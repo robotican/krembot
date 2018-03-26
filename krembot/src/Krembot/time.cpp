@@ -30,37 +30,48 @@
 
 /* Author: Elchay Rauper */
 
-#ifndef BATTERY_H
-#define BATTERY_H
 
-#include "application.h"
+#include "timer.h"
 
-#define BATTERY_LVL_LEG A4
-#define CHARGING_LVL_LEG A5
-#define IS_FULL_CHARGE_LEG D6
-#define IS_CHARGINE_LEG DAC
+Timer::Timer() {started_ = false;}
 
-//TODO: update those vals with Kiril
-#define MAX_BAT_LVL 4.2
-#define MIN_BAT_LVL 3.7
-#define MAX_CHRG_LVL 5.0
-#define MIN_CHRG_LVL 0.0
-
-class Battery
+void Timer::setPeriod(unsigned long period)
 {
-private:
+  period_ = period;
+}
+void Timer::start(unsigned long period)
+{
+    if (!started_)
+    {
+        period_ = period;
+        start_time_ = millis();
+        started_ = true;
+    }
+}
+void Timer::startOver() //override original start time, and start again
+{
+    start_time_ = millis();
+    if (!started_)
+        started_ = true;
+}
+//return true if timer has finished
+bool Timer::finished()
+{
+    if (started_)
+    {
+        end_time_ = millis();
+        if (end_time_ - start_time_ >= period_)
+        {
+            started_ = false;
+        }
+    }
+    return !started_;
+}
 
-public:
+void Timer::reset() {started_ = false;}
 
-  Battery();
-  float readBatLvl(); //lvl in Volt
-  uint8_t getBatLvl(); //lvl in %
-  float readChargelvl(); //lvl in Volt
-  uint8_t getChargeLvl(); //lvl in %
-  bool isCharging();
-  bool isFull();
-  void print();
-
-};
-
-#endif //BATTERY_H
+void Timer::delay(unsigned int period)
+{
+  unsigned long start = millis();
+  while (millis() - start < period) {};
+}

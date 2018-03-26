@@ -28,39 +28,100 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-/* Author: Elchay Rauper */
+/* Author: Elchay Rauper and Yair Shlomi*/
 
-#ifndef BATTERY_H
-#define BATTERY_H
+#ifndef MS_BUMPERS_H
+#define MS_BUMPERS_H
 
-#include "application.h"
+#define BUMPERS_LEG A0
 
-#define BATTERY_LVL_LEG A4
-#define CHARGING_LVL_LEG A5
-#define IS_FULL_CHARGE_LEG D6
-#define IS_CHARGINE_LEG DAC
 
-//TODO: update those vals with Kiril
-#define MAX_BAT_LVL 4.2
-#define MIN_BAT_LVL 3.7
-#define MAX_CHRG_LVL 5.0
-#define MIN_CHRG_LVL 0.0
+/** 
+  *   @brief 
+  *  
+  *   @param 
+  *   
+  *   @return 
+  *
+  */
 
-class Battery
+
+struct BumpersRes
 {
+  bool front = false,
+       right = false,
+       rear = false,
+       left = false;
+};
+
+
+class MSBumpers
+{
+
 private:
 
 public:
 
-  Battery();
-  float readBatLvl(); //lvl in Volt
-  uint8_t getBatLvl(); //lvl in %
-  float readChargelvl(); //lvl in Volt
-  uint8_t getChargeLvl(); //lvl in %
-  bool isCharging();
-  bool isFull();
-  void print();
+/* 
+  *   brief Constructor 
+  *  
+  *   param 
+  *   
+  *   return 
+  *
+  */
 
+  MSBumpers()
+  {
+    pinMode(BUMPERS_LEG, INPUT);
+  }
+
+
+
+/** 
+  *   @brief Read if bumpers were pressed
+  *  
+  *   @param 
+  *   
+  *   @return the bumpers that was pressed
+  *
+  */
+
+  BumpersRes read()
+  {
+    BumpersRes res;
+    
+    return res;
+  }
+
+/** 
+  *   @brief prints which bumpers were pressed
+  *  
+  *   @param 
+  *   
+  *   @return 
+  *
+  */
+
+  void print()
+  {
+    Serial.print("Bumpers Pressed: ");
+    BumpersRes res;
+    res = read();
+    if (res.front)
+      Serial.print("|FRONT|");
+    if (res.rear)
+      Serial.print("|REAR|");
+    if (res.right)
+      Serial.print("|RIGHT|");
+    if (res.left)
+      Serial.print("|LEFT|");
+    Serial.println();
+  }
+
+  
 };
 
-#endif //BATTERY_H
+
+
+#endif

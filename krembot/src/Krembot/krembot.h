@@ -1,3 +1,35 @@
+/*******************************************************************************
+* Copyright (c) 2018, RoboTICan, LTD.
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+*
+* * Redistributions of source code must retain the above copyright notice, this
+*   list of conditions and the following disclaimer.
+*
+* * Redistributions in binary form must reproduce the above copyright notice,
+*   this list of conditions and the following disclaimer in the documentation
+*   and/or other materials provided with the distribution.
+*
+* * Neither the name of RoboTICan nor the names of its
+*   contributors may be used to endorse or promote products derived from
+*   this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*******************************************************************************/
+
+/* Author: Elchay Rauper and Yair Shlomi*/
+
 #ifndef KREMBO_H
 #define KREMBO_H
 
@@ -6,12 +38,9 @@
 #include "mobile_base.h"
 #include "rgb_led.h"
 #include "rgba_sensor.h"
-#include "com_layer.h"
-#include "wkc_krembot2pc.h"
-#include "wkc_pc2krembot.h"
-#include "bluesky_timer.h"
-#include "dac_bumpers.h"
-//#include "imu_sensor.h"
+#include "ms_bumpers.h"
+#include "imu_sensor.h"
+#include "timer.h"
 
 /*TODO:
 1. add connection between photons
@@ -47,22 +76,11 @@ class Krembot
 {
 private:
 
-  bool id_was_sent_,
-  master_asks_for_data_,
-  skip_led_gui_cmds_,	
-  skip_base_gui_cmds_,
-  bump_calib_mode_;
-  COMLayer com_;
-  BlueSkyTimer send_data_timer_;
   String my_name_;
-  String master_ip_;
-  uint16_t port_;
 
 
-  WKCKrembot2PC createWKC();
-  void rcveWKC();
-  void sendWKC(WKCKrembot2PC& wkc_msg);
-  void handleWKCFromPC(WKCPC2Krembot wkc_msg);
+
+
   void saveMyName(const char *topic, const char *data);
 
 
@@ -78,7 +96,7 @@ public:
   RGBASensor RgbaRearLeft; ///< rear left color sensor
 
   MobileBase Base; ///< controls the motors 
-  DacBumpers Bumpers; ///< controls the bumper sensors
+  MSBumpers Bumpers; ///< controls the bumper sensors
   Battery Bat; ///< controls the battery
   RGBLed Led; ///< controls the rgb leds
 
@@ -105,19 +123,7 @@ public:
   *   @return void
   */  
 
-  void setup(String master_ip="10.0.0.3", uint16_t port=8000);
-
-  //void setup() {
-  //  setup("192.168.2.112",8000);
-  //}
-
-  /** 
-  *   @brief  Loop function is called inside the loop function of the krembot_main.ino file.
-  *  
-  *   @return void
-  */  
-  void loop();
-
+  void setup();
 
   /** 
   *   @brief  Gets the ID of the robot. 

@@ -30,37 +30,29 @@
 
 /* Author: Elchay Rauper */
 
-#ifndef BATTERY_H
-#define BATTERY_H
 
-#include "application.h"
+// This library allow setting timer
 
-#define BATTERY_LVL_LEG A4
-#define CHARGING_LVL_LEG A5
-#define IS_FULL_CHARGE_LEG D6
-#define IS_CHARGINE_LEG DAC
+#ifndef TIMER_H
+#define TIMER_H
+#include <Arduino.h>
 
-//TODO: update those vals with Kiril
-#define MAX_BAT_LVL 4.2
-#define MIN_BAT_LVL 3.7
-#define MAX_CHRG_LVL 5.0
-#define MIN_CHRG_LVL 0.0
-
-class Battery
+class Timer
 {
 private:
+    unsigned long start_time_;
+    unsigned long end_time_;
+    unsigned long period_;
+    bool started_;
 
 public:
-
-  Battery();
-  float readBatLvl(); //lvl in Volt
-  uint8_t getBatLvl(); //lvl in %
-  float readChargelvl(); //lvl in Volt
-  uint8_t getChargeLvl(); //lvl in %
-  bool isCharging();
-  bool isFull();
-  void print();
-
+    Timer();
+    void setPeriod(unsigned long period);
+    void start(unsigned long period);
+    void startOver();
+    bool finished();
+    void reset();
+    void delay(unsigned int seconds);
 };
 
-#endif //BATTERY_H
+#endif
