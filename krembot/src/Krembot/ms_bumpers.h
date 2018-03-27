@@ -31,9 +31,23 @@
 /* Author: Elchay Rauper and Yair Shlomi*/
 
 #ifndef MS_BUMPERS_H
-#define MS_BUMPERS_H
 
-#define BUMPERS_LEG A0
+#define MS_BUMPERS_H
+#include <Wire.h> //i2c
+#include "SparkFunSX1509.h" //mux
+
+
+
+
+#define MUX_ADDR 0x3E
+#define BUMPER_FRONT 0
+#define BUMPER_FRONT_RIGHT 1
+#define BUMPER_RIGHT 2
+#define BUMPER_REAR_RIGHT 3
+#define BUMPER_REAR 4
+#define BUMPER_REAR_LEFT 3
+#define BUMPER_LEFT 6
+#define BUMPER_FRONT_LEFT 6
 
 
 /** 
@@ -49,9 +63,13 @@
 struct BumpersRes
 {
   bool front = false,
+       front_right = false,
        right = false,
+       rear_right = false,
        rear = false,
-       left = false;
+       rear_left = false,
+       left = false,
+       front_left = false;
 };
 
 
@@ -59,6 +77,7 @@ class MSBumpers
 {
 
 private:
+  SX1509 mux_;
 
 public:
 
@@ -73,7 +92,16 @@ public:
 
   MSBumpers()
   {
-    pinMode(BUMPERS_LEG, INPUT);
+    mux_.begin(MUX_ADDR);
+
+    mux_.pinMode(BUMPER_FRONT, INPUT_PULLUP);
+    mux_.pinMode(BUMPER_FRONT_RIGHT, INPUT_PULLUP);
+    mux_.pinMode(BUMPER_RIGHT, INPUT_PULLUP);
+    mux_.pinMode(BUMPER_REAR_RIGHT, INPUT_PULLUP);
+    mux_.pinMode(BUMPER_REAR, INPUT_PULLUP);
+    mux_.pinMode(BUMPER_REAR_LEFT, INPUT_PULLUP);
+    mux_.pinMode(BUMPER_LEFT, INPUT_PULLUP);
+    mux_.pinMode(BUMPER_FRONT_LEFT, INPUT_PULLUP);
   }
 
 
@@ -90,7 +118,38 @@ public:
   BumpersRes read()
   {
     BumpersRes res;
-    
+    if(!mux_.digitalRead(BUMPER_FRONT))
+    {
+      res.front = true;
+    }
+    if(!mux_.digitalRead(BUMPER_FRONT_RIGHT))
+    {
+      res.front_right = true;
+    }
+    if(!mux_.digitalRead(BUMPER_RIGHT))
+    {
+      res.right = true;
+    }
+    if(!mux_.digitalRead(BUMPER_REAR_RIGHT))
+    {
+      res.rear_right = true;
+    }
+    if(!mux_.digitalRead(BUMPER_REAR))
+    {
+      res.rear = true;
+    }
+    if(!mux_.digitalRead(BUMPER_REAR_LEFT))
+    {
+      res.rear_left = true;
+    }
+    if(!mux_.digitalRead(BUMPER_LEFT))
+    {
+      res.left = true;
+    }
+    if(!mux_.digitalRead(BUMPER_FRONT_LEFT))
+    {
+      res.front_left = true;
+    }
     return res;
   }
 
@@ -109,13 +168,21 @@ public:
     BumpersRes res;
     res = read();
     if (res.front)
-      Serial.print("|FRONT|");
-    if (res.rear)
-      Serial.print("|REAR|");
+      Serial.print("|   FRONT   |");
+    if (res.front_right)
+      Serial.print("|FRONT RIGHT|");
     if (res.right)
-      Serial.print("|RIGHT|");
+      Serial.print("|   RIGHT   |");
+    if (res.rear_right)
+      Serial.print("|REAR  RIGHT|");
+    if (res.rear)
+      Serial.print("|   REAR    |");
+    if (res.rear_left)
+      Serial.print("| REAR LEFT |");
     if (res.left)
-      Serial.print("|LEFT|");
+      Serial.print("|   LEFT    |");
+    if (res.front_left)
+      Serial.print("|FRONT LEFT |");
     Serial.println();
   }
 

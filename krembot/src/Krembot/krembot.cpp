@@ -45,7 +45,7 @@ void Krembot::setup()
 
 
   //rgba & imu sensors can only be init after wire.begin
-  IMU.init();
+  //IMU.init();
   RgbaFront.init(uint8_t(RGBAAddr::Front));
   RgbaRear.init(uint8_t(RGBAAddr::Rear));
 

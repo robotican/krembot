@@ -32,126 +32,432 @@
 
 #include "Krembot/krembot.h"
 
+enum Stage
+{
+  LEDS,
+  BUMPERS,
+  DRIVING,
+  SENSORS,
+  DONE
+};
+
+struct Leds
+{
+  bool red = false,
+      green = false,
+      blue = false;
+
+  bool red_printed = false,
+       green_printed = false,
+       blue_printed = false;
+};
+
+struct Bumpers
+{
+  bool front = false,
+       front_right = false,
+       right = false,
+       rear_right = false,
+       rear = false,
+       rear_left = false,
+       left = false,
+       front_left = false;
+
+  bool front_printed = false,
+       front_right_printed = false,
+       right_printed = false,
+       rear_right_printed = false,
+       rear_printed = false,
+       rear_left_printed = false,
+       left_printed = false,
+       front_left_printed = false;
+}
+
+struct Driving
+{
+  bool calibrating_left = false,
+       calibrating_right = false;
+
+  bool header_printed = false,
+       case_printed = false,
+       menu_printed = false,
+       calibration_printed = false,
+};
+
+struct Sensors
+{
+  bool front = false,
+       front_right = false,
+       right = false,
+       rear_right = false,
+       rear = false,
+       rear_left = false,
+       left = false,
+       front_left = false;
+
+  bool front_printed = false,
+       front_right_printed = false,
+       right_printed = false,
+       rear_right_printed = false,
+       rear_printed = false,
+       rear_left_printed = false,
+       left_printed = false,
+       front_left_printed = false;
+
+  bool header_printed;
+};
+
 Krembot krembot;
-Timer driveTimer;
+Timer drive_timer;
+BumpersRes results;
+Stage current_stage;
+
 void setup()
 {
     krembot.setup();
     Serial.println("Welcome To Krembot Self Tests");
-    delay(2000);
-    driveTimer.setPeriod(3000);
-    checkLeds();
-    checkBumpers();
-    checkDriving();
-    checkSensores();
+    wait(2000);
+    drive_timer.setPeriod(3000);
+    current_stage = STAGE.LEDS;
+    11133d
 }
-
 
 void loop()
 {
+  if(current_stage == STAGE.LEDS)
+  {
+    if(check_leds())
+    {
+      current_stage == STAGE.BUMPERS;
+    }
+  }
+  else if(current_stage == STAGE.BUMPERS)
+  {
+    if(check_bumpers())
+    {
+      current_stage == STAGE.DRIVING;
+    }
+  }
+  else if(current_stage == STAGE.DRIVING)
+  {
+    if(check_driving())
+    {
+      current_stage == STAGE.SENSORS;
+    }
+  }
+  else if(current_stage == STAGE.SENSORS)
+  {
+    if(check_sensors())
+    {
+      current_stage == STAGE.DONE;
+    }
+  }
+  else if(current_stage == STAGE.DONE)
+  {
+    Serial.println("self test done");
+    wait(5000);
+  }
+
 
 
 }
-
-void checkLeds ()
+bool check_leds ()
 {
-  Serial.println("Let's start with the leds");
-  delay(1000);
-  krembot.Led.write(255,0,0);
-  Serial.println("Look at the leds located on the krembot's head. Are all of them red? (y/n)");
-  while(Serial.available() == 0){}
-  if (Serial.read() != "y")
+  if (!Leds.red_printed)
   {
-   Serial.println("error");
-   while ();
-  }
-  else
-  {
-    Serial.println("great. lets continue");
+    Serial.println("Let's start with the leds");
+    wait(1000);
+    krembot.Led.write(255,0,0);
+    Serial.println("Look at the leds located on the krembot's head. Are all of them red? (y/n)");
+    Leds.red_printed = true;
   }
 
-  delay(1000);
-  krembot.Led.write(0,255,0);
-  Serial.println("Look at the leds again. Are all of them green? (y/n)");
-  while(Serial.available() == 0){}
-  if(Serial.read() != "y")
+  if(!Leds.red)
   {
-   Serial.println("error");
-   while ();
-  }
-  else
-  {
-    Serial.println("great. lets continue");
+    if (!Serial.available())
+      return false;
+    if (Serial.read() != "y")
+    {
+     Serial.println("error");
+     return false;
+    }
+    else
+    {
+      Serial.println("great. lets continue");
+      Leds.red = true;
+    }
   }
 
-  delay(1000);
-  krembot.Led.write(0,0,255);
-  Serial.println("Now look at the leds for the last time. Are all of them blue? (y/n)");
-  while(Serial.available() == 0){}
-  if(Serial.read() != "y")
+  if(!Leds.green_printed)
   {
-   Serial.println("error");
-   while ();
+    Serial.println("Look at the leds again. Are all of them green? (y/n)");
+    wait(1000);
+    krembot.Led.write(0,255,0);
+    Leds.green_printed = true;
   }
-  else
+
+  if(!Leds.green)
   {
-    Serial.println("great. let's move on to the next phase");
+    if (!Serial.available())
+      return false;
+    if (Serial.read() != "y")
+    {
+     Serial.println("error");
+     return false;
+    }
+    else
+    {
+      Leds.green = true;
+      Serial.println("great. lets continue");
+    }
   }
+
+  if(!Leds.blue_printed)
+  {
+    wait(1000);
+    krembot.Led.write(0,0,255);
+    Serial.println("Now look at the leds for the last time. Are all of them blue? (y/n)");
+    Leds.blue_printed = true;
+  }
+  if(!Leds.blue)
+  {
+    if (!Serial.available())
+      return false;
+    if (Serial.read() != "y")
+    {
+     Serial.println("error");
+     return false;
+    }
+    else
+    {
+      Leds.blue = true;
+      Serial.println("great. let's move on to the next phase");
+    }
+  }
+
+  if(Leds.red && Leds.green && Leds.blue)
+  {
+    return true;
+  }
+
+  return false;
 
 }
 
-void checkBumpers()
+bool check_bumpers()
 {
-  Serial.println("Let's continue with the bumpers");
-  BumpersRes results;
-  delay(1000);
-  Serial.println("Please press only the front bumper.");
-  results = Bumpers.read();
-  while(!(results.front && !results.right && !results.rear && !results.left))
+  if(!Bumpers.front_printed)
+  {
+    Serial.println("Let's continue with the bumpers");
+    wait(1000);
+    Serial.println("Please press only the front bumper.");
+    Bumpers.front_printed = true;
+  }
+  if(!Bumpers.front)
   {
     results = Bumpers.read();
+    if(results.front && !results.front_right && !results.right && !results.rear_right
+       && !results.rear && !results.rear_left && !results.left && !results.front_left)
+    {
+      Bumpers.front = true;
+      Serial.println("great. I see the front bumper was pressed");
+      wait(1000);
+    }
+    else
+    {
+      return false;
+    }
   }
-  Serial.println("great. I see the front bumper was pressed");
-  delay(1000);
 
-  Serial.println("now please press only the right bumper.");
-  results = Bumpers.read();
-  while(!(!results.front && results.right && !results.rear && !results.left))
+  if(!Bumpers.front_right_printed)
+  {
+    Serial.println("Please press only the front right bumper.");
+    Bumpers.front_right_printed = true;
+  }
+  if(!Bumpers.front_right)
   {
     results = Bumpers.read();
+    if(!results.front && results.front_right && !results.right && !results.rear_right
+       && !results.rear && !results.rear_left && !results.left && !results.front_left))
+    {
+      Bumpers.front_right = true;
+      Serial.println("great. I see the front right bumper was pressed");
+      wait(1000);
+    }
+    else
+    {
+      return false;
+    }
   }
-  Serial.println("great. I see the right bumper was pressed");
-  delay(1000);
 
-  Serial.println("now please press only the rear bumper.");
-  results = Bumpers.read();
-  while(!(!results.front && !results.right && results.rear && !results.left))
+  if(!Bumpers.right_printed)
+  {
+    Serial.println("Please press only the right bumper.");
+    Bumpers.right_printed = true;
+  }
+  if(!Bumpers.right)
   {
     results = Bumpers.read();
+    if(!results.front && !results.front_right && results.right && !results.rear_right
+       && !results.rear && !results.rear_left && !results.left && !results.front_left))
+    {
+      Bumpers.right = true;
+      Serial.println("great. I see the right bumper was pressed");
+      wait(1000);
+    }
+    else
+    {
+      return false;
+    }
   }
-  Serial.println("great. I see the rear rear was pressed");
-  delay(1000);
 
-  Serial.println("and for the last onw - Please press only the left bumper.");
-  results = Bumpers.read();
-  while(!(!results.front && !results.right && !results.rear && results.left))
+  if(!Bumpers.rear_right_printed)
+  {
+    Serial.println("Please press only the rear right bumper.");
+    Bumpers.rear_right_printed = true;
+  }
+  if(!Bumpers.rear_right)
   {
     results = Bumpers.read();
+    if(!results.front && !results.front_right && !results.right && results.rear_right
+       && !results.rear && !results.rear_left && !results.left && !results.front_left))
+    {
+      Bumpers.rear_right = true;
+      Serial.println("great. I see the rear right bumper was pressed");
+      wait(1000);
+    }
+    else
+    {
+      return false;
+    }
   }
-  Serial.println("great. I see the left bumper was pressed");
-  delay(1000);
+
+  if(!Bumpers.rear_printed)
+  {
+    Serial.println("Please press only the rear bumper.");
+    Bumpers.rear_printed = true;
+  }
+  if(!Bumpers.rear)
+  {
+    results = Bumpers.read();
+    if(!results.front && !results.front_right && !results.right && !results.rear_right
+       && results.rear && !results.rear_left && !results.left && !results.front_left))
+    {
+      Bumpers.rear = true;
+      Serial.println("great. I see the rear bumper was pressed");
+      wait(1000);
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  if(!Bumpers.rear_left_printed)
+  {
+    Serial.println("Please press only the rear left bumper.");
+    Bumpers.rear_left_printed = true;
+  }
+  if(!Bumpers.rear_left)
+  {
+    results = Bumpers.read();
+    if(!results.front && !results.front_right && !results.right && !results.rear_right
+       && !results.rear && results.rear_left && !results.left && !results.front_left))
+    {
+      Bumpers.rear_left = true;
+      Serial.println("great. I see the rear left bumper was pressed");
+      wait(1000);
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  if(!Bumpers.left_printed)
+  {
+    Serial.println("Please press only the left bumper.");
+    Bumpers.left_printed = true;
+  }
+  if(!Bumpers.left)
+  {
+    results = Bumpers.read();
+    if(!results.front && !results.front_right && !results.right && !results.rear_right
+       && !results.rear && !results.rear_left && results.left && !results.front_left))
+    {
+      Bumpers.left = true;
+      Serial.println("great. I see the left bumper was pressed");
+      wait(1000);
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  if(!Bumpers.front_left_printed)
+  {
+    Serial.println("Please press only the front left bumper.");
+    Bumpers.front_left_printed = true;
+  }
+  if(!Bumpers.frontleft)
+  {
+    results = Bumpers.read();
+    if(!results.front && !results.front_right && !results.right && !results.rear_right
+       && !results.rear && !results.rear_left && !results.left && results.front_left))
+    {
+      Bumpers.front_left = true;
+      Serial.println("great. I see the front left bumper was pressed");
+      wait(1000);
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  if(Bumpers.front && Bumpers.front_right && Bumpers.right && Bumpers.rear_right
+     && Bumpers.rear &&Bumpers.rear_left &&Bumpers.left &&Bumpers.front_left)
+  {
+      return true;
+  }
+
+  return false;
+
 }
 
-void checkDriving()
+bool check_driving()
 {
-  Serial.println("Let's check the krembot's movement");
-  delay(1000);
-  int result = "0";
+  if(!Driving.header_printed)
+  {
+    Serial.println("Let's check the krembot's movement");
+    wait(1000);
+    header_printed = true;
+  }
+  int result = 9;
   do
   {
-    printDrivingMenu();
-    while (Serial.available() == 0);
+    if(!Driving.menu_printed)
+    {
+      print_driving_menu();
+      Driving.menu_printed = true;
+    }
+
+    if(!Serial.available() && !Driving.calibrating_left && !Driving.calibrating_right)
+    {
+      return false;
+    }
+
     result = Serial.parseInt();
+    if(Driving.calibrating_right)
+    {
+      result = 5;
+    }
+    else if(Driving.calibrating_left)
+    {
+      result = 6;
+    }
+
     switch (result)
     {
       case 1:
@@ -167,6 +473,8 @@ void checkDriving()
         Serial.println("In case the robot turned right, the right motor needs calibration.");
         Serial.println("In case the robot turned left, the left motor needs calibration.");
         Serial.println("You can choose the calibration mode you need the next time that the menu will be printed");
+        wait(3000);
+        Driving.menu_printed = false;
         break;
       }
 
@@ -183,6 +491,8 @@ void checkDriving()
         Serial.println("In case the robot turned right, the right motor needs calibration.");
         Serial.println("In case the robot turned left, the left motor needs calibration.");
         Serial.println("You can choose the calibration mode you need the next time that the menu will be printed");
+        Driving.menu_printed = false;
+        wait(3000);
         break;
       }
 
@@ -197,6 +507,8 @@ void checkDriving()
         Base.stop();
         Serial.println("If the robot didn't rotate left, the motors may need calibration.");
         Serial.println("You can choose the calibration mode you need the next time that the menu will be printed");
+        Driving.menu_printed = false;
+        wait(3000);
         break;
       }
 
@@ -211,38 +523,52 @@ void checkDriving()
         Base.stop();
         Serial.println("If the robot didn't rotate right, the motors may need calibration.");
         Serial.println("You can choose the calibration mode you need the next time that the menu will be printed");
+        Driving.menu_printed = false;
+        wait(3000);
         break;
       }
 
       case 5:
       {
-        calibrationMode(true);
+        Driving.calibrating_right = true;
+        if(calibration_mode(true)) //calibrating right
+        {
+          Driving.menu_printed = false;
+          Driving.calibration_printed = false;
 
+          wait(3000);
+        }
         break;
       }
 
       case 6:
       {
-        calibrationMode(false);
+        Driving.calibrating_left = true;
+        if(calibration_mode(false)) //calibrating left
+        {
+          Driving.menu_printed = false;
+          Driving.calibration_printed = false;
+          wait(3000);
+        }
         break;
       }
 
       case 0:
       {
-        result = 0;
-        break;
+        return true;
       }
 
       default:
       {
-        result = 0;
-        break;
+        return false;
       }
     }
   } while(result != 0);
+
+  return false;
 }
 
-void printDrivingMenu()
+void print_driving_menu()
 {
   Serial.println("menu:");
   Serial.println("1. drive forward");
@@ -254,9 +580,13 @@ void printDrivingMenu()
   Serial.println("0. exit ");
 }
 
-void calibrationMode(bool isRightMotor)
+bool calibration_mode(bool isRightMotor)
 {
   int8_t offset;
+  if(isRightMotor)
+    Driving.calibrating_right = true;
+  else Driving.calibrating_left = true;
+
   if(isRightMotor)
   {
     offset = EEPROM.read(BASE_RIGHT_OFFSET_ADDR);
@@ -266,101 +596,141 @@ void calibrationMode(bool isRightMotor)
     offset = EEPROM.read(BASE_LEFT_OFFSET_ADDR);
   }
   char input = '0';
-  Serial.print("Motors Calibration Mode: ");
-  if(isRightMotor)
+  if(!Driving.calibration_printed)
   {
-    Serial.print("right ");
-  }
-  else
-  {
-    Serial.print("left");
-  }
-  Serial.println("Motor.");
-
-  Serial.print("Currnet offset: ");
-  Serial.println(offset);
-  Serial.println("to increase the offset of the motor by 1, press '+'.");
-  Serial.println("to decrease the offset of the motor by 1, press '-'.");
-  Serial.println("to save the offset of the motor and exit, press 's'.");
-  while (input != 's' )
-  {
-    while(Serial.available() == 0){}
-    input = Serial.read();
-    if(input == '+')
+    Serial.print("Motors Calibration Mode: ");
+    if(isRightMotor)
     {
-      if(offset < 50)
-      {
-        offset++;
-      }
-    }
-    else if (input == '-')
-    {
-      if(offset > 0)
-      {
-        offset--;
-      }
-    }
-    if(input == 's')
-    {
-      Serial.print("Saved offset: ");
-      if(isRightMotor)
-      {
-        EEPROM.write(BASE_RIGHT_OFFSET_ADDR, offset);
-      }
-      else
-      {
-        EEPROM.write(BASE_LEFT_OFFSET_ADDR, offset);
-      }
-      Serial.println(offset);
+      Serial.print("right ");
     }
     else
     {
+      Serial.print("left");
+    }
+    Serial.println("Motor.");
+
+    Serial.print("Currnet offset: ");
+    Serial.println(offset);
+    Serial.println("to increase the offset of the motor by 1, press '+'.");
+    Serial.println("to decrease the offset of the motor by 1, press '-'.");
+    Serial.println("to save the offset of the motor and exit, press 's'.");
+    Driving.calibration_printed = true;
+  }
+
+  if(!Serial.available())
+  {
+    return false;
+  }
+  input = Serial.read();
+  if(input == '+')
+  {
+    if(offset < 50)
+    {
+      offset++;
       Serial.print("Currnet offset: ");
       Serial.println(offset);
     }
   }
+  else if (input == '-')
+  {
+    if(offset > 0)
+    {
+      offset--;
+      Serial.print("Currnet offset: ");
+      Serial.println(offset);
+    }
+  }
+  else if(input == 's')
+  {
+    Serial.print("Saved offset: ");
+    if(isRightMotor)
+    {
+      EEPROM.write(BASE_RIGHT_OFFSET_ADDR, offset);
+    }
+    else
+    {
+      EEPROM.write(BASE_LEFT_OFFSET_ADDR, offset);
+    }
+    Serial.println(offset);
+    return true;
+  }
+
+  return false;
+}
+
+bool check_sensors()
+{
+  if(!Sensors.header_printed)
+  {
+    Serial.println("Last but not least - the RGB sensors");
+    Serial.println("The values of the sensors will be printed on the screen.");
+    Serial.println("The values of each sensor will be printed until you press any key");
+    Serial.println("Please make sure that the values changes when the color of the led changes");
+    Sensors.header_printed = true;
+  }
+
+  if(!Sensors.front_printed)
+    Serial.println("front sensor:");
+  if(!check_sensor(RgbaFront))
+    return false;
+
+  if(!Sensors.front_right_printed)
+    Serial.println("front right sensor:");
+  if(!check_sensor(RgbaFrontRight))
+    return false;
+
+  if(!Sensors.right_printed)
+    Serial.println("right sensor:");
+  if(!check_sensor(RgbaRight))
+    return false;
+
+  if(!Sensors.rear_right_printed)
+    Serial.println("rear right sensor:");
+  if(!check_sensor(RgbaRearRight))
+    return false;
+
+  if(!Sensors.rear_printed)
+    Serial.println("rear sensor:");
+  if(!check_sensor(RgbaRear))
+    return false;
+
+  if(!Sensors.rear_left_printed)
+    Serial.println("rear left sensor:");
+  if(!check_sensor(RgbaRearLeft))
+    return false;
+
+  if(!Sensors.left_printed)
+    Serial.println("left sensor:");
+  if(!check_sensor(RgbaLeft))
+    return false;
+
+  if(!Sensors.front_left_printed)
+    Serial.println("front left sensor:");
+  if(!check_sensor(RgbaFrontLeft))
+    return false;
+
+  return true;
 
 }
 
-void checkSensores()
-{
-  Serial.println("Last but not least - the RGB sensors");
-  Serial.println("The values of the sensors will be printed on the screen.");
-  Serial.println("The values of each sensor will be printed until you press any key");
-  Serial.println("Please make sure that the values changes when the color of the led changes");
-
-  Serial.println("front sensor:");
-  CheckSensor(RgbaFront);
-
-  Serial.println("front right sensor:");
-  CheckSensor(RgbaFrontRight);
-
-  Serial.println("right sensor:");
-  CheckSensor(RgbaRight);
-
-  Serial.println("rear right sensor:");
-  CheckSensor(RgbaRearRight);
-
-  Serial.println("rear sensor:");
-  CheckSensor(RgbaRear);
-
-  Serial.println("rear left sensor:");
-  CheckSensor(RgbaRearLeft);
-
-  Serial.println("left sensor:");
-  CheckSensor(RgbaLeft);
-
-  Serial.println("front left sensor:");
-  CheckSensor(RgbaFrontLeft);
-
-}
-
-void CheckSensor (RGBASensor &sensor)
+bool check_sensor (RGBASensor &sensor)
 {
 
-  while(Serial.available() == 0)
+  if(!Serial.available())
+  {
+    return false;
+  }
+  else
   {
     sensor.print();
   }
   Serial.println("O.K. moving to the next sensor.");
+  return true;
+}
+
+void wait(int period)
+{
+  Timer timer;
+  timer.setPeriod(period)
+  while (!timer.finished());
 }
