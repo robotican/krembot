@@ -84,8 +84,8 @@ bool MobileBase::drive(int8_t linear_spd, int8_t angular_spd)
      (angular_spd < -100 || angular_spd > 100))
      return false;
 
-  Serial.printf("linear_spd: %d\n", linear_spd);
-  Serial.printf("angular_spd: %d\n", angular_spd);
+  //Serial.printf("linear_spd: %d\n", linear_spd);
+  //Serial.printf("angular_spd: %d\n", angular_spd);
 
   int8_t right_offset = EEPROM.read(BASE_RIGHT_OFFSET_ADDR);
   int8_t left_offset = EEPROM.read(BASE_LEFT_OFFSET_ADDR);
@@ -98,8 +98,8 @@ bool MobileBase::drive(int8_t linear_spd, int8_t angular_spd)
   int linear_scale = int((linear_spd / 100.0) * 255.0);
   int angular_scale = int((angular_spd / 100.0) * 255.0);
 
-  Serial.printf("linear_scale: %d\n", linear_scale);
-  Serial.printf("angular_scale: %d\n", angular_scale);
+  //Serial.printf("linear_scale: %d\n", linear_scale);
+  //Serial.printf("angular_scale: %d\n", angular_scale);
 
   //Serial.print("linear_scale: "); Serial.println(linear_scale);
   //Serial.print("angular_scale: "); Serial.println(angular_scale);
@@ -107,8 +107,8 @@ bool MobileBase::drive(int8_t linear_spd, int8_t angular_spd)
   int left_cmd = linear_scale + angular_scale;
   int right_cmd = linear_scale - angular_scale;
 
-  Serial.print("left cmd: "); Serial.println(left_cmd);
-  Serial.print("right cmd: "); Serial.println(right_cmd);
+  //Serial.print("left cmd: "); Serial.println(left_cmd);
+  //Serial.print("right cmd: "); Serial.println(right_cmd);
 
 
   if (left_cmd != 0)
@@ -116,8 +116,8 @@ bool MobileBase::drive(int8_t linear_spd, int8_t angular_spd)
   if (right_cmd != 0)
     right_cmd += right_offset;
 
-  Serial.print("left cmd: "); Serial.println(left_cmd);
-  Serial.print("right cmd: "); Serial.println(right_cmd);
+  //Serial.print("left cmd: "); Serial.println(left_cmd);
+  //Serial.print("right cmd: "); Serial.println(right_cmd);
 
   if (left_cmd > 255) left_cmd = 255;
   else if (left_cmd < -255) left_cmd = -255;
@@ -140,8 +140,8 @@ bool MobileBase::drive(int8_t linear_spd, int8_t angular_spd)
     right_cmd = -right_cmd;
   }
 
-  Serial.print("left cmd=: "); Serial.println(left_cmd);
-  Serial.print("right cmd=: "); Serial.println(right_cmd);
+  //Serial.print("left cmd=: "); Serial.println(left_cmd);
+  //Serial.print("right cmd=: "); Serial.println(right_cmd);
 
   analogWrite(LEFT_MOTOR_PWM_LEG, left_cmd);
   analogWrite(RIGHT_MOTOR_PWM_LEG, right_cmd);

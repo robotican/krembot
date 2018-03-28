@@ -31,15 +31,19 @@
 /* Author: Elchay Rauper */
 
 
-#include "timer.h"
+#include "custom_timer.h"
 
-Timer::Timer() {started_ = false;}
+CustomTimer::CustomTimer() 
+{
+    started_ = false;
+    period_ = 1000;
+}
 
-void Timer::setPeriod(unsigned long period)
+void CustomTimer::setPeriod(unsigned long period)
 {
   period_ = period;
 }
-void Timer::start(unsigned long period)
+void CustomTimer::start(unsigned long period)
 {
     if (!started_)
     {
@@ -48,14 +52,23 @@ void Timer::start(unsigned long period)
         started_ = true;
     }
 }
-void Timer::startOver() //override original start time, and start again
+
+void CustomTimer::start()
+{
+    if (!started_)
+    {
+        start_time_ = millis();
+        started_ = true;
+    }
+}
+void CustomTimer::startOver() //override original start time, and start again
 {
     start_time_ = millis();
     if (!started_)
         started_ = true;
 }
-//return true if timer has finished
-bool Timer::finished()
+//return true if CustomTimer has finished
+bool CustomTimer::finished()
 {
     if (started_)
     {
@@ -68,9 +81,9 @@ bool Timer::finished()
     return !started_;
 }
 
-void Timer::reset() {started_ = false;}
+void CustomTimer::reset() {started_ = false;}
 
-void Timer::delay(unsigned int period)
+void CustomTimer::delay(unsigned int period)
 {
   unsigned long start = millis();
   while (millis() - start < period) {};

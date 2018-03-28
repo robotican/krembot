@@ -38,14 +38,15 @@ void Krembot::setup()
   Particle.subscribe("spark/", &Krembot::saveMyName, this);
   Particle.subscribe("reset", &Krembot::reset, this);
   Particle.publish("spark/device/name");
-
+  delay(2000);
   pub_battery();
   //init I2C
   Wire.begin();
 
 
   //rgba & imu sensors can only be init after wire.begin
-  //IMU.init();
+  imu_init_ok = imu_sensor.init();
+
   RgbaFront.init(uint8_t(RGBAAddr::Front));
   RgbaRear.init(uint8_t(RGBAAddr::Rear));
 
@@ -62,9 +63,7 @@ void Krembot::setup()
 
 void Krembot::saveMyName(const char *topic, const char *data)
 {
-  Serial.println("received " + String(topic) + ": " + String(data));
+  //Serial.println("received " + String(topic) + ": " + String(data));
   my_name_ = String(data);
 
 }
-
-

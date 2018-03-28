@@ -37,7 +37,7 @@
 #define TIMER_H
 #include <Arduino.h>
 
-class Timer
+class CustomTimer
 {
 private:
     unsigned long start_time_;
@@ -46,9 +46,10 @@ private:
     bool started_;
 
 public:
-    Timer();
+    CustomTimer();
     void setPeriod(unsigned long period);
     void start(unsigned long period);
+    void start();
     void startOver();
     bool finished();
     void reset();

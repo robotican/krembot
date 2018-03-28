@@ -45,9 +45,9 @@
 #define BUMPER_RIGHT 2
 #define BUMPER_REAR_RIGHT 3
 #define BUMPER_REAR 4
-#define BUMPER_REAR_LEFT 3
+#define BUMPER_REAR_LEFT 5
 #define BUMPER_LEFT 6
-#define BUMPER_FRONT_LEFT 6
+#define BUMPER_FRONT_LEFT 7
 
 
 /** 
@@ -104,8 +104,7 @@ public:
     mux_.pinMode(BUMPER_FRONT_LEFT, INPUT_PULLUP);
   }
 
-
-
+  
 /** 
   *   @brief Read if bumpers were pressed
   *  

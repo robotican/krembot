@@ -39,8 +39,8 @@
 #include "rgb_led.h"
 #include "rgba_sensor.h"
 #include "ms_bumpers.h"
-//#include "imu_sensor.h"
-#include "timer.h"
+#include "imu_sensor.h"
+#include "custom_timer.h"
 
 /*TODO:
 1. add connection between photons
@@ -95,19 +95,23 @@ public:
   RGBASensor RgbaRearRight; ///< rear right color sensor
   RGBASensor RgbaRearLeft; ///< rear left color sensor
 
-  MobileBase Base; ///< controls the motors 
+  MobileBase Base; ///< controls the motors
   MSBumpers Bumpers; ///< controls the bumper sensors
   Battery Bat; ///< controls the battery
   RGBLed Led; ///< controls the rgb leds
+  IMUSensor imu_sensor;
 
-  /** 
-  *   @brief  Resets the robot  
-  *  
+  bool imu_init_ok;
+
+
+  /**
+  *   @brief  Resets the robot
+  *
   *   @param  topic is a char array containing the topic
   *   @param  data is a char array containing the data
   *   @return void
-  */  
-  
+  */
+
 
   void reset(const char *topic, const char *data) {
     if (strcmp(topic,"reset")==0 && (strcmp(data,"all")==0 || strcmp(data,getName().c_str())==0) ) {
@@ -115,43 +119,43 @@ public:
     }
   }
 
-  /** 
+  /**
   *   @brief  Setups the robot with the controllers ip and port.
-  *  
+  *
   *   @param  master_ip is a char array containing the controllers ip
   *   @param  port is an uint16_t containing the controllers port
   *   @return void
-  */  
+  */
 
   void setup();
 
-  /** 
-  *   @brief  Gets the ID of the robot. 
-  *  
+  /**
+  *   @brief  Gets the ID of the robot.
+  *
   *   @return String, the ID of the robot
-  */  
+  */
   String getID() { return System.deviceID(); }
 
-  /** 
-  *   @brief  Gets the name of the robot. 
-  *  
+  /**
+  *   @brief  Gets the name of the robot.
+  *
   *   @return String, the name of the robot
-  */  
+  */
   String getName() { return  my_name_; }
 
-  /** 
-  *   @brief  Checks if the robot has name. 
-  *  
+  /**
+  *   @brief  Checks if the robot has name.
+  *
   *   @return bool, true if the robot's name length is longer then 0, false otherwise.
-  */  
+  */
   bool have_name() {return my_name_.length()>0 ;}
 
 
-  /* 
-  *   Publishes and prints the battery level of the robot. 
-  *  
-  *   
-  */  
+  /*
+  *   Publishes and prints the battery level of the robot.
+  *
+  *
+  */
   void pub_battery() {
     char str[50];
     int level= Bat.getBatLvl();

@@ -54,24 +54,18 @@ void RGBASensor::init(uint8_t addr)
   apds_ = SparkFun_APDS9960();
   i2cMuxSelectMe();
 
-  if ( apds_.init() )
-    Serial.print(F("APDS-9960 initialization complete sensor") );
-  else
-    Serial.println(F("Something went wrong during APDS-9960 init sensor" ));
+  if (!apds_.init() )
+       Serial.println(F("Something went wrong during APDS-9960 init sensor" ));
 
-  if ( apds_.enableLightSensor(false) )
-    Serial.println(F("Light sensor is now running sensor" ));
-  else
-    Serial.println(F("Something went wrong during light sensor init! sensor" ));
+  if (!apds_.enableLightSensor(false) )
+      Serial.println(F("Something went wrong during light sensor init! sensor" ));
 
   if ( !apds_.setProximityGain(PGAIN_2X) )
     Serial.println(F("Something went wrong trying to set PGAIN sensor sensor" ));
 
-  if ( apds_.enableProximitySensor(false) )
-    Serial.println(F("Proximity sensor is now running sensor sensor"));
-  else
-    Serial.println(F("Something went wrong during sensor init! sensor"));
-  Serial.println();
+  if ( !apds_.enableProximitySensor(false) )
+     Serial.println(F("Something went wrong during sensor init! sensor"));
+  //Serial.println();
 }
 
 /* 
