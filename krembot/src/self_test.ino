@@ -28,6 +28,18 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
+//This sketch is for testing the krembots.
+//It tests all of the krembot's components - leds, bumpers, motors, imu and rgb sensors.
+//Its designf as state machine - you can cont to the next phase only after the
+//previous phase ended successfully.
+//In every phase, instructions will be printed.
+
+//If the krembot does not enter to flashing mode, try to power off the
+//krembot and wait until the led on the photon is breathing cyan, or if
+//this sketch was the last uploaded firmware, wait until the red leds
+//will turn on,
+
+
 /* Author:  Yair Shlomi*/
 
 #include "Krembot/krembot.h"
@@ -145,7 +157,7 @@ void setup()
 
 void loop()
 {
-  check_imu();
+
   if(current_stage == STAGE::LEDS)
   {
     if(check_leds())
@@ -166,6 +178,14 @@ void loop()
   else if(current_stage == STAGE::DRIVING)
   {
     if(check_driving())
+    {
+      current_stage = STAGE::IMU;
+      Serial.println("\n************************************\n");
+    }
+  }
+  else if(current_stage == STAGE::IMU)
+  {
+    if(check_imu())
     {
       current_stage = STAGE::SENSORS;
       Serial.println("\n************************************\n");
@@ -910,13 +930,12 @@ bool check_sensor (RGBASensor &sensor)
 {
   sensor.print();
     wait(2000);
-    Serial.println("");
     if(Serial.available())
     {
       input = Serial.read();
       if(input == 's')
       {
-        Serial.println("O.K. moving to the next sensor.");
+        Serial.println("O.K. moving to the next sensor\n.");
         return true;
       }
     }
