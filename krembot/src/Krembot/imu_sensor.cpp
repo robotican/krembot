@@ -20,18 +20,21 @@ bool IMUSensor::init()
 
       // Start by performing self test and reporting values
       imu_.MPU9250SelfTest(imu_.SelfTest);
-      Serial.print("x-axis self test: acceleration trim within : ");
-      Serial.print(imu_.SelfTest[0],1); Serial.println("% of factory value");
-      Serial.print("y-axis self test: acceleration trim within : ");
-      Serial.print(imu_.SelfTest[1],1); Serial.println("% of factory value");
-      Serial.print("z-axis self test: acceleration trim within : ");
-      Serial.print(imu_.SelfTest[2],1); Serial.println("% of factory value");
-      Serial.print("x-axis self test: gyration trim within : ");
-      Serial.print(imu_.SelfTest[3],1); Serial.println("% of factory value");
-      Serial.print("y-axis self test: gyration trim within : ");
-      Serial.print(imu_.SelfTest[4],1); Serial.println("% of factory value");
-      Serial.print("z-axis self test: gyration trim within : ");
-      Serial.print(imu_.SelfTest[5],1); Serial.println("% of factory value");
+      if(SerialDebug)
+      {
+        Serial.print("x-axis self test: acceleration trim within : ");
+        Serial.print(imu_.SelfTest[0],1); Serial.println("% of factory value");
+        Serial.print("y-axis self test: acceleration trim within : ");
+        Serial.print(imu_.SelfTest[1],1); Serial.println("% of factory value");
+        Serial.print("z-axis self test: acceleration trim within : ");
+        Serial.print(imu_.SelfTest[2],1); Serial.println("% of factory value");
+        Serial.print("x-axis self test: gyration trim within : ");
+        Serial.print(imu_.SelfTest[3],1); Serial.println("% of factory value");
+        Serial.print("y-axis self test: gyration trim within : ");
+        Serial.print(imu_.SelfTest[4],1); Serial.println("% of factory value");
+        Serial.print("z-axis self test: gyration trim within : ");
+        Serial.print(imu_.SelfTest[5],1); Serial.println("% of factory value");
+      }
 
       // Calibrate gyro and accelerometers, load biases in bias registers
       imu_.calibrateMPU9250(imu_.gyroBias, imu_.accelBias);

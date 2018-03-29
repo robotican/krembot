@@ -31,8 +31,9 @@
 //This sketch is for testing the krembots.
 //It tests all of the krembot's components - leds, bumpers, motors, imu and rgb sensors.
 //Its designf as state machine - you can cont to the next phase only after the
-//previous phase ended successfully.
-//In every phase, instructions will be printed.
+//previous phase ended successfully. In every phase, instructions will be printed.
+
+//This sketch implements krembots API for the tests.
 
 //If the krembot does not enter to flashing mode, try to power off the
 //krembot and wait until the led on the photon is breathing cyan, or if
@@ -46,7 +47,7 @@
 #include "Krembot/imu_sensor.h"
 
 
-enum STAGE
+enum PHASE
 {
   LEDS,
   BUMPERS,
@@ -131,7 +132,7 @@ struct Imu
 Krembot krembot;
 CustomTimer drive_timer;
 BumpersRes results;
-STAGE current_stage;
+PHASE current_phase;
 Leds leds;
 Bumpers bumpers;
 Driving driving;
@@ -151,55 +152,55 @@ void setup()
     wait(8000);
     Serial.println("Welcome To Krembot Self Tests");
     drive_timer.setPeriod(3000);
-    current_stage = STAGE::LEDS;
+    current_phase = PHASE::LEDS;
     Serial.println("\n************************************\n");
 }
 
 void loop()
 {
 
-  if(current_stage == STAGE::LEDS)
+  if(current_phase == PHASE::LEDS)
   {
     if(check_leds())
     {
-      current_stage = STAGE::BUMPERS;
+      current_phase = PHASE::BUMPERS;
       Serial.println("\n************************************\n");
     }
   }
-  else if(current_stage == STAGE::BUMPERS)
+  else if(current_phase == PHASE::BUMPERS)
   {
 
     if(check_bumpers())
     {
-      current_stage = STAGE::DRIVING;
+      current_phase = PHASE::DRIVING;
       Serial.println("\n************************************\n");
     }
   }
-  else if(current_stage == STAGE::DRIVING)
+  else if(current_phase == PHASE::DRIVING)
   {
     if(check_driving())
     {
-      current_stage = STAGE::IMU;
+      current_phase = PHASE::IMU;
       Serial.println("\n************************************\n");
     }
   }
-  else if(current_stage == STAGE::IMU)
+  else if(current_phase == PHASE::IMU)
   {
     if(check_imu())
     {
-      current_stage = STAGE::SENSORS;
+      current_phase = PHASE::SENSORS;
       Serial.println("\n************************************\n");
     }
   }
-  else if(current_stage == STAGE::SENSORS)
+  else if(current_phase == PHASE::SENSORS)
   {
     if(check_sensors())
     {
-      current_stage = STAGE::DONE;
+      current_phase = PHASE::DONE;
       Serial.println("\n************************************\n");
     }
   }
-  else if(current_stage == STAGE::DONE)
+  else if(current_phase == PHASE::DONE)
   {
     if(!done_printed)
     {
@@ -935,7 +936,7 @@ bool check_sensor (RGBASensor &sensor)
       input = Serial.read();
       if(input == 's')
       {
-        Serial.println("O.K. moving to the next sensor\n.");
+        Serial.println("O.K. moving to the next sensor\n");
         return true;
       }
     }
