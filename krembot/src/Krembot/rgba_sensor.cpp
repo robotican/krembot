@@ -147,7 +147,7 @@ void RGBASensor::print()
     Serial.print(" | Red: ");   Serial.print(read_res.Red);
     Serial.print(" | Green: ");   Serial.print(read_res.Green);
     Serial.print(" | Blue: ");  Serial.print(read_res.Blue);
-    Serial.print(" | Proximity: ");  Serial.println(read_res.Proximity);
+    Serial.print(" | Distance: ");  Serial.println(read_res.Distance);
   }
   else
   {

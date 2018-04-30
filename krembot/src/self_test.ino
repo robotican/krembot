@@ -28,6 +28,8 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
+/* Author:  Yair Shlomi*/
+
 //This sketch is for testing the krembots.
 //It tests all of the krembot's components - leds, bumpers, motors, imu and rgb sensors.
 //Its designf as state machine - you can cont to the next phase only after the
@@ -41,19 +43,19 @@
 //will turn on,
 
 
-/* Author:  Yair Shlomi*/
+
 
 #include "Krembot/krembot.h"
-#include "Krembot/imu_sensor.h"
 
 
 enum PHASE
 {
+  IMU,
   LEDS,
   BUMPERS,
   DRIVING,
-  IMU,
   SENSORS,
+  BATTERY,
   DONE
 };
 
@@ -129,11 +131,17 @@ struct Imu
        init_error_printed = false;
 };
 
+bool battery_header_printed = false;
+
 Krembot krembot;
 CustomTimer drive_timer;
+CustomTimer print_timer;
+CustomTimer delay_timer;
+
 BumpersRes results;
 PHASE current_phase;
 Leds leds;
+Battery battery;
 Bumpers bumpers;
 Driving driving;
 Imu imu;
@@ -146,22 +154,25 @@ bool done_printed = false;
 
 void setup()
 {
+    wait(8000);
     krembot.setup();
     //while(!Serial.available()){}
     ///Serial.read();
-    wait(8000);
     Serial.println("Welcome To Krembot Self Tests");
+    print_timer.setPeriod(5000);
     drive_timer.setPeriod(3000);
-    current_phase = PHASE::LEDS;
+    delay_timer.setPeriod(1000);
+
+    current_phase = PHASE::IMU;
     Serial.println("\n************************************\n");
 }
 
 void loop()
 {
-
-  if(current_phase == PHASE::LEDS)
+  krembot.loop();
+  if(current_phase == PHASE::IMU)
   {
-    if(check_leds())
+    if(check_imu())
     {
       current_phase = PHASE::BUMPERS;
       Serial.println("\n************************************\n");
@@ -180,13 +191,13 @@ void loop()
   {
     if(check_driving())
     {
-      current_phase = PHASE::IMU;
+      current_phase = PHASE::LEDS;
       Serial.println("\n************************************\n");
     }
   }
-  else if(current_phase == PHASE::IMU)
+  else if(current_phase == PHASE::LEDS)
   {
-    if(check_imu())
+    if(check_leds())
     {
       current_phase = PHASE::SENSORS;
       Serial.println("\n************************************\n");
@@ -195,6 +206,14 @@ void loop()
   else if(current_phase == PHASE::SENSORS)
   {
     if(check_sensors())
+    {
+      current_phase = PHASE::BATTERY;
+      Serial.println("\n************************************\n");
+    }
+  }
+  else if(current_phase == PHASE::BATTERY)
+  {
+    if(check_battery())
     {
       current_phase = PHASE::DONE;
       Serial.println("\n************************************\n");
@@ -226,7 +245,7 @@ bool check_leds ()
     if (!Serial.available())
       return false;
     input = (char)Serial.read();
-    if (input != 'y')
+    if (input != 'y' && input != 'Y')
     {
      Serial.println("error");
      return false;
@@ -252,7 +271,7 @@ bool check_leds ()
     if (!Serial.available())
       return false;
     input = (char)Serial.read();
-    if (input != 'y')
+    if (input != 'y' && input != 'Y')
     {
      Serial.println("error");
      return false;
@@ -277,7 +296,7 @@ bool check_leds ()
     if (!Serial.available())
       return false;
     input = (char)Serial.read();
-    if (input != 'y')
+    if (input != 'y' && input != 'Y')
     {
      Serial.println("error");
      return false;
@@ -477,8 +496,8 @@ bool check_bumpers()
       bumpers.front_left = true;
       Serial.println("great. I see the front left bumper was pressed");
       Serial.println("------------------------------------\n");
-      return true;
       wait(1000);
+      return true;
     }
     else
     {
@@ -627,6 +646,7 @@ bool check_driving()
 
       case 0:
       {
+        //return false;
         return true;
       }
 
@@ -735,7 +755,7 @@ bool calibration_mode(bool isRightMotor)
 
 bool check_imu()
 {
-  if(krembot.imu_init_ok)
+  if(krembot.Imu_init_errors.imu_adrees_ok && krembot.Imu_init_errors.imu_online && krembot.Imu_init_errors.mag_adrees_ok)
   {
     if(!imu.imu_printed)
     {
@@ -744,18 +764,20 @@ bool check_imu()
       Serial.println("It will be printed until you press 's'");
       Serial.println("Please make sure that the values changes when you tilt the robot");
       Serial.println("------------------------------------\n");
-      wait(5000);
       imu.imu_printed = true;
+      print_timer.start();
     }
-    ImuData data;
-    krembot.imu_sensor.read(data);
-    Serial.print("Roll: ");
-    Serial.print(data.roll);
-    Serial.print(", Pitch: ");
-    Serial.print(data.pitch);
-    Serial.print(", Yaw: ");
-    Serial.println(data.yaw);
-    wait(2000);
+    if(!print_timer.finished())
+    {
+      return false;
+    }
+    delay_timer.start();
+    if(!delay_timer.finished())
+    {
+      return false;
+    }
+    krembot.imu_sensor.print();
+
     Serial.println("");
     if(Serial.available())
     {
@@ -779,7 +801,7 @@ bool check_sensors()
 {
   if(!sensors.header_printed)
   {
-    Serial.println("Last but not least - the RGB sensors");
+    Serial.println("now we will check the RGB sensors");
     Serial.println("The values of the sensors will be printed on the screen.");
     Serial.println("The values of each sensor will be printed until you press 's'");
     Serial.println("Please make sure that the values changes when the color of the led changes");
@@ -941,6 +963,34 @@ bool check_sensor (RGBASensor &sensor)
       }
     }
   return false;
+}
+
+
+bool check_battery()
+{
+  if(!battery_header_printed)
+  {
+    Serial.println("Now we will check the battery");
+    Serial.println("The Raw Battery read, Battery level, Charge Level, charging status (Yes/No) and battery full status(Yes/No) will be printed");
+    Serial.println("It will be printed until you press 's'");
+    Serial.println("Please make sure that the values are correct. charge and stop charging the robot and check if the status changes");
+    Serial.println("------------------------------------\n");
+    wait(5000);
+    battery_header_printed = true;
+  }
+    battery.print();
+    wait(2000);
+    Serial.println("");
+    if(Serial.available())
+    {
+      input = Serial.read();
+      if(input == 's')
+      {
+        Serial.println("O.K. moving to the next phase.");
+        return true;
+      }
+    }
+    return false;
 }
 
 void wait(int period)

@@ -40,14 +40,14 @@
 
 
 #define MUX_ADDR 0x3E
-#define BUMPER_FRONT 0
-#define BUMPER_FRONT_RIGHT 1
-#define BUMPER_RIGHT 2
-#define BUMPER_REAR_RIGHT 3
-#define BUMPER_REAR 4
-#define BUMPER_REAR_LEFT 5
-#define BUMPER_LEFT 6
-#define BUMPER_FRONT_LEFT 7
+#define BUMPER_FRONT 7
+#define BUMPER_FRONT_RIGHT 0
+#define BUMPER_RIGHT 1
+#define BUMPER_REAR_RIGHT 2
+#define BUMPER_REAR 3
+#define BUMPER_REAR_LEFT 4
+#define BUMPER_LEFT 5
+#define BUMPER_FRONT_LEFT 6
 
 
 /** 
@@ -102,6 +102,8 @@ public:
     mux_.pinMode(BUMPER_REAR_LEFT, INPUT_PULLUP);
     mux_.pinMode(BUMPER_LEFT, INPUT_PULLUP);
     mux_.pinMode(BUMPER_FRONT_LEFT, INPUT_PULLUP);
+    
+    //read();
   }
 
   

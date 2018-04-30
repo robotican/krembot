@@ -100,8 +100,8 @@ public:
   Battery Bat; ///< controls the battery
   RGBLed Led; ///< controls the rgb leds
   IMUSensor imu_sensor;
-
-  bool imu_init_ok;
+  ImuData imuData;
+  ImuInitErrors Imu_init_errors;
 
 
   /**
@@ -128,6 +128,8 @@ public:
   */
 
   void setup();
+
+  void loop();
 
   /**
   *   @brief  Gets the ID of the robot.
