@@ -63,9 +63,9 @@ ImuInitErrors IMUSensor::init()
     // Get magnetometer calibration from AK8963 ROM
 
     imu_.initAK8963(imu_.magCalibration);
-    EEPROM.get(MAG_BIAS_0_ADDR, mag_bias0);
-    EEPROM.get(MAG_BIAS_1_ADDR, mag_bias1);
-    EEPROM.get(MAG_BIAS_2_ADDR, mag_bias2);
+    //EEPROM.get(MAG_BIAS_0_ADDR, mag_bias0);
+    //EEPROM.get(MAG_BIAS_1_ADDR, mag_bias1);
+    //EEPROM.get(MAG_BIAS_2_ADDR, mag_bias2);
 
     /*Serial.print("mag_bias0: ");
     Serial.println(mag_bias0);
@@ -74,9 +74,9 @@ ImuInitErrors IMUSensor::init()
     Serial.print("mag_bias2: ");
     Serial.println(mag_bias2);*/
 
-    imu_.magbias[0] = (float)mag_bias0;
-    imu_.magbias[1] = (float)mag_bias1;
-    imu_.magbias[2] = (float)mag_bias2;
+    //imu_.magbias[0] = (float)mag_bias0;
+    //imu_.magbias[1] = (float)mag_bias1;
+    //imu_.magbias[2] = (float)mag_bias2;
 
 
 
@@ -149,9 +149,9 @@ void IMUSensor::loop()
     // automatically calculated
 
 
-    imu_.magbias[0] = (float)mag_bias0;
-    imu_.magbias[1] = (float)mag_bias1;
-    imu_.magbias[2] = (float)mag_bias2;
+    //imu_.magbias[0] = (float)mag_bias0;
+    //imu_.magbias[1] = (float)mag_bias1;
+    //imu_.magbias[2] = (float)mag_bias2;
 
     imu_.magbias[0] = +470.;
     // User environmental x-axis correction in milliGauss TODO axis??
@@ -163,11 +163,11 @@ void IMUSensor::loop()
     // Include factory calibration per data sheet and user environmental
     // corrections
     // Get actual magnetometer value, this depends on scale being set
-    imu_.mx = (float)imu_.magCount[0]*imu_.mRes*imu_.magCalibration[0] +
+    imu_.mx = (float)imu_.magCount[0]*imu_.mRes*imu_.magCalibration[0] -
                imu_.magbias[0];
-    imu_.my = (float)imu_.magCount[1]*imu_.mRes*imu_.magCalibration[1] +
+    imu_.my = (float)imu_.magCount[1]*imu_.mRes*imu_.magCalibration[1] -
                imu_.magbias[1];
-    imu_.mz = (float)imu_.magCount[2]*imu_.mRes*imu_.magCalibration[2] +
+    imu_.mz = (float)imu_.magCount[2]*imu_.mRes*imu_.magCalibration[2] -
                imu_.magbias[2];
   } // if (readByte(MPU9250_ADDRESS, INT_STATUS) & 0x01)
 
