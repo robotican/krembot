@@ -56,6 +56,7 @@ enum PHASE
   DRIVING,
   SENSORS,
   BATTERY,
+  NONE,
   DONE
 };
 
@@ -149,12 +150,13 @@ Sensors sensors;
 char input;
 int8_t offset_added;
 bool done_printed = false;
-
+bool main_menu_printed = false;
+int selection = 0;
 
 
 void setup()
 {
-    wait(8000);
+    wait(5000);
     krembot.setup();
     //while(!Serial.available()){}
     ///Serial.read();
@@ -163,72 +165,168 @@ void setup()
     drive_timer.setPeriod(3000);
     delay_timer.setPeriod(1000);
 
-    current_phase = PHASE::IMU;
+    current_phase = PHASE::NONE;
     Serial.println("\n************************************\n");
 }
 
 void loop()
 {
   krembot.loop();
-  if(current_phase == PHASE::IMU)
+  if(current_phase == PHASE::NONE)
   {
-    if(check_imu())
+    if(print_main_menu(selection))
     {
-      current_phase = PHASE::BUMPERS;
-      Serial.println("\n************************************\n");
-    }
-  }
-  else if(current_phase == PHASE::BUMPERS)
-  {
+      switch (selection)
+      {
+        case 1:
+        {
+          current_phase = PHASE::IMU;
+          selection = 0;
+          break;
+        }
 
-    if(check_bumpers())
-    {
-      current_phase = PHASE::DRIVING;
-      Serial.println("\n************************************\n");
-    }
-  }
-  else if(current_phase == PHASE::DRIVING)
+        case 2:
+        {
+          current_phase = PHASE::BUMPERS;
+          selection = 0;
+          break;
+        }
+
+        case 3:
+        {
+          current_phase = PHASE::DRIVING;
+          selection = 0;
+          break;
+        }
+
+        case 4:
+        {
+          current_phase = PHASE::LEDS;
+          selection = 0;
+          break;
+        }
+
+        case 5:
+        {
+          current_phase = PHASE::SENSORS;
+          selection = 0;
+          break;
+        }
+
+        case 6:
+        {
+          current_phase = PHASE::BATTERY;
+          selection = 0;
+          break;
+        }
+
+        case 9:
+        {
+          current_phase = PHASE::DONE;
+          selection = 0;
+          break;
+        }
+
+        default:
+        {
+          current_phase = PHASE::NONE;
+          selection = 0;
+        }
+      }
+   }
+ }
+
+  if(current_phase != PHASE::NONE)
   {
-    if(check_driving())
+    if(current_phase == PHASE::IMU)
     {
-      current_phase = PHASE::LEDS;
-      Serial.println("\n************************************\n");
+      if(check_imu())
+      {
+        current_phase = PHASE::NONE;
+        Serial.println("\n************************************\n");
+      }
+    }
+    else if(current_phase == PHASE::BUMPERS)
+    {
+
+      if(check_bumpers())
+      {
+        current_phase = PHASE::NONE;
+        Serial.println("\n************************************\n");
+      }
+    }
+    else if(current_phase == PHASE::DRIVING)
+    {
+      if(check_driving())
+      {
+        current_phase = PHASE::NONE;
+        Serial.println("\n************************************\n");
+      }
+    }
+    else if(current_phase == PHASE::LEDS)
+    {
+      if(check_leds())
+      {
+        current_phase = PHASE::NONE;
+        Serial.println("\n************************************\n");
+      }
+    }
+    else if(current_phase == PHASE::SENSORS)
+    {
+      if(check_sensors())
+      {
+        current_phase = PHASE::NONE;
+        Serial.println("\n************************************\n");
+      }
+    }
+    else if(current_phase == PHASE::BATTERY)
+    {
+      if(check_battery())
+      {
+        current_phase = PHASE::NONE;
+        Serial.println("\n************************************\n");
+      }
+    }
+    else if(current_phase == PHASE::DONE)
+    {
+      if(!done_printed)
+      {
+        Serial.println("******************self test done***********************");
+        done_printed = true;
+      }
     }
   }
-  else if(current_phase == PHASE::LEDS)
-  {
-    if(check_leds())
-    {
-      current_phase = PHASE::SENSORS;
-      Serial.println("\n************************************\n");
-    }
-  }
-  else if(current_phase == PHASE::SENSORS)
-  {
-    if(check_sensors())
-    {
-      current_phase = PHASE::BATTERY;
-      Serial.println("\n************************************\n");
-    }
-  }
-  else if(current_phase == PHASE::BATTERY)
-  {
-    if(check_battery())
-    {
-      current_phase = PHASE::DONE;
-      Serial.println("\n************************************\n");
-    }
-  }
-  else if(current_phase == PHASE::DONE)
-  {
-    if(!done_printed)
-    {
-      Serial.println("******************self test done***********************");
-      done_printed = true;
-    }
-  }
+
 
 }
+
+bool print_main_menu(int &selection)
+{
+  if(!main_menu_printed)
+  {
+    Serial.println("Main menu:");
+    Serial.println("1. check imu");
+    Serial.println("2. check bumpers");
+    Serial.println("3. check driving");
+    Serial.println("4. check leds");
+    Serial.println("5. check rgba sensors");
+    Serial.println("6. check battery");
+    Serial.println("9. exit ");
+    main_menu_printed = true;
+  }
+  if (!Serial.available())
+    return false;
+
+  selection = Serial.parseInt();
+  if(selection > 0 && selection < 10)
+  {
+    main_menu_printed = false;
+    return true;
+  }
+  return false;
+
+}
+
 bool check_leds ()
 {
   if (!leds.red_printed)
@@ -306,7 +404,7 @@ bool check_leds ()
       leds.blue = true;
       Serial.println("------------------------------------\n");
       krembot.Led.write(0,0,0);
-      Serial.println("great. let's move on to the next phase");
+      Serial.println("great. Leds phase Done");
       return true;
     }
   }

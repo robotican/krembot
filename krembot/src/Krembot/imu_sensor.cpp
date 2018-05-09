@@ -67,12 +67,12 @@ ImuInitErrors IMUSensor::init()
     EEPROM.get(MAG_BIAS_1_ADDR, mag_bias1);
     EEPROM.get(MAG_BIAS_2_ADDR, mag_bias2);
 
-    Serial.print("mag_bias0: ");
+    /*Serial.print("mag_bias0: ");
     Serial.println(mag_bias0);
     Serial.print("mag_bias1: ");
     Serial.println(mag_bias1);
     Serial.print("mag_bias2: ");
-    Serial.println(mag_bias2);
+    Serial.println(mag_bias2);*/
 
     imu_.magbias[0] = (float)mag_bias0;
     imu_.magbias[1] = (float)mag_bias1;
@@ -84,12 +84,12 @@ ImuInitErrors IMUSensor::init()
     EEPROM.get(MAG_BIAS_1_ADDR, imu_.magbias[1]);
     EEPROM.get(MAG_BIAS_2_ADDR, imu_.magbias[2]);*/
 
-    Serial.print("mag_bias0: ");
+  /*  Serial.print("mag_bias0: ");
     Serial.println(imu_.magbias[0]);
     Serial.print("mag_bias1: ");
     Serial.println(imu_.magbias[1]);
     Serial.print("mag_bias2: ");
-    Serial.println(imu_.magbias[2]);
+    Serial.println(imu_.magbias[2]);*/
     // Initialize device for active mode read of magnetometer
     //Serial.println("AK8963 initialized for active data mode....");
     /*if (SerialDebug)
@@ -153,11 +153,11 @@ void IMUSensor::loop()
     imu_.magbias[1] = (float)mag_bias1;
     imu_.magbias[2] = (float)mag_bias2;
 
-    //imu_.magbias[0] = +470.;
+    imu_.magbias[0] = +470.;
     // User environmental x-axis correction in milliGauss TODO axis??
-    //imu_.magbias[1] = +120.;
+    imu_.magbias[1] = +120.;
     // User environmental x-axis correction in milliGauss
-    //imu_.magbias[2] = +125.;
+    imu_.magbias[2] = +125.;
 
     // Calculate the magnetometer values in milliGauss
     // Include factory calibration per data sheet and user environmental
@@ -187,6 +187,10 @@ void IMUSensor::loop()
                          imu_.gy*DEG_TO_RAD, imu_.gz*DEG_TO_RAD, imu_.my,
                          imu_.mx, imu_.mz, imu_.deltat);
 
+
+                      /*   Serial.print("rate = ");
+                         Serial.print((float)imu_.sumCount/imu_.sum, 2);
+                         Serial.println(" Hz");*/
   if (!AHRS)
   {
     imu_.delt_t = millis() - imu_.count;
