@@ -105,6 +105,37 @@ ImuInitErrors IMUSensor::init()
 
   } // if (c == 0x71)
   else Serial.println("imu_online = false");
+
+
+  EEPROM.get(100, mag_bias);
+  if (mag_bias.id == IMUSensor::MAG_BIAS_ID)
+  {
+    Serial.println("Found mag clibration");
+    Serial.print("mag_bias.x:");
+    Serial.print(mag_bias.x);
+    Serial.print(" | ");
+    Serial.print("mag_bias.y:");
+    Serial.print(mag_bias.y);
+    Serial.print(" | ");
+    Serial.print("mag_bias.z:");
+    Serial.print(mag_bias.z);
+    Serial.println();
+  }
+  else
+  {
+    Serial.println("Mag clibration wasn't found");
+    mag_bias.x = 470;
+    mag_bias.y = 120;
+    mag_bias.z = 125;
+
+    imu_.readMagData(mag_temp);
+    for (int jj = 0; jj<3; jj++)
+    {
+      mag_max[jj] = mag_temp[jj];
+      mag_min[jj] = mag_temp[jj];
+    }
+
+  }
   return errors;
 
 }
@@ -119,6 +150,64 @@ ImuData IMUSensor::read()
 
   return data;
 }
+
+
+void IMUSensor::magCalLoop()
+{
+  Serial.println("Mag Calibration: Wave device in a figure eight until done!");
+
+  char c = '\0';
+  if (Serial.available() > 0)
+    c = Serial.read();
+  if (c != 's')
+  {
+    imu_.readMagData(mag_temp);  // Read the mag data
+     for (int jj = 0; jj < 3; jj++)
+     {
+
+       if(mag_temp[jj] > mag_max[jj])
+          mag_max[jj] = mag_temp[jj];
+
+       if(mag_temp[jj] < mag_min[jj])
+          mag_min[jj] = mag_temp[jj];
+
+       Serial.print("mag_temp[jj]:");
+     Serial.print(mag_temp[jj]);
+     Serial.print(" | ");
+     Serial.print("mag_max[jj]:");
+     Serial.print(mag_max[jj]);
+     Serial.print(" | ");
+     Serial.print("mag_min[jj]:");
+     Serial.print(mag_min[jj]);
+     Serial.println();
+     }
+    delay(135);  // at 8 Hz ODR, new mag data is available every 125 ms
+  }
+  else
+  {
+    mag_bias.x  = (mag_max[0] + mag_min[0])/2;  // get average x mag bias in counts
+    mag_bias.y  = (mag_max[1] + mag_min[1])/2;  // get average y mag bias in counts
+    mag_bias.z  = (mag_max[2] + mag_min[2])/2;  // get average z mag bias in counts
+
+  Serial.print("mag_bias.x:");
+  Serial.print(mag_bias.x);
+  Serial.print(" | ");
+  Serial.print("mag_bias.y:");
+  Serial.print(mag_bias.y);
+  Serial.print(" | ");
+  Serial.print("mag_bias.z:");
+  Serial.print(mag_bias.z);
+  Serial.println();
+
+    // save calibration
+    mag_bias.id = IMUSensor::MAG_BIAS_ID;
+    Serial.print("Saving Calibration");
+    EEPROM.put(100, mag_bias);
+  }
+
+}
+
+
 void IMUSensor::loop()
 {
   // If intPin goes high, all data registers have new data
@@ -149,15 +238,11 @@ void IMUSensor::loop()
     // automatically calculated
 
 
-    //imu_.magbias[0] = (float)mag_bias0;
-    //imu_.magbias[1] = (float)mag_bias1;
-    //imu_.magbias[2] = (float)mag_bias2;
-
-    imu_.magbias[0] = +470.;
+    imu_.magbias[0] = (float) mag_bias.x*imu_.mRes*imu_.magCalibration[0]; //+470.;
     // User environmental x-axis correction in milliGauss TODO axis??
-    imu_.magbias[1] = +120.;
+    imu_.magbias[1] = (float) mag_bias.y*imu_.mRes*imu_.magCalibration[1]; //+120.;
     // User environmental x-axis correction in milliGauss
-    imu_.magbias[2] = +125.;
+    imu_.magbias[2] = (float) mag_bias.z*imu_.mRes*imu_.magCalibration[2]; //+125.;
 
     // Calculate the magnetometer values in milliGauss
     // Include factory calibration per data sheet and user environmental
@@ -294,14 +379,14 @@ void IMUSensor::loop()
       // Declination of SparkFun Electronics (40°05'26.6"N 105°11'05.9"W) is
       //  8° 30' E  ± 0° 21' (or 8.5°) on 2016-07-19
       // - http://www.ngdc.noaa.gov/geomag-web/#declination
-      imu_.yaw   -= 8.5;
+      imu_.yaw   -= 4.6;
       imu_.roll  *= RAD_TO_DEG;
 
 
 
       //if(SerialDebug)
       //{
-       /* Serial.print("Roll, Pitch, Yaw: ");
+        Serial.print("Roll, Pitch, Yaw: ");
         Serial.print(imu_.roll, 2);
         Serial.print(", ");
         Serial.print(imu_.pitch, 2);
@@ -309,7 +394,7 @@ void IMUSensor::loop()
         Serial.println(imu_.yaw, 2);
 
 
-        Serial.print("rate = ");
+        /*Serial.print("rate = ");
         Serial.print((float)imu_.sumCount/imu_.sum, 2);
         Serial.println(" Hz");*/
       //}

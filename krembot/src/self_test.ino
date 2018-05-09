@@ -172,7 +172,7 @@ void setup()
 void loop()
 {
   krembot.loop();
-  if(current_phase == PHASE::NONE)
+  /*if(current_phase == PHASE::NONE)
   {
     if(print_main_menu(selection))
     {
@@ -297,7 +297,7 @@ void loop()
     }
   }
 
-
+*/
 }
 
 bool print_main_menu(int &selection)

@@ -62,6 +62,7 @@ void Krembot::setup()
 
 void Krembot::loop()
 {
+  //imu_sensor.magCalLoop();
   imu_sensor.loop();
 }
 
