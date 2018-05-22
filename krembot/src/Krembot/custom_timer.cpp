@@ -28,12 +28,12 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-/* Author: Elchay Rauper */
+/* Author: Elhay Rauper */
 
 
 #include "custom_timer.h"
 
-CustomTimer::CustomTimer() 
+CustomTimer::CustomTimer()
 {
     started_ = false;
     period_ = 1000;
@@ -43,6 +43,7 @@ void CustomTimer::setPeriod(unsigned long period)
 {
   period_ = period;
 }
+
 void CustomTimer::start(unsigned long period)
 {
     if (!started_)
@@ -67,6 +68,7 @@ void CustomTimer::startOver() //override original start time, and start again
     if (!started_)
         started_ = true;
 }
+
 //return true if CustomTimer has finished
 bool CustomTimer::finished()
 {

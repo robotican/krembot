@@ -31,8 +31,6 @@
 /* Author: Elchay Rauper */
 
 
-// This library allow setting timer
-
 #ifndef TIMER_H
 #define TIMER_H
 #include <Arduino.h>

@@ -28,48 +28,44 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-/* Author:  Elchay Rauper*/
+/* Author:  Elhay Rauper*/
 
 #include "krembot.h"
 
 void Krembot::setup()
 {
-  Serial.begin(38400);
-  Particle.subscribe("spark/", &Krembot::saveMyName, this);
-  Particle.subscribe("reset", &Krembot::reset, this);
-  Particle.publish("spark/device/name");
-  delay(2000);
-  pub_battery();
-  //init I2C
-  Wire.begin();
+	Serial.begin(38400);
+	Particle.subscribe("spark/", &Krembot::saveMyName, this);
+	Particle.subscribe("reset", &Krembot::reset, this);
+	Particle.publish("spark/device/name");
+	delay(2000); // give cloud time to register
 
+	Wire.begin();
 
-  //rgba & imu sensors can only be init after wire.begin
-  Imu_init_errors = imu_sensor.init();
+	//rgba & imu sensors can only be init after wire.begin
+	imuInitErrors = imu.init();
 
-  RgbaFront.init(uint8_t(RGBAAddr::Front));
-  RgbaRear.init(uint8_t(RGBAAddr::Rear));
+	RgbaFront.init(uint8_t(RGBAAddr::Front));
+	RgbaRear.init(uint8_t(RGBAAddr::Rear));
 
-  RgbaFrontRight.init(uint8_t(RGBAAddr::FrontRight));
-  RgbaRight.init(uint8_t(RGBAAddr::Right));
-  RgbaRearRight.init(uint8_t(RGBAAddr::RearRight));
-  RgbaRearLeft.init(uint8_t(RGBAAddr::RearLeft));
-  RgbaLeft.init(uint8_t(RGBAAddr::Left));
-  RgbaFrontLeft.init(uint8_t(RGBAAddr::FrontLeft));
+	RgbaFrontRight.init(uint8_t(RGBAAddr::FrontRight));
+	RgbaRight.init(uint8_t(RGBAAddr::Right));
+	RgbaRearRight.init(uint8_t(RGBAAddr::RearRight));
+	RgbaRearLeft.init(uint8_t(RGBAAddr::RearLeft));
+	RgbaLeft.init(uint8_t(RGBAAddr::Left));
+	RgbaFrontLeft.init(uint8_t(RGBAAddr::FrontLeft));
 
-  my_name_="";
+	my_name_ = "";
 }
 
 void Krembot::loop()
 {
-  //imu_sensor.magCalLoop();
-  imu_sensor.loop();
+	//imu_sensor.magCalLoop();
+	imu.loop();
 }
-
 
 void Krembot::saveMyName(const char *topic, const char *data)
 {
-  //Serial.println("received " + String(topic) + ": " + String(data));
-  my_name_ = String(data);
-
+	Serial.println("[Krembot]: my name is " + String(data));
+	my_name_ = String(data);
 }

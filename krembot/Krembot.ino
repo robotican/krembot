@@ -172,7 +172,7 @@ void setup()
 void loop()
 {
   krembot.loop();
-  if(current_phase == PHASE::NONE)
+  /*if(current_phase == PHASE::NONE)
   {
     if(print_main_menu(selection))
     {
@@ -296,6 +296,8 @@ void loop()
       }
     }
   }
+
+*/
 }
 
 bool print_main_menu(int &selection)
@@ -331,7 +333,7 @@ bool check_leds ()
   {
     Serial.println("Let's start with the leds");
     wait(1000);
-    krembot.led.write(255,0,0);
+    krembot.Led.write(255,0,0);
     Serial.println("Look at the leds located on the krembot's head. Are all of them red? (y/n)");
     leds.red_printed = true;
   }
@@ -358,7 +360,7 @@ bool check_leds ()
   {
     Serial.println("Look at the leds again. Are all of them green? (y/n)");
     wait(1000);
-    krembot.led.write(0,255,0);
+    krembot.Led.write(0,255,0);
     leds.green_printed = true;
   }
 
@@ -383,7 +385,7 @@ bool check_leds ()
   if(!leds.blue_printed)
   {
     wait(1000);
-    krembot.led.write(0,0,255);
+    krembot.Led.write(0,0,255);
     Serial.println("Now look at the leds for the last time. Are all of them blue? (y/n)");
     leds.blue_printed = true;
   }
@@ -401,7 +403,7 @@ bool check_leds ()
     {
       leds.blue = true;
       Serial.println("------------------------------------\n");
-      krembot.led.write(0,0,0);
+      krembot.Led.write(0,0,0);
       Serial.println("great. Leds phase Done");
       return true;
     }
@@ -446,7 +448,7 @@ bool check_bumpers()
   if(!bumpers.front_right)
   {
     clear_bumpers_results();
-    results = krembot.bumpers.read();
+    results = krembot.Bumpers.read();
     if(!results.front && results.front_right && !results.right && !results.rear_right
        && !results.rear && !results.rear_left && !results.left && !results.front_left)
     {
@@ -469,7 +471,7 @@ bool check_bumpers()
   if(!bumpers.right)
   {
     clear_bumpers_results();
-    results = krembot.bumpers.read();
+    results = krembot.Bumpers.read();
     if(!results.front && !results.front_right && results.right && !results.rear_right
        && !results.rear && !results.rear_left && !results.left && !results.front_left)
     {
@@ -492,7 +494,7 @@ bool check_bumpers()
   if(!bumpers.rear_right)
   {
     clear_bumpers_results();
-    results = krembot.bumpers.read();
+    results = krembot.Bumpers.read();
     if(!results.front && !results.front_right && !results.right && results.rear_right
        && !results.rear && !results.rear_left && !results.left && !results.front_left)
     {
@@ -515,7 +517,7 @@ bool check_bumpers()
   if(!bumpers.rear)
   {
     clear_bumpers_results();
-    results = krembot.bumpers.read();
+    results = krembot.Bumpers.read();
     if(!results.front && !results.front_right && !results.right && !results.rear_right
        && results.rear && !results.rear_left && !results.left && !results.front_left)
     {
@@ -538,7 +540,7 @@ bool check_bumpers()
   if(!bumpers.rear_left)
   {
     clear_bumpers_results();
-    results = krembot.bumpers.read();
+    results = krembot.Bumpers.read();
     if(!results.front && !results.front_right && !results.right && !results.rear_right
        && !results.rear && results.rear_left && !results.left && !results.front_left)
     {
@@ -562,7 +564,7 @@ bool check_bumpers()
   {
     clear_bumpers_results();
 
-    results = krembot.bumpers.read();
+    results = krembot.Bumpers.read();
     if(!results.front && !results.front_right && !results.right && !results.rear_right
        && !results.rear && !results.rear_left && results.left && !results.front_left)
     {
@@ -585,7 +587,7 @@ bool check_bumpers()
   if(!bumpers.front_left)
   {
     clear_bumpers_results();
-    results = krembot.bumpers.read();
+    results = krembot.Bumpers.read();
     if(!results.front && !results.front_right && !results.right && !results.rear_right
        && !results.rear && !results.rear_left && !results.left && results.front_left)
     {
@@ -645,10 +647,10 @@ bool check_driving()
         Serial.println("Please make sure that the robot is on flat surface and have enough space.");
         Serial.println("Please look if the robot is moving in a straight line.");
         wait(3000);
-        krembot.base.drive(30, 0);
+        krembot.Base.drive(30, 0);
         drive_timer.start();
         while(!drive_timer.finished()){}
-        krembot.base.stop();
+        krembot.Base.stop();
         Serial.println("If the robot didn't move in straight line, the motors may need calibration.");
         Serial.println("In case the robot turned right, the right motor needs calibration.");
         Serial.println("In case the robot turned left, the left motor needs calibration.");
@@ -665,10 +667,10 @@ bool check_driving()
         Serial.println("Please make sure that the robot is on flat surface and have enough space.");
         Serial.println("Please look if the robot is moving in a straight line.");
         wait(3000);
-        krembot.base.drive(-30, 0);
+        krembot.Base.drive(-30, 0);
         drive_timer.start();
         while(!drive_timer.finished()){}
-        krembot.base.stop();
+        krembot.Base.stop();
         Serial.println("If the robot didn't move in straight line, the motors may need calibration.");
         Serial.println("In case the robot turned right, the right motor needs calibration.");
         Serial.println("In case the robot turned left, the left motor needs calibration.");
@@ -685,10 +687,10 @@ bool check_driving()
         Serial.println("Please make sure that the robot is on flat surface and have enough space.");
         Serial.println("Please look if the robot is rotating left ");
         wait(3000);
-        krembot.base.drive(0, 30);
+        krembot.Base.drive(0, 30);
         drive_timer.start();
         while(!drive_timer.finished()){}
-        krembot.base.stop();
+        krembot.Base.stop();
         Serial.println("If the robot didn't rotate left, the motors may need calibration.");
         Serial.println("You can choose the calibration mode you need the next time that the menu will be printed");
         driving.menu_printed = false;
@@ -703,10 +705,10 @@ bool check_driving()
         Serial.println("Please make sure that the robot is on flat surface and have enough space.");
         Serial.println("Please look if the robot is rotating right");
         wait(3000);
-        krembot.base.drive(0, -30);
+        krembot.Base.drive(0, -30);
         drive_timer.start();
         while(!drive_timer.finished()){}
-        krembot.base.stop();
+        krembot.Base.stop();
         Serial.println("If the robot didn't rotate right, the motors may need calibration.");
         Serial.println("You can choose the calibration mode you need the next time that the menu will be printed");
         driving.menu_printed = false;
@@ -851,7 +853,7 @@ bool calibration_mode(bool isRightMotor)
 
 bool check_imu()
 {
-  if(krembot.imuInitErrors.imu_address_ok && krembot.imuInitErrors.imu_online && krembot.imuInitErrors.mag_address_ok)
+  if(krembot.imu_init_errors.imu_address_ok && krembot.imu_init_errors.imu_online && krembot.imu_init_errors.mag_address_ok)
   {
     if(!imu.imu_printed)
     {
@@ -872,7 +874,7 @@ bool check_imu()
     {
       return false;
     }
-    krembot.imu.printRaw();
+    krembot.imu_sensor.print();
 
     Serial.println("");
     if(Serial.available())

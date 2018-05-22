@@ -28,25 +28,10 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-/* Author:  Elchay Rauper*/
+/* Author: Elhay Rauper */
+/* Maintainer: Yair Shlomi */
 
 #include "rgba_sensor.h"
-/** 
-  *   @brief 
-  *  
-  *   @param 
-  *   
-  *   @return 
-  *
-  */
-
-/** 
-  *   @brief  Initializes the sensor.
-  *  
-  *   @param  addr is a uint8_t containing the address of the sensor (I2C protocol address)
-  *   
-  *   @return void
-  */    
 
 void RGBASensor::init(uint8_t addr)
 {
@@ -55,27 +40,18 @@ void RGBASensor::init(uint8_t addr)
   i2cMuxSelectMe();
 
   if (!apds_.init() )
-       Serial.println(F("Something went wrong during APDS-9960 init sensor" ));
+       Serial.println(F("[RGBA sensor]Something went wrong during APDS-9960 init sensor" ));
 
   if (!apds_.enableLightSensor(false) )
-      Serial.println(F("Something went wrong during light sensor init! sensor" ));
+      Serial.println(F("[RGBA sensor]Something went wrong during light sensor init! sensor" ));
 
   if ( !apds_.setProximityGain(PGAIN_2X) )
-    Serial.println(F("Something went wrong trying to set PGAIN sensor sensor" ));
+    Serial.println(F("[RGBA sensor]Something went wrong trying to set PGAIN sensor sensor" ));
 
   if ( !apds_.enableProximitySensor(false) )
-     Serial.println(F("Something went wrong during sensor init! sensor"));
+     Serial.println(F("[RGBA sensor]Something went wrong during sensor init! sensor"));
   //Serial.println();
 }
-
-/* 
-  *   brief select to the rgba sensor using the SparkFun_APDS9960
-  *  
-  *   param 
-  *   
-  *   return true if the selection to the sensor was succesfull
-  *
-  */
 
 bool RGBASensor::i2cMuxSelectMe()
 {
@@ -90,38 +66,32 @@ bool RGBASensor::i2cMuxSelectMe()
 RGBAResult RGBASensor::read()
 {
   RGBAResult result;
-  result.IsReadOk = true;
   i2cMuxSelectMe();
   if (!apds_.readAmbientLight(result.Ambient))
   {
-    result.IsReadOk = false;
-    result.ErrCode = 0;
-    Serial.print("error code 0");
+    result.AmbientError = true;
+    Serial.print("[RGBA sensor] - Ambient sensor error");
 
   }
   if(!apds_.readRedLight(result.Red))
   {
-    result.IsReadOk = false;
-    result.ErrCode = 1;
-    Serial.print("error code 1");
+    result.RedError = true;
+    Serial.print("[RGBA sensor] - Red sensor error");
   }
   if(!apds_.readGreenLight(result.Green))
   {
-    result.IsReadOk = false;
-    result.ErrCode = 2;
-    Serial.print("error code 2");
+    result.GreenError = true;
+    Serial.print("[RGBA sensor] - Green sensor error");
   }
   if(!apds_.readBlueLight(result.Blue))
   {
-    result.IsReadOk = false;
-    result.ErrCode = 3;
-    Serial.print("error code 3");
+    result.BlueError = true;
+    Serial.print("[RGBA sensor] - Blue sensor error");
   }
   if(!apds_.readProximity(result.Proximity))
   {
-    result.IsReadOk = false;
-    result.ErrCode = 4;
-    Serial.print("error code 4");
+    result.ProximityError = true;
+    Serial.print("[RGBA sensor] - Proximity sensor error");
   }
   else
   { //convert proximity to distance (cm)
@@ -132,15 +102,10 @@ RGBAResult RGBASensor::read()
   return result;
 }
 
-/****************************void print()***************************
-|@Goal: print rgba sensor values: ambient, red, green, blue, proximity
-|@Comment: invoke read() before print() for updated values printing
-********************************************************************/
-
 void RGBASensor::print()
 {
   RGBAResult read_res = read();
-  if (read_res.IsReadOk)
+  if (read_res.AmbientError && read_res.RedError && read_res.GreenError && read_res.AmbientError && read_res.BlueError && read_res.ProximityError)
   {
     Serial.println("------------RGBA Sensor Values------------");
     Serial.print("Ambient: "); Serial.print(read_res.Ambient);
@@ -152,6 +117,50 @@ void RGBASensor::print()
   else
   {
     Serial.println("[RGBSensor]: Error reading from sensor");
-    
   }
+}
+
+
+HSVResult RGBASensor::rgbToHSV(RGBAResult in)
+{
+  HSVResult         out;
+  double      min, max, delta;
+
+  min = in.Red < in.Green ? in.Red : in.Green;
+  min = min  < in.Blue ? min  : in.Blue;
+
+  max = in.Red > in.Green ? in.Red : in.Green;
+  max = max  > in.Blue ? max  : in.Blue;
+
+  out.V = max;                                // v
+  delta = max - min;
+  if (delta < 0.00001)
+  {
+      out.S = 0;
+      out.H = 0; // undefined, maybe nan?
+      return out;
+  }
+  if( max > 0.0 ) { // NOTE: if Max is == 0, this divide would cause a crash
+      out.S = (delta / max);                  // s
+  } else {
+      // if max is 0, then r = g = b = 0
+      // s = 0, h is undefined
+      out.S = 0.0;
+      out.H = NAN;                            // its now undefined
+      return out;
+  }
+  if( in.Red >= max )                           // > is bogus, just keeps compilor happy
+      out.H = ( in.Green - in.Blue ) / delta;        // between yellow & magenta
+  else
+  if( in.Green >= max )
+      out.H = 2.0 + ( in.Blue - in.Red ) / delta;  // between cyan & yellow
+  else
+      out.H = 4.0 + ( in.Red - in.Green ) / delta;  // between magenta & cyan
+
+  out.H *= 60.0;                              // degrees
+
+  if( out.H < 0.0 )
+      out.H += 360.0;
+
+  return out;
 }

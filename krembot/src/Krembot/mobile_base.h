@@ -28,7 +28,7 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-/* Author: Elchay Rauper */
+/* Author: Elhay Rauper */
 
 #ifndef MOBILE_BASE_H
 #define MOBILE_BASE_H
@@ -52,6 +52,7 @@ private:
   enum Direction {FORWARD, BACKWARD};
   void setMotorDirection(Motor motor, Direction direction);
   int8_t mapByteToBaseVal(uint8_t val);
+  
 public:
   MobileBase();
   bool drive(int8_t linear_spd, int8_t angular_spd);

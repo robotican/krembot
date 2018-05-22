@@ -28,7 +28,7 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-/* Author: Elchay Rauper */
+/* Author: Elhay Rauper */
 
 
 #ifndef RGBA_SENSOR_H
@@ -36,57 +36,66 @@
 
 #include "application.h"
 #include "math.h"
-#include "SparkFun_APDS9960.h"
+#include "SparkFun_APDS9960/SparkFun_APDS9960.h"
 #define MUX_ADDR 0x70
 
 
-/**
-* @brief Holds the values related to the color sensor
-* 
-*/
 struct RGBAResult
 {
-  uint16_t Ambient;   /**< The Ambience of the light, (0-65535)*/
-  uint16_t Red;       /**< The Red value of the light, (0-65535)*/
-  uint16_t Green;     /**< The Green value of the light, (0-65535)*/
-  uint16_t Blue;      /**< The Blue value of the light, (0-65535)*/
-  uint8_t Proximity;  /**< The Raw value of the proximity sensor, (0-255)*/
-  float Distance;     /**< The calculated distance to the object, in cm*/
-  uint8_t ErrCode;    /**< The error code returned by the read function*/
-  bool IsReadOk;      /**<  True if the reading was successful, false otherwise*/
+	uint16_t Ambient = 0;   /**< The Ambience of the light, (0-65535)*/
+	uint16_t Red = 0;       /**< The Red value of the light, (0-65535)*/
+	uint16_t Green = 0;     /**< The Green value of the light, (0-65535)*/
+	uint16_t Blue = 0;      /**< The Blue value of the light, (0-65535)*/
+	uint8_t Proximity = 0;  /**< The Raw value of the proximity sensor, (0-255)*/
+	float Distance = 0;     /**< The calculated distance to the object, in cm*/
+	bool AmbientError = false;
+	bool RedError = false;
+	bool GreenError = false;
+	bool BlueError = false;
+	bool ProximityError = false;
 };
 
+struct HSVResult
+{
+	double H, S, V;
+
+	bool isGreen(double hue)
+	{
+		if(hue > 85 && hue < 160)
+			return true;
+		return false;
+	}
+
+	bool isBlue(double hue)
+	{
+		if(hue > 175 && hue < 270)
+			return true;
+		return false;
+	}
+
+	bool isRed(double hue)
+	{
+		if(hue > 330 || hue < 30)
+			return true;
+		return false;
+	}
+};
 
 class RGBASensor
 {
 private:
 
-  uint8_t addr_;
-
-  SparkFun_APDS9960 apds_;
-  bool i2cMuxSelectMe();
+	uint8_t addr_;
+	SparkFun_APDS9960 apds_;
+	bool i2cMuxSelectMe();
 
 
 public:
+	void init(uint8_t addr);
+	RGBAResult read();
+	void print();
+	static HSVResult rgbToHSV(RGBAResult in);
 
-  
-  
-  void init(uint8_t addr);  
-
-  /** 
-  *   @brief  Reads the values from sensor.
-  *   
-  *   @return RGBAResult, a struct that holds the values of the sensor
-  */    
-
-  RGBAResult read();
-
-  /** 
-  *   @brief  Prints the values of the sensor.
-  *   
-  *   @return void
-  */    
-  void print();
 };
 
 

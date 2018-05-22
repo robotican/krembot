@@ -28,7 +28,8 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-/* Author:  Elchay Rauper*/
+/* Author: Elhay Rauper */
+/* Maintainer: Yair Shlomi */
 
 #include "rgb_led.h"
 

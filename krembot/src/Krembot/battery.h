@@ -28,7 +28,7 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-/* Author: Elchay Rauper */
+/* Author: Elhay Rauper */
 
 #ifndef BATTERY_H
 #define BATTERY_H
