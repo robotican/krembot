@@ -43,7 +43,7 @@ void Krembot::setup()
 	Wire.begin();
 
 	//rgba & imu sensors can only be init after wire.begin
-	imuInitErrors = imu.init();
+	Imu.imuInitErrors = Imu.init();
 
 	RgbaFront.init(uint8_t(RGBAAddr::Front));
 	RgbaRear.init(uint8_t(RGBAAddr::Rear));
@@ -61,7 +61,7 @@ void Krembot::setup()
 void Krembot::loop()
 {
 	//imu_sensor.magCalLoop();
-	imu.loop();
+	Imu.loop();
 }
 
 void Krembot::saveMyName(const char *topic, const char *data)

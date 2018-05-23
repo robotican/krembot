@@ -39,7 +39,7 @@
 #include "mobile_base.h"
 #include "rgb_led.h"
 #include "rgba_sensor.h"
-#include "bumpers.h"
+#include "dbumpers.h"
 #include "imu_sensor.h"
 #include "custom_timer.h"
 
@@ -73,13 +73,12 @@ public:
   RGBASensor RgbaRearRight;
   RGBASensor RgbaRearLeft;
 
-  MobileBase base;
-  Bumpers bumpers;
-  Battery battery;
-  RGBLed led;
-  IMUSensor imu;
-  ImuData imuData;
-  ImuInitErrors imuInitErrors;
+  MobileBase Base;
+  DBumpers Bumpers;
+  Battery Batt;
+  RGBLed Led;
+  IMUSensor Imu;
+
 
   void reset(const char *topic, const char *data) {
     if (strcmp(topic,"reset")==0 && (strcmp(data,"all")==0 || strcmp(data,getName().c_str())==0) ) {

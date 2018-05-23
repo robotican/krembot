@@ -84,8 +84,6 @@ struct mag_bias_t
 class IMUSensor
 {
 private:
-  //int intPin = 12;
-  //int myLed = 13;
   MPU9250 imu_;
   int16_t mag_temp[3] = {0, 0, 0};
   int16_t mag_min[3] = {0, 0, 0};
@@ -100,6 +98,8 @@ public:
   void print();
   void printRaw();
   void magCalLoop();
+
+  ImuInitErrors imuInitErrors;
 };
 
 #endif
