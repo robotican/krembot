@@ -75,7 +75,7 @@ public:
 
   MobileBase Base;
   DBumpers Bumpers;
-  Battery Batt;
+  Battery Bat;
   RGBLed Led;
   IMUSensor Imu;
 
