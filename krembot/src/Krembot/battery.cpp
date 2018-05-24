@@ -42,7 +42,7 @@ Battery::Battery()
 float Battery::readBatLvl()
 {
 	//return (analogRead(BATTERY_LVL_LEG) * 3.3 * 1.5 * 1.0201) / 4095.0;
-	return (analogRead(BATTERY_LVL_LEG) * 3.3 * 1.5 * 0.98) / 4095.0;
+	return (analogRead(BATTERY_LVL_LEG) * 3.3 * 1.5 * 0.97) / 4095.0;
 }
 
 float Battery::readChargelvl()
