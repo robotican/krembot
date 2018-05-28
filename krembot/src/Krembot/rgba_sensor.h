@@ -58,27 +58,6 @@ struct RGBAResult
 struct HSVResult
 {
 	double H, S, V;
-
-	bool isGreen(double hue)
-	{
-		if(hue > 85 && hue < 160)
-			return true;
-		return false;
-	}
-
-	bool isBlue(double hue)
-	{
-		if(hue > 175 && hue < 270)
-			return true;
-		return false;
-	}
-
-	bool isRed(double hue)
-	{
-		if(hue > 330 || hue < 30)
-			return true;
-		return false;
-	}
 };
 
 class RGBASensor
@@ -95,6 +74,7 @@ public:
 	RGBAResult read();
 	void print();
 	static HSVResult rgbToHSV(RGBAResult in);
+	static String WhichColor(RGBAResult rgbaIn, HSVResult hsvIn);
 
 };
 
