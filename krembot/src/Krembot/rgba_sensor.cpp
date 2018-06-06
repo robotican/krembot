@@ -165,37 +165,36 @@ HSVResult RGBASensor::rgbToHSV(RGBAResult in)
   return out;
 }
 
-String RGBASensor::WhichColor(RGBAResult rgbaIn, HSVResult hsvIn)
+Colors RGBASensor::WhichColor(RGBAResult rgbaIn, HSVResult hsvIn)
 {
 
   if(hsvIn.S < 0.5)
   {
-    return String("None");
+    return Colors::None;
   }
   else if(rgbaIn.Distance < 12 && rgbaIn.Ambient < 200)
   {
-    return String("None");
+    return Colors::None;
   }
 
   else
   {
     if(hsvIn.H > 85 && hsvIn.H < 165)
     {
-      return String("Green");
+      return Colors::Green;
     }
     else if(hsvIn.H > 175 && hsvIn.H < 270)
     {
-      return String("Blue");
+      return Colors::Blue;
     }
 
     else if(hsvIn.H > 330 || hsvIn.H < 30)
     {
-      return String("Red");
+      return Colors::Red;
     }
 
   }
 
-  return String("None");
+  return Colors::None;
 
 }
-

@@ -60,6 +60,14 @@ struct HSVResult
 	double H, S, V;
 };
 
+enum Colors
+{
+  Red,
+  Green,
+  Blue,
+  None
+};
+
 class RGBASensor
 {
 private:
@@ -74,7 +82,7 @@ public:
 	RGBAResult read();
 	void print();
 	static HSVResult rgbToHSV(RGBAResult in);
-	static String WhichColor(RGBAResult rgbaIn, HSVResult hsvIn);
+	static Colors WhichColor(RGBAResult rgbaIn, HSVResult hsvIn);
 
 };
 
