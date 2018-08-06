@@ -34,6 +34,7 @@
 #define BATTERY_H
 
 #include "application.h"
+#include "SandTimer/SandTimer.h"
 
 #define BATTERY_LVL_LEG A4
 #define CHARGING_LVL_LEG A5
@@ -41,15 +42,20 @@
 #define IS_CHARGINE_LEG DAC
 
 //TODO: update those vals with Kiril
-#define MAX_BAT_LVL 4.2
+#define MAX_BAT_LVL 4.18
 #define MIN_BAT_LVL 3.7
 #define MAX_CHRG_LVL 5.0
 #define MIN_CHRG_LVL 0.0
 
+#define BATTERY_SAMPLE_INTERVAL 100
+
 class Battery
 {
 private:
-
+  float battery_voltage;
+  float alpha = 0.1;
+  void Lpf(float read);
+  SandTimer timer;
 public:
 
   Battery();
@@ -60,6 +66,8 @@ public:
   bool isCharging();
   bool isFull();
   void print();
+  void loop();
+  float getBatVolt();
 
 };
 

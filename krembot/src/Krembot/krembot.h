@@ -42,6 +42,7 @@
 #include "dbumpers.h"
 #include "imu_sensor.h"
 #include "custom_timer.h"
+#include "SandTimer/SandTimer.h"
 
 enum class RGBAAddr
 {
@@ -61,7 +62,10 @@ private:
 
   String my_name_;
   void saveMyName(const char *topic, const char *data);
+  SandTimer battery_level_timer_;
+  SandTimer battery_level_counter_;
 
+  void checkBattery();
 public:
 
   RGBASensor RgbaFront;

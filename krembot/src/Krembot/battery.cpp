@@ -37,12 +37,16 @@ Battery::Battery()
 	pinMode(CHARGING_LVL_LEG, INPUT);
 	pinMode(IS_FULL_CHARGE_LEG, INPUT);
 	pinMode(IS_CHARGINE_LEG, INPUT);
+	battery_voltage = readBatLvl();
+	timer.start(BATTERY_SAMPLE_INTERVAL);
+	String bat =  String(battery_voltage);
+  Particle.publish("battery", bat, PRIVATE);
 }
 
 float Battery::readBatLvl()
 {
 	//return (analogRead(BATTERY_LVL_LEG) * 3.3 * 1.5 * 1.0201) / 4095.0;
-	return (analogRead(BATTERY_LVL_LEG) * 3.3 * 1.5 * 0.97) / 4095.0;
+	return (analogRead(BATTERY_LVL_LEG) * 3.3 * 1.5 * 1.0108) / 4095.0;
 }
 
 float Battery::readChargelvl()
@@ -73,10 +77,40 @@ bool Battery::isFull()
 
 uint8_t Battery::getBatLvl()
 {
-	return (uint8_t)((readBatLvl() - MIN_BAT_LVL) / (MAX_BAT_LVL - MIN_BAT_LVL) * 100);
+	uint8_t battery_level = (uint8_t)((battery_voltage - MIN_BAT_LVL) / (MAX_BAT_LVL - MIN_BAT_LVL) * 100);
+	if(battery_level > 100)
+	{
+		return 100;
+	}
+	else if(battery_level < 0)
+	{
+		return 0;
+	}
+
+	return battery_level;
 }
 
 uint8_t Battery::getChargeLvl()
 {
 	return (uint8_t)((readChargelvl() / MAX_CHRG_LVL) * 100);
+}
+
+void Battery::loop()
+{
+	if(timer.finished())
+	{
+			Lpf(readBatLvl());
+			timer.startOver();
+	}
+
+}
+
+float Battery::getBatVolt()
+{
+	return battery_voltage;
+}
+
+void Battery::Lpf(float read)
+{
+	battery_voltage = ((alpha*read) + ((1-alpha)*battery_voltage));
 }

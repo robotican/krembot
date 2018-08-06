@@ -60,12 +60,25 @@ void Krembot::setup()
 
 void Krembot::loop()
 {
-	//imu_sensor.magCalLoop();
+	//Imu.magCalLoop();
 	Imu.loop();
+	Bat.loop();
+	checkBattery();
 }
 
 void Krembot::saveMyName(const char *topic, const char *data)
 {
 	Serial.println("[Krembot]: my name is " + String(data));
 	my_name_ = String(data);
+}
+
+void Krembot::checkBattery()
+{
+	if(Bat.getBatLvl() < 20)
+	{
+		Led.write(100,0,0);
+		delay(30000);
+		System.sleep(SLEEP_MODE_DEEP, 60);
+	}
+
 }
