@@ -48,16 +48,16 @@ ImuInitErrors IMUSensor::init()
 
 		// Start by performing self test and reporting values
 		imu_.MPU9250SelfTest(imu_.SelfTest);
-
+		delay(300);
 		// Calibrate gyro and accelerometers, load biases in bias registers
 		imu_.calibrateMPU9250(imu_.gyroBias, imu_.accelBias);
 
 		// Initialize device for active mode read of acclerometer, gyroscope, and
 		// temperature
 		imu_.initMPU9250();
-
 		// Read the WHO_AM_I register of the magnetometer, this is a good test of
 		// communication
+
 		byte d = imu_.readByte(AK8963_ADDRESS, WHO_AM_I_AK8963);
 		if (d == 0x48)
 		{
@@ -65,22 +65,14 @@ ImuInitErrors IMUSensor::init()
 			errors.mag_address_ok = true;
 
 			// Get magnetometer calibration from AK8963 ROM
-			imu_.initAK8963(imu_.magCalibration);
+			/*imu_.initAK8963(imu_.magCalibration);
 
 			// try to get magnetometer calibration data from EEPROM
 			EEPROM.get(MAG_CAL_ADDR, mag_bias);
 			if (mag_bias.id == IMUSensor::MAG_BIAS_ID)
 			{
 				Serial.println("[IMU]: found magnetometer calibration data in EEPROM:");
-				/*Serial.print("mag_bias.x:");
-				Serial.print(mag_bias.x);
-				Serial.print(" | ");
-				Serial.print("mag_bias.y:");
-				Serial.print(mag_bias.y);
-				Serial.print(" | ");
-				Serial.print("mag_bias.z:");
-				Serial.print(mag_bias.z);
-				Serial.println();*/
+
 			}
 			else
 			{
@@ -98,7 +90,7 @@ ImuInitErrors IMUSensor::init()
 					mag_max[jj] = mag_temp[jj];
 					mag_min[jj] = mag_temp[jj];
 				}
-			}
+			}*/
 		}
 		else
 			Serial.println("[IMU]: failed to communicate with magnetometer");
@@ -109,6 +101,15 @@ ImuInitErrors IMUSensor::init()
 	}
 
 	return errors;
+}
+
+void IMUSensor::resetMagCal()
+{
+	mag_bias.x = 0;
+	mag_bias.y = 0;
+	mag_bias.z = 0;
+	mag_bias.id = IMUSensor::MAG_BIAS_ID;
+	EEPROM.put(MAG_CAL_ADDR, mag_bias);
 }
 
 // get latest IMU fused data
@@ -128,10 +129,6 @@ ImuData IMUSensor::read()
 	data.ax = imu_.gx;
 	data.ax = imu_.gy;
 	data.ax = imu_.gz;
-
-	data.ax = imu_.mx;
-	data.ax = imu_.my;
-	data.ax = imu_.mz;
 
 	return data;
 }
@@ -190,10 +187,12 @@ void IMUSensor::magCalLoop()
 		// save calibration
 		mag_bias.id = IMUSensor::MAG_BIAS_ID;
 		EEPROM.put(MAG_CAL_ADDR, mag_bias);
+		Serial.print("***** calibration done. please upload other sketch *****");
+		calibrationDone = true;
 	}
 }
 
-
+double yaw=0,roll=0,pitch=0;
 void IMUSensor::loop()
 {
 	// If intPin goes high, all data registers have new data
@@ -218,115 +217,36 @@ void IMUSensor::loop()
 		imu_.gy = (float)imu_.gyroCount[1] * imu_.gRes;
 		imu_.gz = (float)imu_.gyroCount[2] * imu_.gRes;
 
-		imu_.readMagData(imu_.magCount);  // Read the x/y/z adc values
-		imu_.getMres();
 
-		// use magnetometer calibration data
-		imu_.magbias[0] = (float)mag_bias.x*imu_.mRes*imu_.magCalibration[0];
-		imu_.magbias[1] = (float)mag_bias.y*imu_.mRes*imu_.magCalibration[1];
-		imu_.magbias[2] = (float)mag_bias.z*imu_.mRes*imu_.magCalibration[2];
-
-		// Calculate the magnetometer values in milliGauss
-		// Include factory calibration per data sheet and user environmental
-		// corrections
-		// Get actual magnetometer value, this depends on scale being set
-		imu_.mx = (float)imu_.magCount[0] * imu_.mRes*imu_.magCalibration[0] -
-			imu_.magbias[0];
-		imu_.my = (float)imu_.magCount[1] * imu_.mRes*imu_.magCalibration[1] -
-			imu_.magbias[1];
-		imu_.mz = (float)imu_.magCount[2] * imu_.mRes*imu_.magCalibration[2] -
-			imu_.magbias[2];
 	}
 
 	// Must be called before updating quaternions!
 	imu_.updateTime();
+if (abs(imu_.gz)<0.2) imu_.gz=0;
 
-	// Sensors x (y)-axis of the accelerometer is aligned with the y (x)-axis of
-	// the magnetometer; the magnetometer z-axis (+ down) is opposite to z-axis
-	// (+ up) of accelerometer and gyro! We have to make some allowance for this
-	// orientationmismatch in feeding the output to the quaternion filter. For the
-	// MPU-9250, we have chosen a magnetic rotation that keeps the sensor forward
-	// along the x-axis just like in the LSM9DS0 sensor. This rotation can be
-	// modified to allow any convenient orientation convention. This is ok by
-	// aircraft orientation standards! Pass gyro rate as rad/s
-  //  MadgwickQuaternionUpdate(ax, ay, az, gx*PI/180.0f, gy*PI/180.0f, gz*PI/180.0f,  my,  mx, mz);
-	MahonyQuaternionUpdate(imu_.ax, imu_.ay, imu_.az, imu_.gx*DEG_TO_RAD,
-		imu_.gy*DEG_TO_RAD, imu_.gz*DEG_TO_RAD, imu_.my,
-		imu_.mx, imu_.mz, imu_.deltat);
+yaw+=imu_.gz*imu_.deltat;
+pitch = -atan2(-imu_.ax , imu_.az) * RAD_TO_DEG;
+roll = -atan2( imu_.ay , sqrt(imu_.az * imu_.az + imu_.ax * imu_.ax)) * RAD_TO_DEG;
 
+		imu_.yaw=yaw;
 
-	/*   Serial.print("rate = ");
-	   Serial.print((float)imu_.sumCount/imu_.sum, 2);
-	   Serial.println(" Hz");*/
-	if (!AHRS)
-	{
-		imu_.delt_t = millis() - imu_.count;
-		imu_.count = millis();
-	} // if (!AHRS)
-	else
-	{
-		// Serial print and/or display at 0.5 s rate independent of data rates
-		imu_.delt_t = millis() - imu_.count;
+		imu_.roll =roll;
+imu_.pitch=pitch;
 
-		// Define output variables from updated quaternion---these are Tait-Bryan
-		// angles, commonly used in aircraft orientation. In this coordinate system,
-		// the positive z-axis is down toward Earth. Yaw is the angle between Sensor
-		// x-axis and Earth magnetic North (or true North if corrected for local
-		// declination, looking down on the sensor positive yaw is counterclockwise.
-		// Pitch is angle between sensor x-axis and Earth ground plane, toward the
-		// Earth is positive, up toward the sky is negative. Roll is angle between
-		// sensor y-axis and Earth ground plane, y-axis up is positive roll. These
-		// arise from the definition of the homogeneous rotation matrix constructed
-		// from quaternions. Tait-Bryan angles as well as Euler angles are
-		// non-commutative; that is, the get the correct orientation the rotations
-		// must be applied in the correct order which for this configuration is yaw,
-		// pitch, and then roll.
-		// For more see
-		// http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
-		// which has additional links.
-		imu_.yaw = atan2(2.0f * (*(getQ() + 1) * *(getQ() + 2) + *getQ() *
-			*(getQ() + 3)), *getQ() * *getQ() + *(getQ() + 1) * *(getQ() + 1)
-			- *(getQ() + 2) * *(getQ() + 2) - *(getQ() + 3) * *(getQ() + 3));
-		imu_.pitch = -asin(2.0f * (*(getQ() + 1) * *(getQ() + 3) - *getQ() *
-			*(getQ() + 2)));
-		imu_.roll = atan2(2.0f * (*getQ() * *(getQ() + 1) + *(getQ() + 2) *
-			*(getQ() + 3)), *getQ() * *getQ() - *(getQ() + 1) * *(getQ() + 1)
-			- *(getQ() + 2) * *(getQ() + 2) + *(getQ() + 3) * *(getQ() + 3));
-		imu_.pitch *= RAD_TO_DEG;
-		imu_.yaw *= RAD_TO_DEG;
+		//print();
 
-		// Declination of SparkFun Electronics (40°05'26.6"N 105°11'05.9"W) is
-		//  8° 30' E  ± 0° 21' (or 8.5°) on 2016-07-19
-		// - http://www.ngdc.noaa.gov/geomag-web/#declination
-		imu_.yaw -= 4.6;
-
-		imu_.yaw  += 90;
-		if(imu_.yaw >= 180)
-		{
-			imu_.yaw -= 360;
-		}
-		if(imu_.yaw <= -180)
-		{
-			imu_.yaw += 360;
-		}
-
-		imu_.roll *= RAD_TO_DEG;
-
-		imu_.count = millis();
-		imu_.sumCount = 0;
-		imu_.sum = 0;
-	}
 }
 
 void IMUSensor::print()
 {
-	Serial.print("[IMU]: Roll, Pitch, Yaw: ");
+	Serial.print("[IMU]: Roll, Pitch, Yaw, Yae rate: ");
 	Serial.print(imu_.pitch, 2);
 	Serial.print(", ");
 	Serial.print(imu_.roll, 2);
 	Serial.print(", ");
-	Serial.println(imu_.yaw, 2);
-
+	Serial.print(imu_.yaw, 2);
+	Serial.print(", ");
+	Serial.println(imu_.gz, 2);
 }
 
 void IMUSensor::printRaw()
@@ -339,8 +259,8 @@ void IMUSensor::printRaw()
 	Serial.print("gx: ");Serial.print(imu_.gx);
 	Serial.print(", gy: ");Serial.print(imu_.gy);
 	Serial.print(", gz: ");Serial.println(imu_.gz);
-	Serial.print("mx: ");Serial.print(imu_.mx);
-	Serial.print(", my: ");Serial.print(imu_.my);
-	Serial.print(", mz: ");Serial.println(imu_.mz);
+	//Serial.print("mx: ");Serial.print(imu_.mx);
+	//Serial.print(", my: ");Serial.print(imu_.my);
+	//Serial.print(", mz: ");Serial.println(imu_.mz);
 
 }

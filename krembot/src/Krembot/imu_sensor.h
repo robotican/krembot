@@ -65,11 +65,6 @@ struct ImuData
     float gx = 0,
           gy = 0,
           gz = 0;
-
-    float mx = 0,
-          my = 0,
-          mz = 0;
-
 };
 
 struct mag_bias_t
@@ -98,6 +93,9 @@ public:
   void print();
   void printRaw();
   void magCalLoop();
+  bool calibrationDone = false;
+  void resetMagCal();
+
 
   ImuInitErrors imuInitErrors;
 };

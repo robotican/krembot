@@ -105,7 +105,7 @@ RGBAResult RGBASensor::read()
 void RGBASensor::print()
 {
   RGBAResult read_res = read();
-  if (read_res.AmbientError && read_res.RedError && read_res.GreenError && read_res.AmbientError && read_res.BlueError && read_res.ProximityError)
+  if (!read_res.AmbientError && !read_res.RedError && !read_res.GreenError && !read_res.AmbientError && !read_res.BlueError && !read_res.ProximityError)
   {
     Serial.println("------------RGBA Sensor Values------------");
     Serial.print("Ambient: "); Serial.print(read_res.Ambient);

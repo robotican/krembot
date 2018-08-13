@@ -56,14 +56,20 @@ void Krembot::setup()
 	RgbaFrontLeft.init(uint8_t(RGBAAddr::FrontLeft));
 
 	my_name_ = "";
+	//Imu.resetMagCal();
+
 }
 
 void Krembot::loop()
 {
-	//Imu.magCalLoop();
-	Imu.loop();
-	Bat.loop();
-	checkBattery();
+	//if(!Imu.calibrationDone)
+	//{
+		//Imu.magCalLoop();
+		Imu.loop();
+	//}
+
+	//Bat.loop();
+	//checkBattery();
 }
 
 void Krembot::saveMyName(const char *topic, const char *data)
