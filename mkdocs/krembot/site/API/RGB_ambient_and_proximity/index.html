@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>RGB ambient and proximity - Krembot wiki</title>
+  
+
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "RGB ambient and proximity";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+  <script src="../../js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Krembot wiki</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../..">Home</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../Installation/">Installation</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../Getting_started/">Getting Started</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>API</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../API/">API</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../Battery_and_charge_monitoring/">Battery and charge monitoring</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../Bumpers/">Bumpers</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../Differential_driving/">Differential driving</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../Imu/">Imu</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">RGB ambient and proximity</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#rgb-ambient-and-proximity">RGB ambient and proximity</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../RGB_leds/">RGB leds</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Demos</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../Demos/Demos/">Demos</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../Demos/chameleon/">chameleon</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../Demos/ledsAndBumpers/">Leds And Bumpers</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../Demos/Publisher/">Publisher</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../Demos/RunAwayByBumpers/">Run Away By Bumpers</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../Demos/StopByWall/">Stop By Wall</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../Demos/Subscriber/">Subscriber</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../Problem_Solving/">Problem Solving</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Krembot wiki</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>API &raquo;</li>
+        
+      
+    
+    <li>RGB ambient and proximity</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="rgb-ambient-and-proximity">RGB ambient and proximity</h2>
+<p>KREMEBOt sense the world through 8 color sensors, which are able to read RGB values, 
+proximity (distance) from sensor, and ambient value.</p>
+<p>The sensor instances are named by the physical location on the KREMEBOt (8 directions):
+<strong>RgbaFront</strong><br />
+<strong>RgbaFrontRight</strong><br />
+<strong>RgbaRight</strong><br />
+<strong>RgbaRearRight</strong><br />
+<strong>RgbaRear</strong><br />
+<strong>RgbaRearLeft</strong><br />
+<strong>RgbaLeft</strong><br />
+<strong>RgbaFrontLeft</strong>  </p>
+<p>Each of the above is a RGBASensor class, and contains reading data is done using the read command:</p>
+<pre><code class="c++">RGBAResult read();
+</code></pre>
+
+<p>returns RGBAResult struct with the following fields:</p>
+<pre><code class="c++">struct RGBAResult
+{
+uint16_t Ambient ;  // The Ambience of the light
+uint16_t Red;       // The Red value of the light
+uint16_t Green;     // The Green value of the light
+uint16_t Blue;      // The Blue value of the light
+uint8_t Proximity;  // The Raw value of the proximity sensor
+float Distance;     // The calculated distance to the object in cm
+};
+
+</code></pre>
+
+<p>RGBASensor class also supports the HSV color format.
+To convert the RGB values to HSV values, use:</p>
+<pre><code class="c++">static HSVResult rgbToHSV(RGBAResult in);
+</code></pre>
+
+<p>this functions takes a RGBAResult and returns HSVResult strucrt, contains:</p>
+<pre><code class="c++">double H,S, V; //Hue, Saturation, Value
+</code></pre>
+
+<p>To extract a color from the HSV values, use:</p>
+<pre><code class="c++">static Colors WhichColor(RGBAResult rgbaIn, HSVResult hsvIn);
+</code></pre>
+
+<p>which takes the RGBAResult and HSVResult structs as parameters and return a Color enum value:</p>
+<pre><code class="c++">enum Colors
+{
+  Red,
+  Green,
+  Blue,
+  None
+};
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../RGB_leds/" class="btn btn-neutral float-right" title="RGB leds"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../Imu/" class="btn btn-neutral" title="Imu"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../Imu/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../RGB_leds/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>

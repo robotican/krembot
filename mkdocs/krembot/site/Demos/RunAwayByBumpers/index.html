@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Run Away By Bumpers - Krembot wiki</title>
+  
+
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Run Away By Bumpers";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+  <script src="../../js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Krembot wiki</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../..">Home</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../Installation/">Installation</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../Getting_started/">Getting Started</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>API</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../API/API/">API</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../API/Battery_and_charge_monitoring/">Battery and charge monitoring</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../API/Bumpers/">Bumpers</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../API/Differential_driving/">Differential driving</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../API/Imu/">Imu</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../API/RGB_ambient_and_proximity/">RGB ambient and proximity</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../API/RGB_leds/">RGB leds</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Demos</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../Demos/">Demos</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../chameleon/">chameleon</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../ledsAndBumpers/">Leds And Bumpers</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../Publisher/">Publisher</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Run Away By Bumpers</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#run-away-by-bumpers">Run Away By Bumpers</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../StopByWall/">Stop By Wall</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../Subscriber/">Subscriber</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../Problem_Solving/">Problem Solving</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Krembot wiki</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Demos &raquo;</li>
+        
+      
+    
+    <li>Run Away By Bumpers</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="run-away-by-bumpers">Run Away By Bumpers</h1>
+<p>This demo shows how to run away from obstacle the krembot has just bumped into.
+It works only on <strong>krembot_2.0</strong>.</p>
+<pre><code class="c++">#include &quot;Krembot/krembot.h&quot;
+#include &quot;Krembot/SandTimer/SandTimer.h&quot;
+
+Krembot krembot;
+SandTimer backTimer;
+SandTimer turnTimer;
+
+BumpersRes lastResults;
+
+const int FORWARD_SPEED = 60;
+const int BACKWARD_SPEED = -60;
+
+
+const int LEFT_SPEED = 75;
+const int RIGHT_SPEED = -75;
+
+const int BACK_INTERVAL = 450;
+const int TURN_INTERVAL = 450;
+
+bool drivingForward = false;
+bool drivingBack = false;
+bool turning = false;
+
+void setup()
+{
+    krembot.setup();
+
+    // start driving forward
+    krembot.Base.drive(FORWARD_SPEED, 0);
+    backTimer.start(BACK_INTERVAL);
+    turnTimer.start(TURN_INTERVAL);
+}
+
+
+void loop()
+{
+  krembot.loop();
+
+  // read bumpre states
+  BumpersRes results = krembot.Bumpers.read();
+  if (results.isAnyPressed())
+  {
+    // if one of the bumpers was pressed check which one was pressed. based on the
+    // bumper that was pressed. if it was one of the front bumpers - switch to
+    // drivingBack mode for 450 miliseconds
+
+    if(results.front || results.front_left || results.front_right)
+    {
+      krembot.Base.drive(BACKWARD_SPEED, 0);
+      backTimer.startOver();
+      drivingBack = true;
+      turning = false;
+      krembot.Led.write(255,0,0);
+
+    }
+    //if the pressed bumper is not one of the front ones
+    // switch to turn mode for 290 miliseconds
+    else
+    {
+      drivingBack = false;
+      turning = true;
+      turnTimer.startOver();
+    }
+    lastResults = results;
+  }
+
+
+  //if the finished turning disable turning mode
+  if(turnTimer.finished() &amp;&amp; turning)
+  {
+    turning = false;
+    drivingBack = false;
+    krembot.Led.write(0,255,0);
+
+  }
+
+  // if finished driving back, switch to turning mode
+  if(backTimer.finished() &amp;&amp; drivingBack)
+  {
+    drivingBack = false;
+    turning = true;
+    turnTimer.startOver();
+    krembot.Led.write(0,0,255);
+
+  }
+
+
+  //decide the turning direction based on the pressed BUMPER_REAR_LEFT
+  // if it was on the right side (or the front bumper) turn left.
+  // if it was one of the left side - turn right
+  if(turning)
+  {
+    krembot.Led.write(255,255,255);
+
+    if(lastResults.front)
+    {
+      // we chose to turn left
+      krembot.Base.drive(0, LEFT_SPEED);
+    }
+    else if(lastResults.front_right)
+    {
+      // we chose to turn left
+      krembot.Base.drive(0, LEFT_SPEED);
+    }
+    else if(lastResults.right)
+    {
+      krembot.Base.drive(0, LEFT_SPEED);
+    }
+    else if(lastResults.rear_right)
+    {
+      krembot.Base.drive(0, LEFT_SPEED);
+    }
+    else if(lastResults.rear)
+    {
+      krembot.Base.drive(FORWARD_SPEED, 0);
+    }
+    else if(lastResults.rear_left)
+    {
+      krembot.Base.drive(0, RIGHT_SPEED);
+    }
+    else if(lastResults.left)
+    {
+      krembot.Base.drive(0, RIGHT_SPEED);
+    }
+    else if(lastResults.front_left)
+    {
+      krembot.Base.drive(0, RIGHT_SPEED);
+    }
+  }
+
+  //if not turning and not driving - drive forward
+  if(!turning &amp;&amp; !drivingBack)
+  {
+    krembot.Base.drive(FORWARD_SPEED, 0);
+    krembot.Led.write(0,0,0);
+  }
+}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../StopByWall/" class="btn btn-neutral float-right" title="Stop By Wall"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../Publisher/" class="btn btn-neutral" title="Publisher"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../Publisher/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../StopByWall/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>

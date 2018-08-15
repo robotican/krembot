@@ -1,0 +1,224 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "Welcome to Krembot wiki\n\n\nKREMEBOt is a compact and light weight development platform. It uses \nphoton microprocessor\n , which allow KREMEBOt to be flashed remotely, and also have cloud based capabilities. This, alongside with RoboTican's KREMEBOt API create a very quick and easy platform to develop code and deploy it. This means you can be focused only on writing your code.\n\n\nEach client gets his own account. Under that account grouped together one or more KREMEBOts. Because KREMEBOt communicate with cloud when it's on, the client can at any time monitor its state, control certain functions remotely and more. Writing code is fairly easy with \nParticle desktop\n or \ncloud\n IDE. Once code is ready, \nyou can flash it remotely\n to a single KREMEBOt, or multiple ones.\n\n\nFor detailed information, please follow these links:\n\n\nInstallation\n\n\nGetting started\n\n\nProblem Solving",
+            "title": "Home"
+        },
+        {
+            "location": "/#welcome-to-krembot-wiki",
+            "text": "KREMEBOt is a compact and light weight development platform. It uses  photon microprocessor  , which allow KREMEBOt to be flashed remotely, and also have cloud based capabilities. This, alongside with RoboTican's KREMEBOt API create a very quick and easy platform to develop code and deploy it. This means you can be focused only on writing your code.  Each client gets his own account. Under that account grouped together one or more KREMEBOts. Because KREMEBOt communicate with cloud when it's on, the client can at any time monitor its state, control certain functions remotely and more. Writing code is fairly easy with  Particle desktop  or  cloud  IDE. Once code is ready,  you can flash it remotely  to a single KREMEBOt, or multiple ones.  For detailed information, please follow these links:  Installation  Getting started  Problem Solving",
+            "title": "Welcome to Krembot wiki"
+        },
+        {
+            "location": "/Installation/",
+            "text": "Installation\n\n\nThese instructions are compatible with Ubuntu 14.04 and 16.04.\n\n\nParticle-cli\n\n\n$ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -\n$ sudo apt-get install -y nodejs\n$ sudo npm install -g particle-cli\n$ particle login\n\n\n\nParticle-dev\n\n\nParticle-dev\n is a Atom based ide for the photon.\n\n\nClone repository\n\n\n$ cd ~\n$  git clone https://github.com/robotican/krembot.git\n\n\n\nLaunch Atom and login with your account, see: \nhttps://docs.particle.io/guide/tools-and-features/dev/#logging-in\n\n\nOpen the ~/krembot/kermbot project folder:\n\n\nFile -> Add Project Folder -> ~/krembot/krembot",
+            "title": "Installation"
+        },
+        {
+            "location": "/Installation/#installation",
+            "text": "These instructions are compatible with Ubuntu 14.04 and 16.04.",
+            "title": "Installation"
+        },
+        {
+            "location": "/Installation/#particle-cli",
+            "text": "$ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -\n$ sudo apt-get install -y nodejs\n$ sudo npm install -g particle-cli\n$ particle login",
+            "title": "Particle-cli"
+        },
+        {
+            "location": "/Installation/#particle-dev",
+            "text": "Particle-dev  is a Atom based ide for the photon.",
+            "title": "Particle-dev"
+        },
+        {
+            "location": "/Installation/#clone-repository",
+            "text": "$ cd ~\n$  git clone https://github.com/robotican/krembot.git  Launch Atom and login with your account, see:  https://docs.particle.io/guide/tools-and-features/dev/#logging-in  Open the ~/krembot/kermbot project folder:  File -> Add Project Folder -> ~/krembot/krembot",
+            "title": "Clone repository"
+        },
+        {
+            "location": "/Getting_started/",
+            "text": "Getting started\n\n\nBasic Code Pattern\n\n\nKREMEBOt API was designed to be as simple and easy to use as possible. The most basic code required to get start coding includes the following:\n\n\n\n\nKREMEBOt header file (krembot.h)\n\n\nSingle KREMEBOt object instance\n\n\nKREMEBOt's setup() function\n\n\nKREMEBOt's loop() function\n\n\n\n\nSee example \nhere\n\n\nCompiling ang flashing code for KREMEBOt\n\n\nUse the particle-dev to select the target KREMEBOt and compile and flash using the cloud.\n\n\nSee:\n\n\nCompiling\n\n\nFlashing\n\n\nFlashing multiple KREMEBOts\n\n\nCompile your code in particle-dev (without flashing). This step will create a compiled bin file inside ~/KREMEBOt folder.\n\n\nCreate a group file with the names of all the KREMEBOts you want to flash (each name in a new line).\n\n\n$ cd ~/krembot/flash\n$ ./flash_multi.sh <group file path> <bin file path>\n\n\n\nFor example:\n\n\n$ ./flash_multi.sh group_all.txt ../krembot/photon_0.6.2_firmware_1499256083785.bin\n\n\n\nMore important things you need to know:\n\n\n\n\nDo not\n use delay() or long for or while loops. use Timers (e.g. SandTime class) insted.\n\n\nTurn on the KREMEBOt only on flat surface.\n\n\nIf the battery goes below 10% it can cause unknown behavior.   \n\n\nIf the battery will drain completely, the red lights will be turn on for 30 seconds (during this time the KREMEBOt will stop executing any other code).\nAfter this 30 seconds the KREMEBOt will go to sleep for a minute.\n\nNext time the KREMEBOt will be turned on, this 30 seconds of red light and 1 minute of sleep will happen again unless the KREMEBOt will be charged.\n\n\nbefore using any KREMEBOt it is \nhighly recommended\n to flash an empty sketch to it, to prevent any unpredicted movment (from previously flashed sketches).  \n\n\nwhen charging your KREMEBOt, turn off the KREMEBOt for faster charging.",
+            "title": "Getting Started"
+        },
+        {
+            "location": "/Getting_started/#getting-started",
+            "text": "",
+            "title": "Getting started"
+        },
+        {
+            "location": "/Getting_started/#basic-code-pattern",
+            "text": "KREMEBOt API was designed to be as simple and easy to use as possible. The most basic code required to get start coding includes the following:   KREMEBOt header file (krembot.h)  Single KREMEBOt object instance  KREMEBOt's setup() function  KREMEBOt's loop() function   See example  here",
+            "title": "Basic Code Pattern"
+        },
+        {
+            "location": "/Getting_started/#compiling-ang-flashing-code-for-kremebot",
+            "text": "Use the particle-dev to select the target KREMEBOt and compile and flash using the cloud.  See:  Compiling  Flashing",
+            "title": "Compiling ang flashing code for KREMEBOt"
+        },
+        {
+            "location": "/Getting_started/#flashing-multiple-kremebots",
+            "text": "Compile your code in particle-dev (without flashing). This step will create a compiled bin file inside ~/KREMEBOt folder.  Create a group file with the names of all the KREMEBOts you want to flash (each name in a new line).  $ cd ~/krembot/flash\n$ ./flash_multi.sh <group file path> <bin file path>  For example:  $ ./flash_multi.sh group_all.txt ../krembot/photon_0.6.2_firmware_1499256083785.bin",
+            "title": "Flashing multiple KREMEBOts"
+        },
+        {
+            "location": "/Getting_started/#more-important-things-you-need-to-know",
+            "text": "Do not  use delay() or long for or while loops. use Timers (e.g. SandTime class) insted.  Turn on the KREMEBOt only on flat surface.  If the battery goes below 10% it can cause unknown behavior.     If the battery will drain completely, the red lights will be turn on for 30 seconds (during this time the KREMEBOt will stop executing any other code).\nAfter this 30 seconds the KREMEBOt will go to sleep for a minute. \nNext time the KREMEBOt will be turned on, this 30 seconds of red light and 1 minute of sleep will happen again unless the KREMEBOt will be charged.  before using any KREMEBOt it is  highly recommended  to flash an empty sketch to it, to prevent any unpredicted movment (from previously flashed sketches).    when charging your KREMEBOt, turn off the KREMEBOt for faster charging.",
+            "title": "More important things you need to know:"
+        },
+        {
+            "location": "/API/API/",
+            "text": "API\n\n\nKREMEBOt capabilities includes:\n\n\n1.\nBattery and charge monitoring\n\n2.\nBumpers\n\n3.\nDifferential driving\n\n4.\nIMU\n\n5.\nRGB, ambient and proximity sensors\n\n6.\nRGB leds",
+            "title": "API"
+        },
+        {
+            "location": "/API/API/#api",
+            "text": "KREMEBOt capabilities includes:  1. Battery and charge monitoring \n2. Bumpers \n3. Differential driving \n4. IMU \n5. RGB, ambient and proximity sensors \n6. RGB leds",
+            "title": "API"
+        },
+        {
+            "location": "/API/Battery_and_charge_monitoring/",
+            "text": "Battery and Charge monitoring\n\n\nThe KREMEBOt battery and charging status can be read through the Bat class.\n\n\nTo read battery level (0-100%):\n\n\nuint8_t getBatLvl();\n\n\n\n\nTo check if the robot is in charging state:\n\n\nbool isCharging();",
+            "title": "Battery and charge monitoring"
+        },
+        {
+            "location": "/API/Battery_and_charge_monitoring/#battery-and-charge-monitoring",
+            "text": "The KREMEBOt battery and charging status can be read through the Bat class.  To read battery level (0-100%):  uint8_t getBatLvl();  To check if the robot is in charging state:  bool isCharging();",
+            "title": "Battery and Charge monitoring"
+        },
+        {
+            "location": "/API/Bumpers/",
+            "text": "Bumpers\n\n\nKREMEBOt_2.0\n has 8 bumpers which helps it to sense when it bumps into objects. \nThe bumpers are located around the robot(front, front right, right, rear right, rear, rear left, left and front left), \nand can be accessed through the Bumpers class.\n\n\nYou can detect which bumper is pressed by invoking:\n\n\nBumpersRes read();\n\n\n\n\nThis function returns BumpersRes struct that contains the following fields:\n\n\nstruct BumpersRes\n{\n    bool front,\n         front_right,\n         right,\n         rear_right,\n         rear,\n         rear_left,\n         left,\n         front_left;\n};\n\n\n\n\nIf a bumper is pressed, the value of the corresponding field will be true.\n\n\n\n\nKREMEBOt_1.0\n has 4 bumpers which helps it to sense when it bumps into objects. \nThe bumpers are located around the robot (front, right, left and rear) \nand can be accessed through the Bumpers class:\n\n\nYou can detect which bumper is pressed by invoking:\n\n\nBumpersRes read();\n\n\n\n\nThis function returns BumpersRes struct that contains the following fields:\n\n\nstruct BumpersRes\n{\n  bool front,\n       rear,\n       right,\n       left;\n};\n\n\n\n\nIf a bumper is pressed, the value of the corresponding field will be true.",
+            "title": "Bumpers"
+        },
+        {
+            "location": "/API/Bumpers/#bumpers",
+            "text": "KREMEBOt_2.0  has 8 bumpers which helps it to sense when it bumps into objects. \nThe bumpers are located around the robot(front, front right, right, rear right, rear, rear left, left and front left), \nand can be accessed through the Bumpers class.  You can detect which bumper is pressed by invoking:  BumpersRes read();  This function returns BumpersRes struct that contains the following fields:  struct BumpersRes\n{\n    bool front,\n         front_right,\n         right,\n         rear_right,\n         rear,\n         rear_left,\n         left,\n         front_left;\n};  If a bumper is pressed, the value of the corresponding field will be true.   KREMEBOt_1.0  has 4 bumpers which helps it to sense when it bumps into objects. \nThe bumpers are located around the robot (front, right, left and rear) \nand can be accessed through the Bumpers class:  You can detect which bumper is pressed by invoking:  BumpersRes read();  This function returns BumpersRes struct that contains the following fields:  struct BumpersRes\n{\n  bool front,\n       rear,\n       right,\n       left;\n};  If a bumper is pressed, the value of the corresponding field will be true.",
+            "title": "Bumpers"
+        },
+        {
+            "location": "/API/Differential_driving/",
+            "text": "Differential Driving\n\n\nKREMEBOt use different driving to control the use of Base class, along with the drive function:\n\n\nbool drive(int8_t linear_spd, int8_t angular_spd);\n\n\n\n\nwhere linear_spd and angular_spd are between -100 and 100.\n\n\nNegative values means reverse for linear_spd, and clockwise rotation for angular_spd.\n\n\nFor example, to drive forward in full speed:\n\n\nkrembot.Base.drive(100,0);\n\n\n\n\nand to turn the robot left(counter-clockwise) in full rotation speed:\n\n\nkrembot.Base.drive(0,100);\n\n\n\n\nThe drive function will return false if called with out of range values.\n\n\nTo stop the robot you can use the stop function;\n\n\nkrembot.Base.stop();",
+            "title": "Differential driving"
+        },
+        {
+            "location": "/API/Differential_driving/#differential-driving",
+            "text": "KREMEBOt use different driving to control the use of Base class, along with the drive function:  bool drive(int8_t linear_spd, int8_t angular_spd);  where linear_spd and angular_spd are between -100 and 100.  Negative values means reverse for linear_spd, and clockwise rotation for angular_spd.  For example, to drive forward in full speed:  krembot.Base.drive(100,0);  and to turn the robot left(counter-clockwise) in full rotation speed:  krembot.Base.drive(0,100);  The drive function will return false if called with out of range values.  To stop the robot you can use the stop function;  krembot.Base.stop();",
+            "title": "Differential Driving"
+        },
+        {
+            "location": "/API/Imu/",
+            "text": "IMU\n\n\nKREMEBOt_2.0 has 9 DOF IMU sensor. In order to read it, use the Imu object.\n\n\nImuData read();\n\n\n\n\nImuData is a struct that contains the raw and fused data from the Imu sensor:\n\n\nstruct ImuData\n{\n    //fused data\n    float roll,\n          pitch,\n          yaw;\n\n    //accelerometer values\n    float ax,\n          ay,\n          az;\n\n    //gyro values\n    float gx,\n          gy,\n          gz;\n\n    //magnetometer values\n    float mx,\n          my,\n          mz;\n\n};",
+            "title": "Imu"
+        },
+        {
+            "location": "/API/Imu/#imu",
+            "text": "KREMEBOt_2.0 has 9 DOF IMU sensor. In order to read it, use the Imu object.  ImuData read();  ImuData is a struct that contains the raw and fused data from the Imu sensor:  struct ImuData\n{\n    //fused data\n    float roll,\n          pitch,\n          yaw;\n\n    //accelerometer values\n    float ax,\n          ay,\n          az;\n\n    //gyro values\n    float gx,\n          gy,\n          gz;\n\n    //magnetometer values\n    float mx,\n          my,\n          mz;\n\n};",
+            "title": "IMU"
+        },
+        {
+            "location": "/API/RGB_ambient_and_proximity/",
+            "text": "RGB ambient and proximity\n\n\nKREMEBOt sense the world through 8 color sensors, which are able to read RGB values, \nproximity (distance) from sensor, and ambient value.\n\n\nThe sensor instances are named by the physical location on the KREMEBOt (8 directions):\n\nRgbaFront\n\n\nRgbaFrontRight\n\n\nRgbaRight\n\n\nRgbaRearRight\n\n\nRgbaRear\n\n\nRgbaRearLeft\n\n\nRgbaLeft\n\n\nRgbaFrontLeft\n  \n\n\nEach of the above is a RGBASensor class, and contains reading data is done using the read command:\n\n\nRGBAResult read();\n\n\n\n\nreturns RGBAResult struct with the following fields:\n\n\nstruct RGBAResult\n{\nuint16_t Ambient ;  // The Ambience of the light\nuint16_t Red;       // The Red value of the light\nuint16_t Green;     // The Green value of the light\nuint16_t Blue;      // The Blue value of the light\nuint8_t Proximity;  // The Raw value of the proximity sensor\nfloat Distance;     // The calculated distance to the object in cm\n};\n\n\n\n\n\nRGBASensor class also supports the HSV color format.\nTo convert the RGB values to HSV values, use:\n\n\nstatic HSVResult rgbToHSV(RGBAResult in);\n\n\n\n\nthis functions takes a RGBAResult and returns HSVResult strucrt, contains:\n\n\ndouble H,S, V; //Hue, Saturation, Value\n\n\n\n\nTo extract a color from the HSV values, use:\n\n\nstatic Colors WhichColor(RGBAResult rgbaIn, HSVResult hsvIn);\n\n\n\n\nwhich takes the RGBAResult and HSVResult structs as parameters and return a Color enum value:\n\n\nenum Colors\n{\n  Red,\n  Green,\n  Blue,\n  None\n};",
+            "title": "RGB ambient and proximity"
+        },
+        {
+            "location": "/API/RGB_ambient_and_proximity/#rgb-ambient-and-proximity",
+            "text": "KREMEBOt sense the world through 8 color sensors, which are able to read RGB values, \nproximity (distance) from sensor, and ambient value.  The sensor instances are named by the physical location on the KREMEBOt (8 directions): RgbaFront  RgbaFrontRight  RgbaRight  RgbaRearRight  RgbaRear  RgbaRearLeft  RgbaLeft  RgbaFrontLeft     Each of the above is a RGBASensor class, and contains reading data is done using the read command:  RGBAResult read();  returns RGBAResult struct with the following fields:  struct RGBAResult\n{\nuint16_t Ambient ;  // The Ambience of the light\nuint16_t Red;       // The Red value of the light\nuint16_t Green;     // The Green value of the light\nuint16_t Blue;      // The Blue value of the light\nuint8_t Proximity;  // The Raw value of the proximity sensor\nfloat Distance;     // The calculated distance to the object in cm\n};  RGBASensor class also supports the HSV color format.\nTo convert the RGB values to HSV values, use:  static HSVResult rgbToHSV(RGBAResult in);  this functions takes a RGBAResult and returns HSVResult strucrt, contains:  double H,S, V; //Hue, Saturation, Value  To extract a color from the HSV values, use:  static Colors WhichColor(RGBAResult rgbaIn, HSVResult hsvIn);  which takes the RGBAResult and HSVResult structs as parameters and return a Color enum value:  enum Colors\n{\n  Red,\n  Green,\n  Blue,\n  None\n};",
+            "title": "RGB ambient and proximity"
+        },
+        {
+            "location": "/API/RGB_leds/",
+            "text": "RGB Leds\n\n\nIn order to set the KREMEBOt color, use the Led class with the write function:\n\n\nvoid write(uint8_t red_val, uint8_t green_val, uint8_t blue_val);\n\n\n\n\nEach color argument is in the rang of 0-255.\n\n\nFor example, to set the robot color to blue:\n\n\nkrembot.Led.write(0,0,255);",
+            "title": "RGB leds"
+        },
+        {
+            "location": "/API/RGB_leds/#rgb-leds",
+            "text": "In order to set the KREMEBOt color, use the Led class with the write function:  void write(uint8_t red_val, uint8_t green_val, uint8_t blue_val);  Each color argument is in the rang of 0-255.  For example, to set the robot color to blue:  krembot.Led.write(0,0,255);",
+            "title": "RGB Leds"
+        },
+        {
+            "location": "/Demos/Demos/",
+            "text": "demos\n\n\nKrembot comes with some demos to demonstrate it's capabilities:\n\n\n\n\nchameleon\n\n\nLeds And Bumpers\n\n\nPublisher\n\n\nRun Away By Bumpers\n (only for krembot_2.0)\n\n\nStop By Wall\n\n\nSubscriber",
+            "title": "Demos"
+        },
+        {
+            "location": "/Demos/Demos/#demos",
+            "text": "Krembot comes with some demos to demonstrate it's capabilities:   chameleon  Leds And Bumpers  Publisher  Run Away By Bumpers  (only for krembot_2.0)  Stop By Wall  Subscriber",
+            "title": "demos"
+        },
+        {
+            "location": "/Demos/chameleon/",
+            "text": "chameleon\n\n\nIn this demo we use the RGBA sensors to sense other colors and turn on the leds in the color it sensed.\n\n\n\n#include \"Krembot/krembot.h\"\n\nKrembot krembot;\n\n\nvoid setup()\n{\n    krembot.setup();\n}\n\n\nvoid loop()\n{\n  krembot.loop();\n  RGBAResult rgbRes;\n  HSVResult hsvRes;\n\n  // read the rgba sensor. \n  rgbRes = krembot.RgbaRear.read();\n\n  // convert the reult from rgb to hsv\n  hsvRes = RGBASensor::rgbToHSV(rgbRes);\n\n  // detect the color based on the rgb and hsv results\n  Colors color = RGBASensor::WhichColor(rgbRes, hsvRes);\n\n  // turn on the leds with the calculated color \n  switch (color)\n  {\n    case Colors::Red :\n    {\n      // red\n      krembot.Led.write(255,0,0);\n      break;\n    }\n\n    case Colors::Green :\n    {\n      // green\n      krembot.Led.write(0,255,0);\n      break;\n    }\n\n\n    case Colors::Blue :\n    {\n      // blue\n      krembot.Led.write(0,0,255);\n      break;\n    }\n\n\n    default :\n    {\n      // if none detected - turn off all leds\n      krembot.Led.write(0,0,0);\n      break;\n    }\n\n  }\n\n}",
+            "title": "chameleon"
+        },
+        {
+            "location": "/Demos/chameleon/#chameleon",
+            "text": "In this demo we use the RGBA sensors to sense other colors and turn on the leds in the color it sensed.  \n#include \"Krembot/krembot.h\"\n\nKrembot krembot;\n\n\nvoid setup()\n{\n    krembot.setup();\n}\n\n\nvoid loop()\n{\n  krembot.loop();\n  RGBAResult rgbRes;\n  HSVResult hsvRes;\n\n  // read the rgba sensor. \n  rgbRes = krembot.RgbaRear.read();\n\n  // convert the reult from rgb to hsv\n  hsvRes = RGBASensor::rgbToHSV(rgbRes);\n\n  // detect the color based on the rgb and hsv results\n  Colors color = RGBASensor::WhichColor(rgbRes, hsvRes);\n\n  // turn on the leds with the calculated color \n  switch (color)\n  {\n    case Colors::Red :\n    {\n      // red\n      krembot.Led.write(255,0,0);\n      break;\n    }\n\n    case Colors::Green :\n    {\n      // green\n      krembot.Led.write(0,255,0);\n      break;\n    }\n\n\n    case Colors::Blue :\n    {\n      // blue\n      krembot.Led.write(0,0,255);\n      break;\n    }\n\n\n    default :\n    {\n      // if none detected - turn off all leds\n      krembot.Led.write(0,0,0);\n      break;\n    }\n\n  }\n\n}",
+            "title": "chameleon"
+        },
+        {
+            "location": "/Demos/ledsAndBumpers/",
+            "text": "Leds and Bumpers\n\n\nthis demo enables to turn on the leds on red, green and blue by pressing a bumper.\n\n\n#include \"Krembot/krembot.h\"\n\nKrembot krembot;\n\n\nvoid setup()\n{\n    krembot.setup();\n}\n\n\nvoid loop()\n{\n  krembot.loop();\n\n  // read thr bumpers and turn the leds on based on the pressed bumper\n  BumpersRes results = krembot.Bumpers.read();\n  if(results.left)\n  {\n    // turn the red leds on\n    krembot.Led.write(255,0,0);\n  }\n  else if(rear)\n  {\n    // turn the green leds on\n    krembot.Led.write(0,255,0);\n  }\n  else if(results.right)\n  {\n    // turn the blue leds on\n    krembot.Led.write(0,0,255);\n  }\n\n  else if(results.front)\n  {\n    // turn all the leds off\n    krembot.Led.write(0,0,0);\n  }\n}",
+            "title": "Leds And Bumpers"
+        },
+        {
+            "location": "/Demos/ledsAndBumpers/#leds-and-bumpers",
+            "text": "this demo enables to turn on the leds on red, green and blue by pressing a bumper.  #include \"Krembot/krembot.h\"\n\nKrembot krembot;\n\n\nvoid setup()\n{\n    krembot.setup();\n}\n\n\nvoid loop()\n{\n  krembot.loop();\n\n  // read thr bumpers and turn the leds on based on the pressed bumper\n  BumpersRes results = krembot.Bumpers.read();\n  if(results.left)\n  {\n    // turn the red leds on\n    krembot.Led.write(255,0,0);\n  }\n  else if(rear)\n  {\n    // turn the green leds on\n    krembot.Led.write(0,255,0);\n  }\n  else if(results.right)\n  {\n    // turn the blue leds on\n    krembot.Led.write(0,0,255);\n  }\n\n  else if(results.front)\n  {\n    // turn all the leds off\n    krembot.Led.write(0,0,0);\n  }\n}",
+            "title": "Leds and Bumpers"
+        },
+        {
+            "location": "/Demos/Publisher/",
+            "text": "Publisher\n\n\nThis demo shows how to publish data to the particle cloud.\n\nplease refer to the \ncloud console\n\nand choose one of the online krembots to see the data that was published.\n\n\n#include \"Krembot/krembot.h\"\n#include \"Krembot/SandTimer/SandTimer.h\"\n\nKrembot krembot;\nSandTimer publishTimer;\n\nconst long INTERVAL = 60000;\n\nvoid setup()\n{\n    krembot.setup();\n    // start timer of 1 minute\n    publishTimer.start(INTERVAL);\n}\n\n\nvoid loop()\n{\n  krembot.loop();\n  if (publishTimer.finished())\n  {\n    // if the timer finishedm read the battery level\n    String bat =  String(krembot.Bat.getBatLvl());\n    // publish the battery level to the cloud.\n    Particle.publish(\"battery\", bat, PRIVATE);\n    publishTimer.startOver();\n  }\n\n}",
+            "title": "Publisher"
+        },
+        {
+            "location": "/Demos/Publisher/#publisher",
+            "text": "This demo shows how to publish data to the particle cloud. \nplease refer to the  cloud console \nand choose one of the online krembots to see the data that was published.  #include \"Krembot/krembot.h\"\n#include \"Krembot/SandTimer/SandTimer.h\"\n\nKrembot krembot;\nSandTimer publishTimer;\n\nconst long INTERVAL = 60000;\n\nvoid setup()\n{\n    krembot.setup();\n    // start timer of 1 minute\n    publishTimer.start(INTERVAL);\n}\n\n\nvoid loop()\n{\n  krembot.loop();\n  if (publishTimer.finished())\n  {\n    // if the timer finishedm read the battery level\n    String bat =  String(krembot.Bat.getBatLvl());\n    // publish the battery level to the cloud.\n    Particle.publish(\"battery\", bat, PRIVATE);\n    publishTimer.startOver();\n  }\n\n}",
+            "title": "Publisher"
+        },
+        {
+            "location": "/Demos/RunAwayByBumpers/",
+            "text": "Run Away By Bumpers\n\n\nThis demo shows how to run away from obstacle the krembot has just bumped into.\nIt works only on \nkrembot_2.0\n.\n\n\n#include \"Krembot/krembot.h\"\n#include \"Krembot/SandTimer/SandTimer.h\"\n\nKrembot krembot;\nSandTimer backTimer;\nSandTimer turnTimer;\n\nBumpersRes lastResults;\n\nconst int FORWARD_SPEED = 60;\nconst int BACKWARD_SPEED = -60;\n\n\nconst int LEFT_SPEED = 75;\nconst int RIGHT_SPEED = -75;\n\nconst int BACK_INTERVAL = 450;\nconst int TURN_INTERVAL = 450;\n\nbool drivingForward = false;\nbool drivingBack = false;\nbool turning = false;\n\nvoid setup()\n{\n    krembot.setup();\n\n    // start driving forward\n    krembot.Base.drive(FORWARD_SPEED, 0);\n    backTimer.start(BACK_INTERVAL);\n    turnTimer.start(TURN_INTERVAL);\n}\n\n\nvoid loop()\n{\n  krembot.loop();\n\n  // read bumpre states\n  BumpersRes results = krembot.Bumpers.read();\n  if (results.isAnyPressed())\n  {\n    // if one of the bumpers was pressed check which one was pressed. based on the\n    // bumper that was pressed. if it was one of the front bumpers - switch to\n    // drivingBack mode for 450 miliseconds\n\n    if(results.front || results.front_left || results.front_right)\n    {\n      krembot.Base.drive(BACKWARD_SPEED, 0);\n      backTimer.startOver();\n      drivingBack = true;\n      turning = false;\n      krembot.Led.write(255,0,0);\n\n    }\n    //if the pressed bumper is not one of the front ones\n    // switch to turn mode for 290 miliseconds\n    else\n    {\n      drivingBack = false;\n      turning = true;\n      turnTimer.startOver();\n    }\n    lastResults = results;\n  }\n\n\n  //if the finished turning disable turning mode\n  if(turnTimer.finished() && turning)\n  {\n    turning = false;\n    drivingBack = false;\n    krembot.Led.write(0,255,0);\n\n  }\n\n  // if finished driving back, switch to turning mode\n  if(backTimer.finished() && drivingBack)\n  {\n    drivingBack = false;\n    turning = true;\n    turnTimer.startOver();\n    krembot.Led.write(0,0,255);\n\n  }\n\n\n  //decide the turning direction based on the pressed BUMPER_REAR_LEFT\n  // if it was on the right side (or the front bumper) turn left.\n  // if it was one of the left side - turn right\n  if(turning)\n  {\n    krembot.Led.write(255,255,255);\n\n    if(lastResults.front)\n    {\n      // we chose to turn left\n      krembot.Base.drive(0, LEFT_SPEED);\n    }\n    else if(lastResults.front_right)\n    {\n      // we chose to turn left\n      krembot.Base.drive(0, LEFT_SPEED);\n    }\n    else if(lastResults.right)\n    {\n      krembot.Base.drive(0, LEFT_SPEED);\n    }\n    else if(lastResults.rear_right)\n    {\n      krembot.Base.drive(0, LEFT_SPEED);\n    }\n    else if(lastResults.rear)\n    {\n      krembot.Base.drive(FORWARD_SPEED, 0);\n    }\n    else if(lastResults.rear_left)\n    {\n      krembot.Base.drive(0, RIGHT_SPEED);\n    }\n    else if(lastResults.left)\n    {\n      krembot.Base.drive(0, RIGHT_SPEED);\n    }\n    else if(lastResults.front_left)\n    {\n      krembot.Base.drive(0, RIGHT_SPEED);\n    }\n  }\n\n  //if not turning and not driving - drive forward\n  if(!turning && !drivingBack)\n  {\n    krembot.Base.drive(FORWARD_SPEED, 0);\n    krembot.Led.write(0,0,0);\n  }\n}",
+            "title": "Run Away By Bumpers"
+        },
+        {
+            "location": "/Demos/RunAwayByBumpers/#run-away-by-bumpers",
+            "text": "This demo shows how to run away from obstacle the krembot has just bumped into.\nIt works only on  krembot_2.0 .  #include \"Krembot/krembot.h\"\n#include \"Krembot/SandTimer/SandTimer.h\"\n\nKrembot krembot;\nSandTimer backTimer;\nSandTimer turnTimer;\n\nBumpersRes lastResults;\n\nconst int FORWARD_SPEED = 60;\nconst int BACKWARD_SPEED = -60;\n\n\nconst int LEFT_SPEED = 75;\nconst int RIGHT_SPEED = -75;\n\nconst int BACK_INTERVAL = 450;\nconst int TURN_INTERVAL = 450;\n\nbool drivingForward = false;\nbool drivingBack = false;\nbool turning = false;\n\nvoid setup()\n{\n    krembot.setup();\n\n    // start driving forward\n    krembot.Base.drive(FORWARD_SPEED, 0);\n    backTimer.start(BACK_INTERVAL);\n    turnTimer.start(TURN_INTERVAL);\n}\n\n\nvoid loop()\n{\n  krembot.loop();\n\n  // read bumpre states\n  BumpersRes results = krembot.Bumpers.read();\n  if (results.isAnyPressed())\n  {\n    // if one of the bumpers was pressed check which one was pressed. based on the\n    // bumper that was pressed. if it was one of the front bumpers - switch to\n    // drivingBack mode for 450 miliseconds\n\n    if(results.front || results.front_left || results.front_right)\n    {\n      krembot.Base.drive(BACKWARD_SPEED, 0);\n      backTimer.startOver();\n      drivingBack = true;\n      turning = false;\n      krembot.Led.write(255,0,0);\n\n    }\n    //if the pressed bumper is not one of the front ones\n    // switch to turn mode for 290 miliseconds\n    else\n    {\n      drivingBack = false;\n      turning = true;\n      turnTimer.startOver();\n    }\n    lastResults = results;\n  }\n\n\n  //if the finished turning disable turning mode\n  if(turnTimer.finished() && turning)\n  {\n    turning = false;\n    drivingBack = false;\n    krembot.Led.write(0,255,0);\n\n  }\n\n  // if finished driving back, switch to turning mode\n  if(backTimer.finished() && drivingBack)\n  {\n    drivingBack = false;\n    turning = true;\n    turnTimer.startOver();\n    krembot.Led.write(0,0,255);\n\n  }\n\n\n  //decide the turning direction based on the pressed BUMPER_REAR_LEFT\n  // if it was on the right side (or the front bumper) turn left.\n  // if it was one of the left side - turn right\n  if(turning)\n  {\n    krembot.Led.write(255,255,255);\n\n    if(lastResults.front)\n    {\n      // we chose to turn left\n      krembot.Base.drive(0, LEFT_SPEED);\n    }\n    else if(lastResults.front_right)\n    {\n      // we chose to turn left\n      krembot.Base.drive(0, LEFT_SPEED);\n    }\n    else if(lastResults.right)\n    {\n      krembot.Base.drive(0, LEFT_SPEED);\n    }\n    else if(lastResults.rear_right)\n    {\n      krembot.Base.drive(0, LEFT_SPEED);\n    }\n    else if(lastResults.rear)\n    {\n      krembot.Base.drive(FORWARD_SPEED, 0);\n    }\n    else if(lastResults.rear_left)\n    {\n      krembot.Base.drive(0, RIGHT_SPEED);\n    }\n    else if(lastResults.left)\n    {\n      krembot.Base.drive(0, RIGHT_SPEED);\n    }\n    else if(lastResults.front_left)\n    {\n      krembot.Base.drive(0, RIGHT_SPEED);\n    }\n  }\n\n  //if not turning and not driving - drive forward\n  if(!turning && !drivingBack)\n  {\n    krembot.Base.drive(FORWARD_SPEED, 0);\n    krembot.Led.write(0,0,0);\n  }\n}",
+            "title": "Run Away By Bumpers"
+        },
+        {
+            "location": "/Demos/StopByWall/",
+            "text": "Stop By Wall\n\n\nIn this demo we constantly read the distance from the rgba sensor. the krembot drives forward with the green leds on.\n\nwhen the distance read is below the minimum distance the krembot stops and the red leds are turned on.\n\n\n\n#include \"Krembot/krembot.h\"\n\n//Only one instance of krembot object should be declared\nKrembot krembot;\n\nconst int MinDistance = 7;\nfloat distance = 0, lastDistance = 0, lastLastDistance = 0;\nint deadband = 2;\n\nRGBAResult rgbRes;\n\nvoid setup()\n{\n    krembot.setup();\n\n    //save the first distance result of the rgba sensor\n    rgbRes = krembot.RgbaFront.read();\n    lastDistance = rgbRes.Distance;\n}\n\n\nvoid loop()\n{\n  krembot.loop();\n  // read the distance from the front sensor\n  rgbRes = krembot.RgbaFront.read();\n  distance = rgbRes.Distance;\n\n  // if the distance is larger then the minimum and the last 2 samples has\n  // reasonable distance, drive forward and turn the leds green\n  if(distance > MinDistance && abs((lastDistance - distance)) < deadband)\n  {\n    krembot.Base.drive(30, 0);\n    krembot.Led.write(0, 255, 0);\n  }\n\n  // if the distance is not larger then the minimum and the last 2 samples has\n  // reasonable distance, stop driving and turn the leds red\n  else if (distance <= MinDistance && abs((lastDistance - distance)) < deadband)\n  {\n    krembot.Base.stop();\n    krembot.Led.write(255, 0, 0);\n  }\n  lastDistance = distance;\n\n}",
+            "title": "Stop By Wall"
+        },
+        {
+            "location": "/Demos/StopByWall/#stop-by-wall",
+            "text": "In this demo we constantly read the distance from the rgba sensor. the krembot drives forward with the green leds on. \nwhen the distance read is below the minimum distance the krembot stops and the red leds are turned on.  \n#include \"Krembot/krembot.h\"\n\n//Only one instance of krembot object should be declared\nKrembot krembot;\n\nconst int MinDistance = 7;\nfloat distance = 0, lastDistance = 0, lastLastDistance = 0;\nint deadband = 2;\n\nRGBAResult rgbRes;\n\nvoid setup()\n{\n    krembot.setup();\n\n    //save the first distance result of the rgba sensor\n    rgbRes = krembot.RgbaFront.read();\n    lastDistance = rgbRes.Distance;\n}\n\n\nvoid loop()\n{\n  krembot.loop();\n  // read the distance from the front sensor\n  rgbRes = krembot.RgbaFront.read();\n  distance = rgbRes.Distance;\n\n  // if the distance is larger then the minimum and the last 2 samples has\n  // reasonable distance, drive forward and turn the leds green\n  if(distance > MinDistance && abs((lastDistance - distance)) < deadband)\n  {\n    krembot.Base.drive(30, 0);\n    krembot.Led.write(0, 255, 0);\n  }\n\n  // if the distance is not larger then the minimum and the last 2 samples has\n  // reasonable distance, stop driving and turn the leds red\n  else if (distance <= MinDistance && abs((lastDistance - distance)) < deadband)\n  {\n    krembot.Base.stop();\n    krembot.Led.write(255, 0, 0);\n  }\n  lastDistance = distance;\n\n}",
+            "title": "Stop By Wall"
+        },
+        {
+            "location": "/Demos/Subscriber/",
+            "text": "Subscriber\n\n\nThis demo shows how to subscribes to a cloud event and handles it in the handler function.\nIt subscribes to the event that was published in the \npublisher\n demo and turns the leds on in a color that matches to the publisher krembot's battery level.\n\n\n#include \"Krembot/krembot.h\"\n\nKrembot krembot;\n\nvoid setup()\n{\n    krembot.setup();\n    // subscribe to the battery topic from the cloud and declare the handler\n    Particle.subscribe(\"battery\", ChangeLedsForBattery, MY_DEVICES));\n}\n\nvoid loop()\n{\n  krembot.loop();\n}\n\n// handler for the battery topic\nvoid ChangeLedsForBattery(String topic, String data)\n{\n\n  // read the battery level, from the topic\n  String batLvlString = String(data);\n  long batLvl = batLvlString.toInt();\n\n  // change the leds colors based on the battery level \n  if(batLvl > 80)\n  {\n    // turn on the green leds\n    krembot.Led.write(0, 255 ,0);\n  }\n  else if(batLvl <  80 && batLvl > 20)\n  {\n    // turn on the blue leds\n    krembot.Led.write(0, 0, 255);\n  }\n  else\n  {\n    // turn on the red leds\n    krembot.Led.write(255, 0 ,0);\n  }\n}",
+            "title": "Subscriber"
+        },
+        {
+            "location": "/Demos/Subscriber/#subscriber",
+            "text": "This demo shows how to subscribes to a cloud event and handles it in the handler function.\nIt subscribes to the event that was published in the  publisher  demo and turns the leds on in a color that matches to the publisher krembot's battery level.  #include \"Krembot/krembot.h\"\n\nKrembot krembot;\n\nvoid setup()\n{\n    krembot.setup();\n    // subscribe to the battery topic from the cloud and declare the handler\n    Particle.subscribe(\"battery\", ChangeLedsForBattery, MY_DEVICES));\n}\n\nvoid loop()\n{\n  krembot.loop();\n}\n\n// handler for the battery topic\nvoid ChangeLedsForBattery(String topic, String data)\n{\n\n  // read the battery level, from the topic\n  String batLvlString = String(data);\n  long batLvl = batLvlString.toInt();\n\n  // change the leds colors based on the battery level \n  if(batLvl > 80)\n  {\n    // turn on the green leds\n    krembot.Led.write(0, 255 ,0);\n  }\n  else if(batLvl <  80 && batLvl > 20)\n  {\n    // turn on the blue leds\n    krembot.Led.write(0, 0, 255);\n  }\n  else\n  {\n    // turn on the red leds\n    krembot.Led.write(255, 0 ,0);\n  }\n}",
+            "title": "Subscriber"
+        },
+        {
+            "location": "/Problem_Solving/",
+            "text": "Problem Solving\n\n\nHow To Bring KREMEBOt Back To Life\n\n\n\n\n\n\nRemove old dfu-util: sudo apt-get remove dfu-util\n\n\n\n\n\n\nDownload newest dfu-util from https://sourceforge.net/projects/dfu-util/\n\n\n\n\n\n\nInstall dfu-util from source (see INSTALL section)\n\n\n\n\n\n\nConnect with usb to pc (robot power should be down) put krembot in DFU mode (reset+setup -> release reset -> wait for yellow and release setup)\n\n\n\n\n\n\nSave KREMEBOt ID from console\n\n\n\n\n\n\nIn terminal:\n\n\n\n\n\n\n    $ particle keys server\n\n\n\n\n    $ particle keys doctor <photon id>\n\n\n\n\nIf needed setup wifi again.",
+            "title": "Problem Solving"
+        },
+        {
+            "location": "/Problem_Solving/#problem-solving",
+            "text": "",
+            "title": "Problem Solving"
+        },
+        {
+            "location": "/Problem_Solving/#how-to-bring-kremebot-back-to-life",
+            "text": "Remove old dfu-util: sudo apt-get remove dfu-util    Download newest dfu-util from https://sourceforge.net/projects/dfu-util/    Install dfu-util from source (see INSTALL section)    Connect with usb to pc (robot power should be down) put krembot in DFU mode (reset+setup -> release reset -> wait for yellow and release setup)    Save KREMEBOt ID from console    In terminal:        $ particle keys server      $ particle keys doctor <photon id>  If needed setup wifi again.",
+            "title": "How To Bring KREMEBOt Back To Life"
+        }
+    ]
+}

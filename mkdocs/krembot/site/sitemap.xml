@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    
+    <url>
+     <loc>None/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>None/Installation/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>None/Getting_started/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+        
+    <url>
+     <loc>None/API/API/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/API/Battery_and_charge_monitoring/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/API/Bumpers/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/API/Differential_driving/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/API/Imu/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/API/RGB_ambient_and_proximity/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/API/RGB_leds/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>None/Demos/Demos/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/Demos/chameleon/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/Demos/ledsAndBumpers/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/Demos/Publisher/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/Demos/RunAwayByBumpers/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/Demos/StopByWall/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/Demos/Subscriber/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+    <url>
+     <loc>None/Problem_Solving/</loc>
+     <lastmod>2018-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+</urlset>
