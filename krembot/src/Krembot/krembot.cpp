@@ -62,14 +62,10 @@ void Krembot::setup()
 
 void Krembot::loop()
 {
-	//if(!Imu.calibrationDone)
-	//{
-		//Imu.magCalLoop();
-		Imu.loop();
-	//}
-
-	//Bat.loop();
-	//checkBattery();
+	Imu.loop();
+	
+	Bat.loop();
+	checkBattery();
 }
 
 void Krembot::saveMyName(const char *topic, const char *data)
