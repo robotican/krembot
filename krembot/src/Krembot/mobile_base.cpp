@@ -109,11 +109,6 @@ bool MobileBase::drive(int8_t linear_spd, int8_t angular_spd)
   //Serial.print("left cmd: "); Serial.println(left_cmd);
   //Serial.print("right cmd: "); Serial.println(right_cmd);
 
-  if (left_cmd > 255) left_cmd = 255;
-  else if (left_cmd < -255) left_cmd = -255;
-
-  if (right_cmd > 255) right_cmd = 255;
-  else if (right_cmd<-255) right_cmd = -255;
 
 
   if (left_cmd > 0)
@@ -142,8 +137,16 @@ if (left_cmd != 0)
  if (right_cmd != 0)
    right_cmd += right_offset;
 
+   if (left_cmd > 255) left_cmd = 255;
+   else if (left_cmd < -255) left_cmd = -255;
+
+   if (right_cmd > 255) right_cmd = 255;
+   else if (right_cmd<-255) right_cmd = -255;
+
   //Serial.print("left cmd = : "); Serial.println(left_cmd);
   //Serial.print("right cmd = : "); Serial.println(right_cmd);
+
+
 
   analogWrite(LEFT_MOTOR_PWM_LEG, left_cmd);
   analogWrite(RIGHT_MOTOR_PWM_LEG, right_cmd);

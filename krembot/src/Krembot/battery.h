@@ -41,9 +41,8 @@
 #define IS_FULL_CHARGE_LEG D6
 #define IS_CHARGINE_LEG DAC
 
-//TODO: update those vals with Kiril
-#define MAX_BAT_LVL 4.18
-#define MIN_BAT_LVL 3.7
+#define MAX_BAT_LVL 4.12
+#define MIN_BAT_LVL 3.3
 #define MAX_CHRG_LVL 5.0
 #define MIN_CHRG_LVL 0.0
 
