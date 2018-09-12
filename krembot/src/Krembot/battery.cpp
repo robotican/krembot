@@ -76,7 +76,7 @@ bool Battery::isFull()
 
 uint8_t Battery::getBatLvl()
 {
-	uint8_t battery_level = (uint8_t)((battery_voltage - MIN_BAT_LVL) / (MAX_BAT_LVL - MIN_BAT_LVL) * 100);
+	int8_t battery_level = (uint8_t)((battery_voltage - MIN_BAT_LVL) / (MAX_BAT_LVL - MIN_BAT_LVL) * 100);
 	if(battery_level > 100)
 	{
 		return 100;
@@ -86,7 +86,7 @@ uint8_t Battery::getBatLvl()
 		return 0;
 	}
 
-	return battery_level;
+	return (uint8_t)battery_level;
 }
 
 uint8_t Battery::getChargeLvl()
