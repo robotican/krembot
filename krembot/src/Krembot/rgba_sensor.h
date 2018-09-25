@@ -29,6 +29,7 @@
 *******************************************************************************/
 
 /* Author: Elhay Rauper */
+/* Maintainer: Yair Shlomi */
 
 
 #ifndef RGBA_SENSOR_H

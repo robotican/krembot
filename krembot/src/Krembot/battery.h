@@ -29,6 +29,7 @@
 *******************************************************************************/
 
 /* Author: Elhay Rauper */
+/* Maintainer: Yair Shlomi */
 
 #ifndef BATTERY_H
 #define BATTERY_H

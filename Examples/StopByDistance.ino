@@ -31,50 +31,57 @@
 /* Author: Yair Shlomi */
 
 /*
-* This demo shows how to subscribes to a cloud event and handles it in the handler function.
-* It subscribes to the event that was published in the publisher demo
-* and turns the leds on in a color that matches to the publisher krembot's battery level.
+* In this demo we constantly read the distance from the rgba sensor.
+* the krembot drives forward with the green leds on.
+* when the distance read is below the minimum distance
+* the krembot stops and the red leds are turned on.
 */
 
 
 #include "Krembot/krembot.h"
 
+//Only one instance of krembot object should be declared
 Krembot krembot;
+
+const int MinDistance = 9;
+float distance = 0, lastDistance = 0, lastLastDistance = 0;
+int deadband = 2;
+
+RGBAResult rgbRes;
 
 void setup()
 {
     krembot.setup();
-    // subscribe to the battery topic from the cloud and declare the handler
-    Particle.subscribe("battery", ChangeLedsForBattery, MY_DEVICES);
+
+    //save the first distance result of the rgba sensor
+    rgbRes = krembot.RgbaLeft.readRGBA();
+    lastDistance = rgbRes.Distance;
 }
+
 
 void loop()
 {
   krembot.loop();
-}
+  // read the distance from the front sensor
+  rgbRes = krembot.RgbaLeft.readRGBA();
+  distance = rgbRes.Distance;
 
-// handler for the battery topic
-void ChangeLedsForBattery(String topic, String data)
-{
+  // if the distance is larger then the minimum and the last 2 samples has
+  // reasonable distance, drive forward and turn the leds green
 
-  // read the battery level, from the topic
-  String batLvlString = String(data);
-  long batLvl = batLvlString.toInt();
+  if(distance > MinDistance && abs((lastDistance - distance)) < deadband)
+  {
+    krembot.Base.drive(30, 0);
+    krembot.Led.write(0, 255, 0);
+  }
 
-  // change the leds colors based on the battery level
-  if(batLvl > 80)
+  // if the distance is not larger then the minimum and the last 2 samples has
+  // reasonable distance, stop driving and turn the leds red
+  else if (distance <= MinDistance && abs((lastDistance - distance)) < deadband)
   {
-    // turn on the green leds
-    krembot.Led.write(0, 255 ,0);
+    krembot.Base.stop();
+    krembot.Led.write(255, 0, 0);
   }
-  else if(batLvl <  80 && batLvl > 20)
-  {
-    // turn on the blue leds
-    krembot.Led.write(0, 0, 255);
-  }
-  else
-  {
-    // turn on the red leds
-    krembot.Led.write(255, 0 ,0);
-  }
+  lastDistance = distance;
+
 }

@@ -29,6 +29,7 @@
 *******************************************************************************/
 
 /* Author: Elhay Rauper */
+/* Maintainer: Yair Shlomi */
 
 #ifndef MOBILE_BASE_H
 #define MOBILE_BASE_H

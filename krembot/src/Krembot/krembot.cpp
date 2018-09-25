@@ -28,7 +28,8 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-/* Author:  Elhay Rauper*/
+/* Author: Elhay Rauper */
+/* Maintainer: Yair Shlomi */
 
 #include "krembot.h"
 
@@ -45,7 +46,7 @@ void Krembot::setup()
 	//rgba & imu sensors can only be init after wire.begin
 	Imu.init();
 
-	/*RgbaFront.init(uint8_t(RGBAAddr::Front));
+	RgbaFront.init(uint8_t(RGBAAddr::Front));
 	RgbaRear.init(uint8_t(RGBAAddr::Rear));
 
 	RgbaFrontRight.init(uint8_t(RGBAAddr::FrontRight));
@@ -53,7 +54,7 @@ void Krembot::setup()
 	RgbaRearRight.init(uint8_t(RGBAAddr::RearRight));
 	RgbaRearLeft.init(uint8_t(RGBAAddr::RearLeft));
 	RgbaLeft.init(uint8_t(RGBAAddr::Left));
-	RgbaFrontLeft.init(uint8_t(RGBAAddr::FrontLeft));*/
+	RgbaFrontLeft.init(uint8_t(RGBAAddr::FrontLeft));
 
 	my_name_ = "";
 

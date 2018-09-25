@@ -30,51 +30,48 @@
 
 /* Author: Yair Shlomi */
 
+
 /*
-* This demo shows how to subscribes to a cloud event and handles it in the handler function.
-* It subscribes to the event that was published in the publisher demo
-* and turns the leds on in a color that matches to the publisher krembot's battery level.
-*/
+ * this demo turns on the leds on red, green and blue by pressing a bumper.
+ */ 
 
 
 #include "Krembot/krembot.h"
 
 Krembot krembot;
 
+
 void setup()
 {
     krembot.setup();
-    // subscribe to the battery topic from the cloud and declare the handler
-    Particle.subscribe("battery", ChangeLedsForBattery, MY_DEVICES);
 }
+
 
 void loop()
 {
   krembot.loop();
-}
 
-// handler for the battery topic
-void ChangeLedsForBattery(String topic, String data)
-{
-
-  // read the battery level, from the topic
-  String batLvlString = String(data);
-  long batLvl = batLvlString.toInt();
-
-  // change the leds colors based on the battery level
-  if(batLvl > 80)
+  // read thr bumpers and turn the leds on based on the pressed bumper
+  BumpersRes results = krembot.Bumpers.read();
+  if(results.left)
   {
-    // turn on the green leds
-    krembot.Led.write(0, 255 ,0);
+    // turn the red leds on
+    krembot.Led.write(255,0,0);
   }
-  else if(batLvl <  80 && batLvl > 20)
+  else if(results.rear)
   {
-    // turn on the blue leds
-    krembot.Led.write(0, 0, 255);
+    // turn the green leds on
+    krembot.Led.write(0,255,0);
   }
-  else
+  else if(results.right)
   {
-    // turn on the red leds
-    krembot.Led.write(255, 0 ,0);
+    // turn the blue leds on
+    krembot.Led.write(0,0,255);
+  }
+
+  else if(results.front)
+  {
+    // turn all the leds off
+    krembot.Led.write(0,0,0);
   }
 }

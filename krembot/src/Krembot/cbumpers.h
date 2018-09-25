@@ -37,6 +37,9 @@
 
 #include <Wire.h> //i2c
 #include "SparkFunSX1509/SparkFunSX1509.h" //mux
+#include "hardware_selector.h"
+
+#ifdef krembot_V2
 
 #define MUX_ADDR 0x3E
 #define BUMPER_FRONT 7
@@ -48,24 +51,64 @@
 #define BUMPER_LEFT 5
 #define BUMPER_FRONT_LEFT 6
 
+#endif
+
+#ifdef krembot_V1
+	#define BUMPERS_LEG A0
+	#define TOLERANCE 10
+	#define CALIB_TIMEOUT 5
+
+	#define NO_BUMP 0
+
+
+	struct BumpCalib
+	{
+	  uint16_t left,
+	          right,
+	          right_left,
+	          rear,
+	          rear_left,
+	          rear_right,
+	          rear_left_right,
+	          front,
+	          front_left,
+	          front_right,
+	          front_right_left,
+	          front_rear,
+	          front_rear_left,
+	          front_rear_right,
+	          front_rear_right_left;
+	};
+#endif
+
 
 struct BumpersRes
 {
-	bool front = false,
-		front_right = false,
-		right = false,
+#ifdef krembot_V2
+	bool front_right = false,
 		rear_right = false,
-		rear = false,
 		rear_left = false,
-		left = false,
 		front_left = false;
+#endif
+	bool front = false,
+		right = false,
+		rear = false,
+		left = false;
+
 
 		bool isAnyPressed()
 		{
-			if(front || front_right || right || rear_right || rear || rear_left || left || front_left)
+			if(front || right || rear || left)
 			{
 				return true;
 			}
+
+#ifdef krembot_V2
+			if(front_right || rear_right || rear_left || front_left)
+			{
+				return true;
+			}
+#endif
 			return false;
 		}
 };
@@ -76,7 +119,14 @@ class CBumpers
 
 private:
 
+#ifdef krembot_V2
 	SX1509 mux_;
+#endif
+
+#ifdef krembot_V1
+	uint8_t calib_stage_ = 0;
+	BumpCalib bumps_calib_;
+#endif
 
 public:
 
@@ -85,6 +135,12 @@ public:
 	void print();
 	void publish();
 
+#ifdef krembot_V1
+	void printCalib();
+ 	bool calib();
+	void countDown(uint8_t duration);
+	uint16_t readRaw();
+#endif
 
 };
 

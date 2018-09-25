@@ -6,7 +6,7 @@ If a krembot not driving in straight line when the propper command is received t
 * If the krembot is turning left insterd of driving in a straight line, we will add a little offset to the left wheel command.
 
 1. To start the calibration process flash the calibration sketch to the krembot.
-2. Go to your particle [events control panel](https://console.particle.io/events.)
+2. Go to your particle [events control panel](https://console.particle.io/events)
 3. Choose the krembot you want to calibrate (make sure it's online).
 
 4. Press on the green Paper plane (Publish Event).
