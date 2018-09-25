@@ -31,7 +31,6 @@
 /* Author: Yair Shlomi */
 
 /*
-*
 * uncomment the hardware version you have and comment the second
 */
 
