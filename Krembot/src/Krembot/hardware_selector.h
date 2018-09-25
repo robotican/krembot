@@ -30,8 +30,16 @@
 
 /* Author: Yair Shlomi */
 
+/*
+*
+* uncomment the hardware version you have and comment the second
+*/
+
+
 #ifndef HARDWARE_SELECTOR_H
 #define HARDWARE_SELECTOR_H
+
+
 
 //#define krembot_V1
 #define krembot_V2
