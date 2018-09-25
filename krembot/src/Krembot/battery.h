@@ -46,6 +46,13 @@
 #define MAX_CHRG_LVL 5.0
 #define MIN_CHRG_LVL 0.0
 
+#define MAX_INPUT_VOLTAGE 3.33
+#define ANALOG_READ_RESOLUTION 4096.0
+#define BAT_VOLTAGE_DIVIDER_RATIO 1.5
+#define CHARGE_VOLTAGE_DIVIDER_RATIO 1.666
+#define ERROR_FIXING_CONST 1.0108
+
+
 #define BATTERY_SAMPLE_INTERVAL 100
 
 class Battery
@@ -53,7 +60,7 @@ class Battery
 private:
   float battery_voltage;
   float alpha = 0.1;
-  void Lpf(float read);
+  void lpf(float read);
   SandTimer timer;
 public:
 
@@ -67,6 +74,7 @@ public:
   void print();
   void loop();
   float getBatVolt();
+  void publish();
 
 };
 

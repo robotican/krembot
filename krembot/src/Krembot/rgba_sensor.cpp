@@ -50,7 +50,7 @@ void RGBASensor::init(uint8_t addr)
 
   if ( !apds_.enableProximitySensor(false) )
      Serial.println(F("[RGBA sensor]Something went wrong during sensor init! sensor"));
-  //Serial.println();
+  setName();
 }
 
 bool RGBASensor::i2cMuxSelectMe()
@@ -63,7 +63,7 @@ bool RGBASensor::i2cMuxSelectMe()
   return true;
 }
 
-RGBAResult RGBASensor::read()
+RGBAResult RGBASensor::readRGBA()
 {
   RGBAResult result;
   i2cMuxSelectMe();
@@ -71,7 +71,6 @@ RGBAResult RGBASensor::read()
   {
     result.AmbientError = true;
     Serial.print("[RGBA sensor] - Ambient sensor error");
-
   }
   if(!apds_.readRedLight(result.Red))
   {
@@ -94,7 +93,8 @@ RGBAResult RGBASensor::read()
     Serial.print("[RGBA sensor] - Proximity sensor error");
   }
   else
-  { //convert proximity to distance (cm)
+  {
+    //convert proximity to distance (cm)
     if (result.Proximity < 20) //min bound - read below it is not reliable
       result.Proximity = 20;
     result.Distance = 117.55 * pow(result.Proximity, -0.51); //result min val is 6, and max is 25 cm
@@ -102,71 +102,18 @@ RGBAResult RGBASensor::read()
   return result;
 }
 
-void RGBASensor::print()
+
+HSVResult RGBASensor::readHSV()
 {
-  RGBAResult read_res = read();
-  if (!read_res.AmbientError && !read_res.RedError && !read_res.GreenError && !read_res.AmbientError && !read_res.BlueError && !read_res.ProximityError)
-  {
-    Serial.println("------------RGBA Sensor Values------------");
-    Serial.print("Ambient: "); Serial.print(read_res.Ambient);
-    Serial.print(" | Red: ");   Serial.print(read_res.Red);
-    Serial.print(" | Green: ");   Serial.print(read_res.Green);
-    Serial.print(" | Blue: ");  Serial.print(read_res.Blue);
-    Serial.print(" | Distance: ");  Serial.println(read_res.Distance);
-  }
-  else
-  {
-    Serial.println("[RGBSensor]: Error reading from sensor");
-  }
-}
-
-
-HSVResult RGBASensor::rgbToHSV(RGBAResult in)
-{
-  HSVResult         out;
-  double      min, max, delta;
-
-  min = in.Red < in.Green ? in.Red : in.Green;
-  min = min  < in.Blue ? min  : in.Blue;
-
-  max = in.Red > in.Green ? in.Red : in.Green;
-  max = max  > in.Blue ? max  : in.Blue;
-
-  out.V = max;                                // v
-  delta = max - min;
-  if (delta < 0.00001)
-  {
-      out.S = 0;
-      out.H = 0; // undefined, maybe nan?
-      return out;
-  }
-  if( max > 0.0 ) { // NOTE: if Max is == 0, this divide would cause a crash
-      out.S = (delta / max);                  // s
-  } else {
-      // if max is 0, then r = g = b = 0
-      // s = 0, h is undefined
-      out.S = 0.0;
-      out.H = NAN;                            // its now undefined
-      return out;
-  }
-  if( in.Red >= max )                           // > is bogus, just keeps compilor happy
-      out.H = ( in.Green - in.Blue ) / delta;        // between yellow & magenta
-  else
-  if( in.Green >= max )
-      out.H = 2.0 + ( in.Blue - in.Red ) / delta;  // between cyan & yellow
-  else
-      out.H = 4.0 + ( in.Red - in.Green ) / delta;  // between magenta & cyan
-
-  out.H *= 60.0;                              // degrees
-
-  if( out.H < 0.0 )
-      out.H += 360.0;
-
+  RGBAResult in = readRGBA();
+  HSVResult out = rgbToHSV(in);
   return out;
 }
 
-Colors RGBASensor::WhichColor(RGBAResult rgbaIn, HSVResult hsvIn)
+Colors RGBASensor::readColor()
 {
+  RGBAResult rgbaIn = readRGBA();
+  HSVResult hsvIn = rgbToHSV(rgbaIn);
 
   if(hsvIn.S < 0.5)
   {
@@ -196,5 +143,202 @@ Colors RGBASensor::WhichColor(RGBAResult rgbaIn, HSVResult hsvIn)
   }
 
   return Colors::None;
+}
+
+
+HSVResult RGBASensor::rgbToHSV(RGBAResult in)
+{
+  HSVResult out;
+  double min, max, delta;
+
+  min = in.Red < in.Green ? in.Red : in.Green;
+  min = min  < in.Blue ? min  : in.Blue;
+
+  max = in.Red > in.Green ? in.Red : in.Green;
+  max = max  > in.Blue ? max  : in.Blue;
+
+  out.V = max;
+  delta = max - min;
+
+  if (delta < 0.00001)
+  {
+      out.S = 0;
+      out.H = 0;
+      return out;
+  }
+
+  if( max > 0.0 )
+  {
+      out.S = (delta / max);
+  }
+  else
+  {
+      out.S = 0.0;
+      out.H = NAN;
+      return out;
+  }
+
+  if( in.Red >= max )
+  {
+      out.H = ( in.Green - in.Blue ) / delta;
+  }
+  else
+  {
+    if( in.Green >= max )
+    {
+      out.H = 2.0 + ( in.Blue - in.Red ) / delta;
+    }
+    else
+    {
+      out.H = 4.0 + ( in.Red - in.Green ) / delta;
+    }
+  }
+
+  out.H *= 60.0;
+
+  if( out.H < 0.0 )
+  {
+    out.H += 360.0;
+  }
+
+  return out;
+
+}
+
+
+
+void RGBASensor::printRGBA()
+{
+  RGBAResult read_res = readRGBA();
+  Serial.print("------------ "); Serial.print(name_); Serial.println(" RGBA Sensor Values------------");
+  Serial.print("Ambient: "); Serial.print(read_res.Ambient);
+  Serial.print(" | Red: ");   Serial.print(read_res.Red);
+  Serial.print(" | Green: ");   Serial.print(read_res.Green);
+  Serial.print(" | Blue: ");  Serial.print(read_res.Blue);
+  Serial.print(" | Distance: ");  Serial.println(read_res.Distance);
+}
+
+
+void RGBASensor::printHSV()
+{
+  HSVResult hsvIn = readHSV();
+  Serial.print("------------ "); Serial.print(name_); Serial.println(" HSV Values------------");
+  Serial.print("Hue: "); Serial.print(hsvIn.H);
+  Serial.print(" | Saturation: ");   Serial.print(hsvIn.S);
+  Serial.print(" | Value: ");   Serial.print(hsvIn.V);
+}
+
+void RGBASensor::printColor()
+{
+  Serial.print(name_); Serial.print(" Color: ");
+  Colors color = readColor();
+  switch (color)
+  {
+    case Colors::Red:
+    {
+      Serial.println(" Red ");
+      break;
+    }
+
+    case Colors::Green:
+    {
+      Serial.println(" Green ");
+      break;
+    }
+
+    case Colors::Blue:
+    {
+      Serial.println(" Blue ");
+      break;
+    }
+
+    default:
+      Serial.println(" None ");
+      break;
+  }
+}
+
+void RGBASensor::print()
+{
+  printRGBA();
+  printHSV();
+  printColor();
+}
+
+void RGBASensor::publish()
+{
+  RGBAResult read_res = readRGBA();
+  String ambient = String(read_res.Ambient);
+  String red = String(read_res.Red);
+  String green = String(read_res.Green);
+  String blue = String(read_res.Blue);
+  String distance = String(read_res.Distance);
+
+  String publishStr = String("[");
+  publishStr.concat(name_);
+  publishStr.concat(" RGBA Sensor");
+  publishStr.concat("]: ");
+  publishStr.concat("Ambient: "); publishStr.concat(ambient);
+  publishStr.concat(" | Red: ");   publishStr.concat(red);
+  publishStr.concat(" | Green: ");   publishStr.concat(green);
+  publishStr.concat(" | Blue: ");  publishStr.concat(blue);
+  publishStr.concat(" | Distance: ");  publishStr.concat(distance);
+
+  Particle.publish("RGBA", publishStr, PRIVATE);
+}
+
+
+void RGBASensor::setName()
+{
+
+  switch (addr_)
+  {
+    case (int)RGBAAddr::Front:
+    {
+      name_ = "Front";
+      break;
+    }
+    case (int)RGBAAddr::FrontRight:
+    {
+      name_ = "FrontRight";
+      break;
+    }
+    case (int)RGBAAddr::Right:
+    {
+      name_ = "Right";
+      break;
+    }
+    case (int)RGBAAddr::RearRight:
+    {
+      name_ = "RearRight";
+      break;
+    }
+    case (int)RGBAAddr::Rear:
+    {
+      name_ = "Rear";
+      break;
+    }
+    case (int)RGBAAddr::RearLeft:
+    {
+      name_ = "RearLeft";
+      break;
+    }
+    case (int)RGBAAddr::Left:
+    {
+      name_ = "Left";
+      break;
+    }
+    case (int)RGBAAddr::FrontLeft:
+    {
+      name_ = "FrontLeft";
+      break;
+    }
+
+    default:
+    {
+        name_ ="None";
+      break;
+    }
+  }
 
 }

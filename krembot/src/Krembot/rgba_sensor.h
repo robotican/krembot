@@ -39,6 +39,17 @@
 #include "SparkFun_APDS9960/SparkFun_APDS9960.h"
 #define MUX_ADDR 0x70
 
+enum class RGBAAddr
+{
+  Front = 0,
+  FrontRight = 1,
+  Right = 2,
+  RearRight = 3,
+  Rear = 4,
+  RearLeft = 5,
+  Left = 6,
+  FrontLeft = 7
+};
 
 struct RGBAResult
 {
@@ -73,16 +84,24 @@ class RGBASensor
 private:
 
 	uint8_t addr_;
+	String name_;
 	SparkFun_APDS9960 apds_;
 	bool i2cMuxSelectMe();
-
+	void setName();
 
 public:
 	void init(uint8_t addr);
-	RGBAResult read();
-	void print();
+	RGBAResult readRGBA();
+	HSVResult readHSV();
+	Colors readColor();
 	static HSVResult rgbToHSV(RGBAResult in);
-	static Colors WhichColor(RGBAResult rgbaIn, HSVResult hsvIn);
+
+	void printRGBA();
+	void printHSV();
+	void printColor();
+	void print();
+
+	void publish();
 
 };
 

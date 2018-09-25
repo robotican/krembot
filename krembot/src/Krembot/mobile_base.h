@@ -51,7 +51,6 @@ private:
   enum Motor {RIGHT, LEFT};
   enum Direction {FORWARD, BACKWARD};
   void setMotorDirection(Motor motor, Direction direction);
-  int8_t mapByteToBaseVal(uint8_t val);
   
 public:
   MobileBase();

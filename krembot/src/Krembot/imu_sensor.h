@@ -45,11 +45,10 @@
 #define AHRS true         // Set to false for basic data read
 #define SerialDebug false  // Set to true to get Serial output for debugging
 
-struct ImuInitErrors
+struct ImuInitFlags
 {
-    bool imu_address_ok = false,
-    	 imu_online = false,
-    	 mag_address_ok = false;
+    bool address = false,
+    	 online = false;
 };
 
 struct ImuData
@@ -67,37 +66,23 @@ struct ImuData
           gz = 0;
 };
 
-struct mag_bias_t
-{
-  int8_t id = 0;
-  int16_t x = 0;
-  int16_t y = 0;
-  int16_t z = 0;
-};
-
-
 class IMUSensor
 {
 private:
   MPU9250 imu_;
-  int16_t mag_temp[3] = {0, 0, 0};
-  int16_t mag_min[3] = {0, 0, 0};
-  int16_t mag_max[3] = {0, 0, 0};
-  mag_bias_t mag_bias;
-  static const uint8_t MAG_BIAS_ID = 123;
+  double yaw = 0,
+         roll = 0,
+         pitch=0;
 
 public:
-  ImuInitErrors init();
+  void init();
   void loop();
   ImuData read();
   void print();
   void printRaw();
-  void magCalLoop();
-  bool calibrationDone = false;
-  void resetMagCal();
+  void publish();
 
-
-  ImuInitErrors imuInitErrors;
+  ImuInitFlags InitFlags;
 };
 
 #endif

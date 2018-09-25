@@ -43,9 +43,9 @@ void Krembot::setup()
 	Wire.begin();
 
 	//rgba & imu sensors can only be init after wire.begin
-	Imu.imuInitErrors = Imu.init();
+	Imu.init();
 
-	RgbaFront.init(uint8_t(RGBAAddr::Front));
+	/*RgbaFront.init(uint8_t(RGBAAddr::Front));
 	RgbaRear.init(uint8_t(RGBAAddr::Rear));
 
 	RgbaFrontRight.init(uint8_t(RGBAAddr::FrontRight));
@@ -53,10 +53,9 @@ void Krembot::setup()
 	RgbaRearRight.init(uint8_t(RGBAAddr::RearRight));
 	RgbaRearLeft.init(uint8_t(RGBAAddr::RearLeft));
 	RgbaLeft.init(uint8_t(RGBAAddr::Left));
-	RgbaFrontLeft.init(uint8_t(RGBAAddr::FrontLeft));
+	RgbaFrontLeft.init(uint8_t(RGBAAddr::FrontLeft));*/
 
 	my_name_ = "";
-
 
 }
 
@@ -65,22 +64,11 @@ void Krembot::loop()
 	Imu.loop();
 
 	Bat.loop();
-	
+
 }
 
 void Krembot::saveMyName(const char *topic, const char *data)
 {
 	Serial.println("[Krembot]: my name is " + String(data));
 	my_name_ = String(data);
-}
-
-void Krembot::checkBattery()
-{
-	if(Bat.getBatLvl() < 20)
-	{
-		Led.write(100,0,0);
-		delay(30000);
-		System.sleep(SLEEP_MODE_DEEP, 60);
-	}
-
 }

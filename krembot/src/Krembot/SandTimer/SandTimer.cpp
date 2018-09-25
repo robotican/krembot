@@ -35,7 +35,16 @@
 
 #include "SandTimer.h"
 
-SandTimer::SandTimer() {started_ = false;}
+SandTimer::SandTimer()
+{
+  started_ = false;
+  period_ = 1000;
+}
+
+void SandTimer::setPeriod(unsigned long period)
+{
+period_ = period;
+}
 
 /* start timer. if already started, do nothing */
 void SandTimer::start(unsigned long period)
@@ -48,8 +57,16 @@ void SandTimer::start(unsigned long period)
     }
 }
 
+void SandTimer::start()
+{
+    if (!started_)
+    {
+        start_time_ = millis();
+        started_ = true;
+    }
+}
 /* override original start time, and start timer again */
-void SandTimer::startOver() 
+void SandTimer::startOver()
 {
     start_time_ = millis();
     if (!started_)
@@ -71,4 +88,3 @@ bool SandTimer::finished()
 }
 
 void SandTimer::reset() {started_ = false;}
-

@@ -39,18 +39,16 @@ Battery::Battery()
 	pinMode(IS_CHARGINE_LEG, INPUT);
 	battery_voltage = readBatLvl();
 	timer.start(BATTERY_SAMPLE_INTERVAL);
-	String bat =  String(battery_voltage);
-  Particle.publish("battery", bat, PRIVATE);
 }
 
 float Battery::readBatLvl()
 {
-	return (analogRead(BATTERY_LVL_LEG) * 3.3 * 1.5 * 1.0108) / 4095.0;
+	return (analogRead(BATTERY_LVL_LEG) * MAX_INPUT_VOLTAGE * BAT_VOLTAGE_DIVIDER_RATIO * ERROR_FIXING_CONST) / ANALOG_READ_RESOLUTION;
 }
 
 float Battery::readChargelvl()
 {
-	return (analogRead(CHARGING_LVL_LEG) * 3.3 * (5.0 / 3.0)) / 4095.0;
+	return (analogRead(CHARGING_LVL_LEG) * MAX_INPUT_VOLTAGE *CHARGE_VOLTAGE_DIVIDER_RATIO) / ANALOG_READ_RESOLUTION;
 }
 
 void Battery::print()
@@ -98,10 +96,9 @@ void Battery::loop()
 {
 	if(timer.finished())
 	{
-			Lpf(readBatLvl());
+			lpf(readBatLvl());
 			timer.startOver();
 	}
-
 }
 
 float Battery::getBatVolt()
@@ -109,7 +106,15 @@ float Battery::getBatVolt()
 	return battery_voltage;
 }
 
-void Battery::Lpf(float read)
+void Battery::lpf(float read)
 {
 	battery_voltage = ((alpha*read) + ((1-alpha)*battery_voltage));
+}
+
+void Battery::publish()
+{
+	String publishStr = "[Battery]: ";
+	String level = String(getBatLvl());
+	publishStr.concat(level);
+	Particle.publish("battery", publishStr, PRIVATE);
 }

@@ -46,6 +46,8 @@ private:
 public:
     SandTimer();
     void start(unsigned long period);
+    void start();
+    void setPeriod(unsigned long period);
     void startOver();
     bool finished();
     void reset();

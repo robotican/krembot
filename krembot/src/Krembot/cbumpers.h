@@ -31,60 +31,61 @@
 /* Author: Elhay Rauper */
 /* Maintainer: Yair Shlomi */
 
-#ifndef KREMBO_H
-#define KREMBO_H
 
-#include "application.h"
-#include "battery.h"
-#include "mobile_base.h"
-#include "rgb_led.h"
-#include "rgba_sensor.h"
-#include "cbumpers.h"
-#include "imu_sensor.h"
-#include "SandTimer/SandTimer.h"
+#ifndef CBUMPERS_H
+#define CBUMPERS_H
 
-class Krembot
+#include <Wire.h> //i2c
+#include "SparkFunSX1509/SparkFunSX1509.h" //mux
+
+#define MUX_ADDR 0x3E
+#define BUMPER_FRONT 7
+#define BUMPER_FRONT_RIGHT 0
+#define BUMPER_RIGHT 1
+#define BUMPER_REAR_RIGHT 2
+#define BUMPER_REAR 3
+#define BUMPER_REAR_LEFT 4
+#define BUMPER_LEFT 5
+#define BUMPER_FRONT_LEFT 6
+
+
+struct BumpersRes
 {
+	bool front = false,
+		front_right = false,
+		right = false,
+		rear_right = false,
+		rear = false,
+		rear_left = false,
+		left = false,
+		front_left = false;
+
+		bool isAnyPressed()
+		{
+			if(front || front_right || right || rear_right || rear || rear_left || left || front_left)
+			{
+				return true;
+			}
+			return false;
+		}
+};
+
+
+class CBumpers
+{
+
 private:
 
-  String my_name_;
-  void saveMyName(const char *topic, const char *data);
-  SandTimer battery_level_timer_;
-  SandTimer battery_level_counter_;
+	SX1509 mux_;
 
 public:
 
-  RGBASensor RgbaFront;
-  RGBASensor RgbaRear;
-  RGBASensor RgbaRight;
-  RGBASensor RgbaLeft;
-  RGBASensor RgbaFrontRight;
-  RGBASensor RgbaFrontLeft;
-  RGBASensor RgbaRearRight;
-  RGBASensor RgbaRearLeft;
-
-  MobileBase Base;
-  CBumpers Bumpers;
-  Battery Bat;
-  RGBLed Led;
-  IMUSensor Imu;
+	CBumpers();
+	BumpersRes read();
+	void print();
+	void publish();
 
 
-  void reset(const char *topic, const char *data) {
-    if (strcmp(topic,"reset")==0 && (strcmp(data,"all")==0 || strcmp(data,getName().c_str())==0) ) {
-      System.reset();
-    }
-  }
-
-  void setup();
-
-  void loop();
-
-  String getID() { return System.deviceID(); }
-
-  String getName() { return  my_name_; }
-
-  bool have_name() {return my_name_.length()>0 ;}
 };
 
 #endif
