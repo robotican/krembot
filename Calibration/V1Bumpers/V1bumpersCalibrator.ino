@@ -1,6 +1,5 @@
-
 /*******************************************************************************
-* Copyright (c) 2018 Elhay Rauper
+* Copyright (c) 2018 RoboTICan
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -31,65 +30,32 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 * POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
+/* Author: Elhay Rauper */
 
 
-#include "SandTimer.h"
+#include "Krembot/krembot.h"
+//Only one instance of krembot object should be declared
+Krembot krembot;
 
-SandTimer::SandTimer()
+bool bumpers_calibration_mode = false;
+
+void setup()
 {
-  started_ = false;
-  period_ = 1000;
+    krembot.setup();
+    krembot.Led.write(30, 30, 30);
 }
 
-void SandTimer::setPeriod(unsigned long period)
-{
-period_ = period;
-}
 
-/* start timer. if already started, do nothing */
-void SandTimer::start(unsigned long period)
+void loop()
 {
-    if (!started_)
-    {
-        period_ = period;
-        start_time_ = millis();
-        started_ = true;
-    }
-}
+  krembot.loop();
+  bumpers_calibration_mode = krembot.Bumpers.calib();
+  if (bumpers_calibration_mode)
+  {
+     krembot.Led.write(0, 0, 0);
+     while(true);
+  }
 
-void SandTimer::start()
-{
-    if (!started_)
-    {
-        start_time_ = millis();
-        started_ = true;
-    }
-}
-/* override original start time, and start timer again */
-void SandTimer::startOver()
-{
-    start_time_ = millis();
-    if (!started_)
-        started_ = true;
-}
 
-/* return true if timer has finished */
-bool SandTimer::finished()
-{
-    if (started_)
-    {
-        end_time_ = millis();
-        if (end_time_ - start_time_ >= period_)
-        {
-            started_ = false;
-        }
-    }
-    return !started_;
-}
-
-void SandTimer::reset() {started_ = false;}
-
-bool SandTimer::isRunning()
-{
-  return started_;
+  //your code here
 }

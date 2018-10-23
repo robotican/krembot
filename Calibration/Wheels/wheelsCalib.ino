@@ -34,10 +34,12 @@
 
 
 #include "Krembot/krembot.h"
+#include "Krembot/SandTimer/SandTimer.h"
+
 
 //Only one instance of krembot object should be declared
 Krembot krembot;
-BlueSkyTimer driveTimer, ledsTimer, saveLedsTimer, saftySaveTimer;
+SandTimer driveTimer, ledsTimer, saveLedsTimer, saftySaveTimer;
 bool savedToEeprom = false;
 int8_t rightOffset = 0, leftOffset = 0;
 void setup()
@@ -57,18 +59,18 @@ void loop()
 {
   krembot.loop();
   //your code here
-  if(driveTimer.finished())
+  if(driveTimer.isRunning() && driveTimer.finished())
   {
     krembot.Base.stop();
     krembot.Led.write(0, 0, 0);
   }
 
-  if(ledsTimer.finished())
+  if(ledsTimer.isRunning() && ledsTimer.finished())
   {
     krembot.Led.write(0, 0, 0);
   }
 
-  if(saveLedsTimer.finished())
+  if(saveLedsTimer.isRunning() && saveLedsTimer.finished())
   {
     krembot.Led.write(0, 0, 0);
   }
@@ -84,14 +86,26 @@ void WheelsCalibFunc(String topic, String data)
   {
     krembot.Led.write(255, 0, 0);
     krembot.Base.drive(30, 0);
-    driveTimer.startOver();
+    driveTimer.reset();
+    driveTimer.start();
+
+    EEPROM.get(BASE_RIGHT_OFFSET_ADDR, rightOffset);
+    EEPROM.get(BASE_LEFT_OFFSET_ADDR, leftOffset);
+
+    String rightOffsetStr = String(rightOffset);
+    String leftOffsetStr = String(leftOffset);
+
     Particle.publish("feedback", "drive forward command received", PRIVATE);
+    Particle.publish("offset", "right offset: " + rightOffsetStr, PRIVATE);
+    Particle.publish("offset", "left offset: " + leftOffsetStr, PRIVATE);
+
   }
   else if(command.compareTo("back") == 0)
   {
     krembot.Led.write(255, 0, 0);
     krembot.Base.drive(-30, 0);
-    driveTimer.startOver();
+    driveTimer.reset();
+    driveTimer.start();
     Particle.publish("feedback", "drive backwords command received", PRIVATE);
   }
 
@@ -104,7 +118,8 @@ void WheelsCalibFunc(String topic, String data)
     {
         leftOffset = offset;
         krembot.Led.write(0, 0, 255);
-        ledsTimer.startOver();
+        ledsTimer.reset();
+        ledsTimer.start();
 
         Particle.publish("feedback", "received left offset: " + offsetStr, PRIVATE);
     }
@@ -124,7 +139,8 @@ void WheelsCalibFunc(String topic, String data)
     {
         rightOffset = offset;
         krembot.Led.write(0, 0, 255);
-        ledsTimer.startOver();
+        ledsTimer.reset();
+        ledsTimer.start();
 
         Particle.publish("feedback", "received right offset: " + offsetStr, PRIVATE);
     }
@@ -136,11 +152,17 @@ void WheelsCalibFunc(String topic, String data)
       if(!savedToEeprom)
       {
         krembot.Led.write(0, 255, 0);
-        EEPROM.write(BASE_RIGHT_OFFSET_ADDR, rightOffset);
-        EEPROM.write(BASE_LEFT_OFFSET_ADDR, leftOffset);
+        //EEPROM.write(BASE_RIGHT_OFFSET_ADDR, rightOffset);
+        //EEPROM.write(BASE_LEFT_OFFSET_ADDR, leftOffset);
+        EEPROM.put(BASE_RIGHT_OFFSET_ADDR, rightOffset);
+        EEPROM.put(BASE_LEFT_OFFSET_ADDR, leftOffset);
+
+
         savedToEeprom = true;
-        saveLedsTimer.startOver();
-        saftySaveTimer.startOver();
+        saveLedsTimer.reset();
+        saveLedsTimer.start();
+        saftySaveTimer.reset();
+        saftySaveTimer.start();
         String rightOffsetstr = String(rightOffset);
         String leftOffsetstr = String(leftOffset);
         Particle.publish("feedback", "values saved to EEPROM successfully. right: " + rightOffsetstr + ", left: " + leftOffsetstr, PRIVATE);
@@ -158,7 +180,8 @@ void WheelsCalibFunc(String topic, String data)
     {
       savedToEeprom = false;
       krembot.Led.write(255, 255, 255);
-      saveLedsTimer.startOver();
+      saveLedsTimer.reset();
+      saveLedsTimer.start();
       Particle.publish("feedback", "save safty lock removed", PRIVATE);
 
     }

@@ -54,7 +54,7 @@ void setup()
     krembot.setup();
 
     //save the first distance result of the rgba sensor
-    rgbRes = krembot.RgbaLeft.readRGBA();
+    rgbRes = krembot.RgbaFront.readRGBA();
     lastDistance = rgbRes.Distance;
 }
 
@@ -63,7 +63,7 @@ void loop()
 {
   krembot.loop();
   // read the distance from the front sensor
-  rgbRes = krembot.RgbaLeft.readRGBA();
+  rgbRes = krembot.RgbaFront.readRGBA();
   distance = rgbRes.Distance;
 
   // if the distance is larger then the minimum and the last 2 samples has

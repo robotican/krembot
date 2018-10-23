@@ -1,9 +1,9 @@
 # Wheels calibration
 
 
-If a krembot not driving in straight line when the propper command is received the wheels may need calibration/
-* If the krembot is turning right insterd of driving in a straight line, we will add a little offset to the right wheel command.
-* If the krembot is turning left insterd of driving in a straight line, we will add a little offset to the left wheel command.
+If a krembot not driving in straight line when the propper command is received the wheels may need calibration.
+* If the krembot is turning right insterd of driving in a straight line, we will add a little offset to the left. 
+* If the krembot is turning left insterd of driving in a straight line, we will add a little offset to the right.
 
 1. To start the calibration process flash the calibration sketch to the krembot.
 2. Go to your particle [events control panel](https://console.particle.io/events)

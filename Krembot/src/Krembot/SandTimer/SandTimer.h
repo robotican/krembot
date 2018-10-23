@@ -51,6 +51,7 @@ public:
     void startOver();
     bool finished();
     void reset();
+    bool isRunning();
 };
 
 #endif

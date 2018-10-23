@@ -124,7 +124,7 @@ void IMUSensor::loop()
 	pitch = -atan2(-imu_.ax , imu_.az) * RAD_TO_DEG;
 	roll = -atan2( imu_.ay , sqrt(imu_.az * imu_.az + imu_.ax * imu_.ax)) * RAD_TO_DEG;
 
-	imu_.yaw = yaw;
+	imu_.yaw = yaw * (-1);
 	imu_.roll = roll;
 	imu_.pitch = pitch;
 }
@@ -136,7 +136,7 @@ void IMUSensor::print()
 	Serial.print(", ");
 	Serial.print(imu_.pitch, 2);
 	Serial.print(", ");
-	Serial.print(imu_.yaw, 2);
+	Serial.println(imu_.yaw, 2);
 }
 
 
@@ -147,7 +147,7 @@ void IMUSensor::printRaw()
 	Serial.print("ax: ");Serial.print(imu_.ax);
 	Serial.print(", ay: ");Serial.print(imu_.ay);
 	Serial.print(", az: ");Serial.println(imu_.az);
-	Serial.print("gx: ");Serial.print(imu_.gx);
+	Serial.print(" gx: ");Serial.print(imu_.gx);
 	Serial.print(", gy: ");Serial.print(imu_.gy);
 	Serial.print(", gz: ");Serial.println(imu_.gz);
 
