@@ -41,6 +41,7 @@ Krembot krembot;
 SandTimer backTimer;
 SandTimer turnTimer;
 
+
 BumpersRes lastResults;
 
 const int FORWARD_SPEED = 60;
@@ -79,12 +80,7 @@ void loop()
     // if one of the bumpers was pressed check which one was pressed. based on the
     // bumper that was pressed. if it was one of the front bumpers - switch to
     // drivingBack mode for 450 miliseconds
-#ifdef krembot_V2
-    if(results.front || results.front_left || results.front_right)
-#endif
-#ifdef krembot_V1
-    if(results.front)
-#endif
+    if(results.front == BumperState::PRESSED || results.front_left == BumperState::PRESSED || results.front_right == BumperState::PRESSED)
     {
       krembot.Base.drive(BACKWARD_SPEED, 0);
       backTimer.startOver();
@@ -101,7 +97,9 @@ void loop()
       turning = true;
       turnTimer.startOver();
     }
+
     lastResults = results;
+
   }
 
 
@@ -132,48 +130,41 @@ void loop()
   {
     krembot.Led.write(255,255,255);
 
-    if(lastResults.front)
+    if(lastResults.front == BumperState::PRESSED)
     {
       // we chose to turn left
       krembot.Base.drive(0, LEFT_SPEED);
     }
-#ifdef krembot_V2
-    else if(lastResults.front_right)
+    else if(lastResults.front_right == BumperState::PRESSED)
     {
       // we chose to turn left
       krembot.Base.drive(0, LEFT_SPEED);
     }
-#endif
-    else if(lastResults.right)
+    else if(lastResults.right == BumperState::PRESSED)
     {
       krembot.Base.drive(0, LEFT_SPEED);
     }
-#ifdef krembot_V2
-    else if(lastResults.rear_right)
+    else if(lastResults.rear_right == BumperState::PRESSED)
     {
       krembot.Base.drive(0, LEFT_SPEED);
     }
-#endif
-    else if(lastResults.rear)
+    else if(lastResults.rear == BumperState::PRESSED)
     {
       krembot.Base.drive(FORWARD_SPEED, 0);
     }
-#ifdef krembot_V2
-    else if(lastResults.rear_left)
+    else if(lastResults.rear_left == BumperState::PRESSED)
     {
       krembot.Base.drive(0, RIGHT_SPEED);
     }
-#endif
-    else if(lastResults.left)
+    else if(lastResults.left == BumperState::PRESSED)
     {
       krembot.Base.drive(0, RIGHT_SPEED);
     }
-#ifdef krembot_V2
-    else if(lastResults.front_left)
+    else if(lastResults.front_left == BumperState::PRESSED)
     {
       krembot.Base.drive(0, RIGHT_SPEED);
     }
-#endif
+
   }
 
   //if not turning and not driving - drive forward

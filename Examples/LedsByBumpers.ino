@@ -33,7 +33,7 @@
 
 /*
  * this demo turns on the leds on red, green and blue by pressing a bumper.
- */ 
+ */
 
 
 #include "Krembot/krembot.h"
@@ -53,23 +53,23 @@ void loop()
 
   // read thr bumpers and turn the leds on based on the pressed bumper
   BumpersRes results = krembot.Bumpers.read();
-  if(results.left)
+  if(results.left == BumperState::PRESSED)
   {
     // turn the red leds on
     krembot.Led.write(255,0,0);
   }
-  else if(results.rear)
+  else if(results.rear == BumperState::PRESSED)
   {
     // turn the green leds on
     krembot.Led.write(0,255,0);
   }
-  else if(results.right)
+  else if(results.right == BumperState::PRESSED)
   {
     // turn the blue leds on
     krembot.Led.write(0,0,255);
   }
 
-  else if(results.front)
+  else if(results.front == BumperState::PRESSED)
   {
     // turn all the leds off
     krembot.Led.write(0,0,0);

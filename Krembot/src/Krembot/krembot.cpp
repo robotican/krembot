@@ -41,11 +41,12 @@ void Krembot::setup()
 	Particle.publish("spark/device/name");
 	delay(2000); // give cloud time to register
 
+	//Led.write(0,255,0);
 	Wire.begin();
 
 	//rgba & imu sensors can only be init after wire.begin
 	Imu.init();
-
+	checkVersion();
 	RgbaFront.init(uint8_t(RGBAAddr::Front));
 	RgbaRear.init(uint8_t(RGBAAddr::Rear));
 
@@ -72,4 +73,25 @@ void Krembot::saveMyName(const char *topic, const char *data)
 {
 	Serial.println("[Krembot]: my name is " + String(data));
 	my_name_ = String(data);
+}
+
+void Krembot::checkVersion()
+{
+	//check if bumpers mux is connected
+	Wire.beginTransmission(0x3E);
+	int error = Wire.endTransmission();
+	if(error == 0)
+	{
+		version = Version::V2;
+	}
+	else
+	{
+		version = Version::V1;
+	}
+}
+
+
+Version Krembot::getVersion()
+{
+	return version;
 }

@@ -31,8 +31,8 @@
 /* Author: Elhay Rauper */
 /* Maintainer: Yair Shlomi */
 
-#ifndef KREMBO_H
-#define KREMBO_H
+#ifndef KREMBOT_H
+#define KREMBOT_H
 
 #include "application.h"
 #include "battery.h"
@@ -42,6 +42,8 @@
 #include "cbumpers.h"
 #include "imu_sensor.h"
 #include "SandTimer/SandTimer.h"
+#include "version_detector.h"
+
 
 
 class Krembot
@@ -52,6 +54,7 @@ private:
   void saveMyName(const char *topic, const char *data);
   SandTimer battery_level_timer_;
   SandTimer battery_level_counter_;
+  Version version;
 
 public:
 
@@ -70,7 +73,6 @@ public:
   RGBLed Led;
   IMUSensor Imu;
 
-
   void reset(const char *topic, const char *data) {
     if (strcmp(topic,"reset")==0 && (strcmp(data,"all")==0 || strcmp(data,getName().c_str())==0) ) {
       System.reset();
@@ -86,6 +88,10 @@ public:
   String getName() { return  my_name_; }
 
   bool have_name() {return my_name_.length()>0 ;}
+
+  Version getVersion();
+
+  void checkVersion();
 };
 
 #endif

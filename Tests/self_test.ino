@@ -75,32 +75,15 @@ struct Leds
 
 struct BumpersPhase
 {
-#ifdef krembot_V1
 
-  bool front = false,
-       right = false,
-       rear = false,
-       left = false;
-
-
-  bool front_printed = false,
-       right_printed = false,
-       rear_printed = false,
-       left_printed = false;
-
-#endif
-
-#ifdef krembot_V2
-
-  bool front = false,
-       front_right = false,
-       right = false,
-       rear_right = false,
-       rear = false,
-       rear_left = false,
-       left = false,
-       front_left = false;
-
+  BumperState front = BumperState::UNPRESSED,
+              right = BumperState::UNPRESSED,
+              rear = BumperState::UNPRESSED,
+              left = BumperState::UNPRESSED,
+              front_right = BumperState::UNPRESSED,
+              rear_right = BumperState::UNPRESSED,
+              rear_left = BumperState::UNPRESSED,
+              front_left = BumperState::UNPRESSED;
 
   bool front_printed = false,
        front_right_printed = false,
@@ -111,7 +94,7 @@ struct BumpersPhase
        left_printed = false,
        front_left_printed = false;
 
-#endif
+
 };
 
 struct Driving
@@ -191,6 +174,14 @@ void setup()
 
     current_phase = PHASE::NONE;
     Serial.println("\n************************************\n");
+
+    if(krembot.getVersion() == Version::V1)
+    {
+      bumpers.front_right = BumperState::UNDEFINED,
+      bumpers.rear_right = BumperState::UNDEFINED,
+      bumpers.rear_left = BumperState::UNDEFINED,
+      bumpers.front_left = BumperState::UNDEFINED;
+    }
 }
 
 void loop()
@@ -435,303 +426,214 @@ bool check_leds ()
 
 }
 
-#ifdef krembot_V2
-  bool check_bumpers()
+bool check_bumpers()
+{
+  if(!bumpers.front_printed && bumpers.front != BumperState::UNDEFINED)
   {
-    if(!bumpers.front_printed)
+    Serial.println("Let's continue with the bumpers");
+    wait(1000);
+    Serial.println("Please press only the front bumper.");
+    bumpers.front_printed = true;
+  }
+  if(bumpers.front == BumperState::UNPRESSED)
+  {
+    clear_bumpers_results();
+    results = krembot.Bumpers.read();
+    if(results.front == BumperState::PRESSED && results.front_right != BumperState::PRESSED && results.right != BumperState::PRESSED &&
+      results.rear_right != BumperState::PRESSED && results.rear != BumperState::PRESSED && results.rear_left != BumperState::PRESSED &&
+      results.left  != BumperState::PRESSED&& results.front_left != BumperState::PRESSED)
     {
-      Serial.println("Let's continue with the bumpers");
+      bumpers.front = BumperState::PRESSED;
+      Serial.println("great. I see the front bumper was pressed");
+      Serial.println("------------------------------------\n");
       wait(1000);
-      Serial.println("Please press only the front bumper.");
-      bumpers.front_printed = true;
     }
-    if(!bumpers.front)
+    else
     {
-      clear_bumpers_results();
-      results = krembot.Bumpers.read();
-      if(results.front && !results.front_right && !results.right && !results.rear_right
-        && !results.rear && !results.rear_left && !results.left && !results.front_left)
-      {
-        bumpers.front = true;
-        Serial.println("great. I see the front bumper was pressed");
-        Serial.println("------------------------------------\n");
-        wait(1000);
-      }
-      else
-      {
-        return false;
-      }
+      return false;
     }
-
-    if(!bumpers.front_right_printed)
-    {
-      Serial.println("Please press only the front right bumper.");
-      bumpers.front_right_printed = true;
-    }
-    if(!bumpers.front_right)
-    {
-      clear_bumpers_results();
-      results = krembot.Bumpers.read();
-      if(!results.front && results.front_right && !results.right && !results.rear_right
-        && !results.rear && !results.rear_left && !results.left && !results.front_left)
-      {
-        bumpers.front_right = true;
-        Serial.println("great. I see the front right bumper was pressed");
-        Serial.println("------------------------------------\n");
-        wait(1000);
-      }
-      else
-      {
-        return false;
-      }
-    }
-
-    if(!bumpers.right_printed)
-    {
-      Serial.println("Please press only the right bumper.");
-      bumpers.right_printed = true;
-    }
-    if(!bumpers.right)
-    {
-      clear_bumpers_results();
-      results = krembot.Bumpers.read();
-      if(!results.front && !results.front_right && results.right && !results.rear_right
-        && !results.rear && !results.rear_left && !results.left && !results.front_left)
-      {
-        bumpers.right = true;
-        Serial.println("great. I see the right bumper was pressed");
-        Serial.println("------------------------------------\n");
-        wait(1000);
-      }
-      else
-      {
-        return false;
-      }
-    }
-
-    if(!bumpers.rear_right_printed)
-    {
-      Serial.println("Please press only the rear right bumper.");
-      bumpers.rear_right_printed = true;
-    }
-    if(!bumpers.rear_right)
-    {
-      clear_bumpers_results();
-      results = krembot.Bumpers.read();
-      if(!results.front && !results.front_right && !results.right && results.rear_right
-        && !results.rear && !results.rear_left && !results.left && !results.front_left)
-      {
-        bumpers.rear_right = true;
-        Serial.println("great. I see the rear right bumper was pressed");
-        Serial.println("------------------------------------\n");
-        wait(1000);
-      }
-      else
-      {
-        return false;
-      }
-    }
-
-    if(!bumpers.rear_printed)
-    {
-      Serial.println("Please press only the rear bumper.");
-      bumpers.rear_printed = true;
-    }
-    if(!bumpers.rear)
-    {
-      clear_bumpers_results();
-      results = krembot.Bumpers.read();
-      if(!results.front && !results.front_right && !results.right && !results.rear_right
-        && results.rear && !results.rear_left && !results.left && !results.front_left)
-      {
-        bumpers.rear = true;
-        Serial.println("great. I see the rear bumper was pressed");
-        Serial.println("------------------------------------\n");
-        wait(1000);
-      }
-      else
-      {
-        return false;
-      }
-    }
-
-    if(!bumpers.rear_left_printed)
-    {
-      Serial.println("Please press only the rear left bumper.");
-      bumpers.rear_left_printed = true;
-    }
-    if(!bumpers.rear_left)
-    {
-      clear_bumpers_results();
-      results = krembot.Bumpers.read();
-      if(!results.front && !results.front_right && !results.right && !results.rear_right
-        && !results.rear && results.rear_left && !results.left && !results.front_left)
-      {
-        bumpers.rear_left = true;
-        Serial.println("great. I see the rear left bumper was pressed");
-        Serial.println("------------------------------------\n");
-        wait(1000);
-      }
-      else
-      {
-        return false;
-      }
-    }
-
-    if(!bumpers.left_printed)
-    {
-      Serial.println("Please press only the left bumper.");
-      bumpers.left_printed = true;
-    }
-    if(!bumpers.left)
-    {
-      clear_bumpers_results();
-
-      results = krembot.Bumpers.read();
-      if(!results.front && !results.front_right && !results.right && !results.rear_right
-        && !results.rear && !results.rear_left && results.left && !results.front_left)
-      {
-        bumpers.left = true;
-        Serial.println("great. I see the left bumper was pressed");
-        Serial.println("------------------------------------\n");
-        wait(1000);
-      }
-      else
-      {
-        return false;
-      }
-    }
-
-    if(!bumpers.front_left_printed)
-    {
-      Serial.println("Please press only the front left bumper.");
-      bumpers.front_left_printed = true;
-    }
-    if(!bumpers.front_left)
-    {
-      clear_bumpers_results();
-      results = krembot.Bumpers.read();
-      if(!results.front && !results.front_right && !results.right && !results.rear_right
-        && !results.rear && !results.rear_left && !results.left && results.front_left)
-      {
-        bumpers.front_left = true;
-        Serial.println("great. I see the front left bumper was pressed");
-        Serial.println("------------------------------------\n");
-        wait(1000);
-        return true;
-      }
-      else
-      {
-        return false;
-      }
-    }
-
-    return false;
-
   }
 
-#endif
-
-#ifdef krembot_V1
-  bool check_bumpers()
+  if(!bumpers.front_right_printed && bumpers.front_right != BumperState::UNDEFINED)
   {
-    if(!bumpers.front_printed)
+    Serial.println("Please press only the front right bumper.");
+    bumpers.front_right_printed = true;
+  }
+  if(bumpers.front_right == BumperState::UNPRESSED)
+  {
+    clear_bumpers_results();
+    results = krembot.Bumpers.read();
+    if(results.front != BumperState::PRESSED && results.front_right == BumperState::PRESSED && results.right != BumperState::PRESSED &&
+      results.rear_right != BumperState::PRESSED && results.rear != BumperState::PRESSED && results.rear_left != BumperState::PRESSED &&
+      results.left  != BumperState::PRESSED&& results.front_left != BumperState::PRESSED)
     {
-      Serial.println("Let's continue with the bumpers");
+      bumpers.front_right = BumperState::PRESSED;
+      Serial.println("great. I see the front right bumper was pressed");
+      Serial.println("------------------------------------\n");
       wait(1000);
-      Serial.println("Please press only the front bumper.");
-      bumpers.front_printed = true;
     }
-    if(!bumpers.front)
+    else
     {
-      clear_bumpers_results();
-      results = krembot.Bumpers.read();
-      if(results.front && !results.right && !results.rear && !results.left)
-      {
-        bumpers.front = true;
-        Serial.println("great. I see the front bumper was pressed");
-        Serial.println("------------------------------------\n");
-        wait(1000);
-      }
-      else
-      {
-        return false;
-      }
+      return false;
     }
-
-    if(!bumpers.right_printed)
-    {
-      Serial.println("Please press only the right bumper.");
-      bumpers.right_printed = true;
-    }
-    if(!bumpers.right)
-    {
-      clear_bumpers_results();
-      results = krembot.Bumpers.read();
-      if(!results.front && results.right && !results.rear && !results.left)
-      {
-        bumpers.right = true;
-        Serial.println("great. I see the right bumper was pressed");
-        Serial.println("------------------------------------\n");
-        wait(1000);
-      }
-      else
-      {
-        return false;
-      }
-    }
-
-    if(!bumpers.rear_printed)
-    {
-      Serial.println("Please press only the rear bumper.");
-      bumpers.rear_printed = true;
-    }
-    if(!bumpers.rear)
-    {
-      clear_bumpers_results();
-      results = krembot.Bumpers.read();
-      if(!results.front && !results.right && results.rear && !results.left)
-      {
-        bumpers.rear = true;
-        Serial.println("great. I see the rear bumper was pressed");
-        Serial.println("------------------------------------\n");
-        wait(1000);
-      }
-      else
-      {
-        return false;
-      }
-    }
-
-    if(!bumpers.left_printed)
-    {
-      Serial.println("Please press only the left bumper.");
-      bumpers.left_printed = true;
-    }
-    if(!bumpers.left)
-    {
-      clear_bumpers_results();
-
-      results = krembot.Bumpers.read();
-      if(!results.front && !results.right && !results.rear && results.left)
-      {
-        bumpers.left = true;
-        Serial.println("great. I see the left bumper was pressed");
-        Serial.println("------------------------------------\n");
-        wait(1000);
-        return true;
-      }
-      else
-      {
-        return false;
-      }
-    }
-
-    return false;
-
   }
 
-#endif
+  if(!bumpers.right_printed && bumpers.right != BumperState::UNDEFINED)
+  {
+    Serial.println("Please press only the right bumper.");
+    bumpers.right_printed = true;
+  }
+  if(bumpers.right == BumperState::UNPRESSED)
+  {
+    clear_bumpers_results();
+    results = krembot.Bumpers.read();
+    if(results.front != BumperState::PRESSED && results.front_right != BumperState::PRESSED && results.right == BumperState::PRESSED &&
+      results.rear_right != BumperState::PRESSED && results.rear != BumperState::PRESSED && results.rear_left != BumperState::PRESSED &&
+      results.left  != BumperState::PRESSED&& results.front_left != BumperState::PRESSED)
+    {
+      bumpers.right = BumperState::PRESSED;
+      Serial.println("great. I see the right bumper was pressed");
+      Serial.println("------------------------------------\n");
+      wait(1000);
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  if(!bumpers.rear_right_printed && bumpers.rear_right != BumperState::UNDEFINED)
+  {
+    Serial.println("Please press only the rear right bumper.");
+    bumpers.rear_right_printed = true;
+  }
+  if(bumpers.rear_right == BumperState::UNPRESSED)
+  {
+    clear_bumpers_results();
+    results = krembot.Bumpers.read();
+    if(results.front != BumperState::PRESSED && results.front_right != BumperState::PRESSED && results.right != BumperState::PRESSED &&
+      results.rear_right == BumperState::PRESSED && results.rear != BumperState::PRESSED && results.rear_left != BumperState::PRESSED &&
+      results.left  != BumperState::PRESSED&& results.front_left != BumperState::PRESSED)
+    {
+      bumpers.rear_right = BumperState::PRESSED;
+      Serial.println("great. I see the rear right bumper was pressed");
+      Serial.println("------------------------------------\n");
+      wait(1000);
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  if(!bumpers.rear_printed && bumpers.rear != BumperState::UNDEFINED)
+  {
+    Serial.println("Please press only the rear bumper.");
+    bumpers.rear_printed = true;
+  }
+  if(bumpers.rear == BumperState::UNPRESSED)
+  {
+    clear_bumpers_results();
+    results = krembot.Bumpers.read();
+    if(results.front != BumperState::PRESSED && results.front_right != BumperState::PRESSED && results.right != BumperState::PRESSED &&
+      results.rear_right != BumperState::PRESSED && results.rear == BumperState::PRESSED && results.rear_left != BumperState::PRESSED &&
+      results.left  != BumperState::PRESSED&& results.front_left != BumperState::PRESSED)
+    {
+      bumpers.rear = BumperState::PRESSED;
+      Serial.println("great. I see the rear bumper was pressed");
+      Serial.println("------------------------------------\n");
+      wait(1000);
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  if(!bumpers.rear_left_printed && bumpers.rear_left != BumperState::UNDEFINED)
+  {
+    Serial.println("Please press only the rear left bumper.");
+    bumpers.rear_left_printed = true;
+  }
+  if(bumpers.rear_left == BumperState::UNPRESSED)
+  {
+    clear_bumpers_results();
+    results = krembot.Bumpers.read();
+    if(results.front != BumperState::PRESSED && results.front_right != BumperState::PRESSED && results.right != BumperState::PRESSED &&
+      results.rear_right != BumperState::PRESSED && results.rear != BumperState::PRESSED && results.rear_left == BumperState::PRESSED &&
+      results.left  != BumperState::PRESSED&& results.front_left != BumperState::PRESSED)
+    {
+      bumpers.rear_left = BumperState::PRESSED;
+      Serial.println("great. I see the rear left bumper was pressed");
+      Serial.println("------------------------------------\n");
+      wait(1000);
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  if(!bumpers.left_printed && bumpers.left != BumperState::UNDEFINED)
+  {
+    Serial.println("Please press only the left bumper.");
+    bumpers.left_printed = true;
+  }
+  if(bumpers.left == BumperState::UNPRESSED)
+  {
+    clear_bumpers_results();
+
+    results = krembot.Bumpers.read();
+    if(results.front != BumperState::PRESSED && results.front_right != BumperState::PRESSED && results.right != BumperState::PRESSED &&
+      results.rear_right != BumperState::PRESSED && results.rear != BumperState::PRESSED && results.rear_left != BumperState::PRESSED &&
+      results.left  == BumperState::PRESSED&& results.front_left != BumperState::PRESSED)
+    {
+      bumpers.left = BumperState::PRESSED;
+      Serial.println("great. I see the left bumper was pressed");
+      Serial.println("------------------------------------\n");
+      wait(1000);
+      if(krembot.getVersion() == Version::V1)
+      {
+        return true;
+      }
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  if(!bumpers.front_left_printed && bumpers.front_left != BumperState::UNDEFINED)
+  {
+    Serial.println("Please press only the front left bumper.");
+    bumpers.front_left_printed = true;
+  }
+  if(bumpers.front_left == BumperState::UNPRESSED)
+  {
+    clear_bumpers_results();
+    results = krembot.Bumpers.read();
+    if(results.front != BumperState::PRESSED && results.front_right != BumperState::PRESSED && results.right != BumperState::PRESSED &&
+      results.rear_right != BumperState::PRESSED && results.rear != BumperState::PRESSED && results.rear_left != BumperState::PRESSED &&
+      results.left  != BumperState::PRESSED&& results.front_left == BumperState::PRESSED)
+    {
+      bumpers.front_left = BumperState::PRESSED;
+      Serial.println("great. I see the front left bumper was pressed");
+      Serial.println("------------------------------------\n");
+      wait(1000);
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  return false;
+
+}
+
+
+
 bool check_driving()
 {
   if(!driving.header_printed)
@@ -1225,17 +1127,18 @@ void wait(int period)
 
 void clear_bumpers_results()
 {
-  results.front = false;
-  results.right = false;
-  results.rear = false;
-  results.left = false;
+  results.front = BumperState::UNPRESSED;
+  results.right = BumperState::UNPRESSED;
+  results.rear = BumperState::UNPRESSED;
+  results.left = BumperState::UNPRESSED;
 
-#ifdef krembot_V2
-  results.front_right = false;
-  results.rear_left = false;
-  results.rear_right = false;
-  results.front_left = false;
-#endif
+  if(krembot.getVersion() == Version::V2)
+  {
+    results.front_right = BumperState::UNPRESSED;
+    results.rear_left = BumperState::UNPRESSED;
+    results.rear_right = BumperState::UNPRESSED;
+    results.front_left = BumperState::UNPRESSED;
+  }
 
 
 }
