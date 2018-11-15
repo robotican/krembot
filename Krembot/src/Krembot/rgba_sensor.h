@@ -28,8 +28,7 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
 
-/* Author: Elhay Rauper */
-/* Maintainer: Yair Shlomi */
+/* Author: Elhay Rauper, Yair Shlomi */
 
 
 #ifndef RGBA_SENSOR_H

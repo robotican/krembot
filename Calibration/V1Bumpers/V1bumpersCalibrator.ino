@@ -30,15 +30,15 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 * POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
-/* Author: Elhay Rauper */
+/* Author: Yair Shlomi */
 
 
 #include "Krembot/krembot.h"
 //Only one instance of krembot object should be declared
 Krembot krembot;
-
+BumpCalib bumps_calib_;
 bool bumpers_calibration_mode = false;
-
+bool finished = false;
 void setup()
 {
     krembot.setup();
@@ -49,13 +49,13 @@ void setup()
 void loop()
 {
   krembot.loop();
-  bumpers_calibration_mode = krembot.Bumpers.calib();
-  if (bumpers_calibration_mode)
+  if(!finished)
   {
-     krembot.Led.write(0, 0, 0);
-     while(true);
+    bumpers_calibration_mode = krembot.Bumpers.calib();
+    if (bumpers_calibration_mode)
+    {
+       krembot.Led.write(0, 0, 0);
+       finished = true;
+    }
   }
-
-
-  //your code here
 }
