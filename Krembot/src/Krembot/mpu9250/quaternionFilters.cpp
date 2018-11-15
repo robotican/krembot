@@ -9,6 +9,15 @@
 // Kalman-based filtering algorithms but is much less computationally
 // intensive---it can be performed on a 3.3 V Pro Mini operating at 8 MHz!
 
+/*
+https://github.com/sparkfun/SparkFun_MPU-9250_Breakout_Arduino_Library
+
+This code is beerware; if you see me (or any other SparkFun employee) at the
+local, and you've found our code helpful, please buy us a round!
+
+Distributed as-is; no warranty is given.
+*****************************************************************************/
+
 #include "quaternionFilters.h"
 
 // These are the free parameters in the Mahony filter and fusion scheme, Kp

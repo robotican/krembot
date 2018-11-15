@@ -4,7 +4,16 @@
  a 3.3 V Teensy 3.1. We have disabled the internal pull-ups used by the Wire
  library in the Wire.h/twi.c utility file. We are also using the 400 kHz fast
  I2C mode by setting the TWI_FREQ  to 400000L /twi.h utility file.
- */
+
+https://github.com/sparkfun/SparkFun_MPU-9250_Breakout_Arduino_Library
+
+This code is beerware; if you see me (or any other SparkFun employee) at the
+local, and you've found our code helpful, please buy us a round!
+
+Distributed as-is; no warranty is given.
+******************************************************************************/
+
+ 
 #ifndef _MPU9250_H_
 #define _MPU9250_H_
 
