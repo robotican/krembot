@@ -23,4 +23,4 @@ If a krembot not driving in straight line when the propper command is received t
 * There are some limitations - 
 	* Adding offset to a wheel will override the previous value.
 	* re enabling the save command will work only if you wait 30 seconds after saving.
-	* somtimes we will need tp wait a few seconds until the krembot will execute the command we sent. please wait patiently.
+	* somtimes we will need to wait a few seconds until the krembot will execute the command we sent. please wait patiently.
