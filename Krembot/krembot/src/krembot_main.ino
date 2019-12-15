@@ -33,7 +33,7 @@
 /* Author: Elhay Rauper */
 
 
-#include "krembot.h"
+#include "Krembot/krembot.h"
 //Only one instance of krembot object should be declared
 Krembot krembot;
 
@@ -46,5 +46,5 @@ void setup()
 void loop()
 {
   krembot.loop();
-  //your code here
+  //your code here   
 }

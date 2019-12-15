@@ -46,5 +46,8 @@
         "cinttypes": "cpp",
         "utility": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "particle.targetDevice": "krembot102",
+    "particle.firmwareVersion": "1.4.4",
+    "particle.targetPlatform": "photon"
 }

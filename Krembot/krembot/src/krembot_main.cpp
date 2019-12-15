@@ -1,3 +1,7 @@
+/******************************************************/
+//       THIS IS A GENERATED FILE - DO NOT EDIT       //
+/******************************************************/
+
 #include "application.h"
 #line 1 "d:/Projects/KrembotsNew/krembot/Krembot/krembot/src/krembot_main.ino"
 /*******************************************************************************
@@ -35,7 +39,7 @@
 /* Author: Elhay Rauper */
 
 
-#include "krembot.h"
+#include "Krembot/krembot.h"
 //Only one instance of krembot object should be declared
 void setup();
 void loop();
@@ -51,5 +55,5 @@ void setup()
 void loop()
 {
   krembot.loop();
-  //your code here
+  //your code here   
 }
