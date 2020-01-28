@@ -12,3 +12,5 @@ target/
 .vscode/
 
 Src/krembot_main.cpp
+
+*.bin

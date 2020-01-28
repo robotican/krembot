@@ -1,6 +1,7 @@
 # SandTimer
-https://github.com/elhayra/SandTimer
-This library allow you to set and use timers easily over Arduino platform. The implementation doesn't use delay function, and it is very fast. This is very important if you want your board to keep doing things in the "background" while using timer.
+https://github.com/elhayra/SandTimer  
+This library allow you to set and use timers easily over Arduino platform. The implementation doesn't use delay function, and it is very fast.  
+ This is very important if you want your board to keep doing things in the "background" while using timer.  
 
 ## Usage
 

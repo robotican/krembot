@@ -10,4 +10,5 @@
  * relies on the Arduino Wire (I2C) library. to use the library, instantiate an
  * APDS9960 object, call init(), and call the appropriate functions.
  
- */https://github.com/sparkfun/SparkFun_APDS-9960_Sensor_Arduino_Library
+ */  
+ https://github.com/sparkfun/SparkFun_APDS-9960_Sensor_Arduino_Library

@@ -82,7 +82,7 @@ void Krembot::saveMyName(const char *topic, const char *data)
 void Krembot::checkVersion()
 {
 	//check if bumpers mux is connected
-	Wire.beginTransmission(0x3E);
+	Wire.beginTransmission(BUMPERS_MUX_ADDR);
 	int error = Wire.endTransmission();
 	if(error == 0)
 	{

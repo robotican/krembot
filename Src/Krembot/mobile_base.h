@@ -56,7 +56,6 @@ private:
 public:
   MobileBase();
   bool drive(int8_t linear_spd, int8_t angular_spd);
-  void standby();
   void stop();
 };
 
